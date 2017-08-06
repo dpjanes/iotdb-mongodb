@@ -61,7 +61,7 @@ const pop = (_self, done) => {
                 }
 
                 if (result.value) {
-                    self.json = util.safe_ids(result.value)
+                    self.json = util.scrub_ids(result.value)
                 } else {
                     self.json = null;
                 }

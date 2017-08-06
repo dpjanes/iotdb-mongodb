@@ -52,7 +52,7 @@ const get = (_self, done) => {
                     return done(error);
                 }
 
-                self.json = util.safe_ids(result)
+                self.json = util.scrub_ids(result)
 
                 done(null, self);
             })

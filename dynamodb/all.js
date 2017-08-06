@@ -70,7 +70,7 @@ const all = (_self, done) => {
                     return done(error)
                 }
 
-                self.jsons = util.safe_ids(mongo_result);
+                self.jsons = util.scrub_ids(mongo_result);
                 self.json = self.jsons.length ? self.jsons[0] : null;
 
                 if (options.limit) {

@@ -14,11 +14,9 @@
 const _ = require("iotdb-helpers");
 const fs = require("iotdb-fs");
 
-const assert = require("assert");
 const path = require("path");
 const os = require("os");
 
-const AWS = require("aws-sdk");
 const Q = require("bluebird-q");
 const minimist = require('minimist');
 
@@ -82,50 +80,3 @@ Q({
         console.log("#", _.error.message(error))
     })
     .done(() => process.exit())
-
-/*
-const table_name = ad._[0]
-
-Q({
-    awsd: awsd,
-    table_name: table_name,
-    result: {
-        table_name: table_name,
-        schema: {},
-        items: [],
-    }
-})
-    .then(aws.initialize)
-    .then(aws.dynamodb.initialize)
-    .then(aws.dynamodb.describe_table)
-    .then(sd => {
-        sd.result.schema.keys = sd.table.KeySchema.map(kd => kd.AttributeName)
-        sd.result.schema.indexes = {};
-
-        (sd.table.GlobalSecondaryIndexes || []).forEach(xd => {
-            sd.result.schema.indexes[xd.IndexName] = xd.KeySchema.map(kd => kd.AttributeName)
-        })
-
-        return sd;
-    })
-    .then(aws.dynamodb.all)
-    .then(sd => {
-        sd.result.items = sd.jsons;
-
-        sd.path = `exported/${table_name}.json`;
-        sd.json = sd.result;
-
-        return sd;
-    })
-    .then(fs.mkdir.parent)
-    .then(fs.write.json)
-    .then(sd => {
-        console.log("+", "#items", sd.result.items.length)
-        console.log("+", "keys", sd.result.schema.keys)
-        console.log("+", "indexes", _.keys(sd.result.schema.indexes).sort())
-    })
-    .catch(error => {
-        console.log("ERROR", error)
-        console.log("#", _.error.message(error))
-    })
-*/
