@@ -25,6 +25,7 @@
 module.exports = Object.assign(
     {},
     require("./all"),
+    require("./delete"),
     require("./get"),
     require("./initialize"),
     require("./put"),
