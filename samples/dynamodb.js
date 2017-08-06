@@ -359,3 +359,26 @@ if (action("delete")) {
         .done(sd => process.exit(0))
 }
 
+
+if (action("pop")) {
+    Q({
+        mongodbd: mongodbd,
+        table_name: "movies",
+        json: {
+            year: 2014,
+            title: "The Matrix Unhung",
+        },
+        query: {
+            year: 2014,
+            title: "The Matrix Unhung",
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.put)
+        .then(mongo.dynamodb.pop)
+        .then(sd => console.log("+", "ok", sd.json))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
+}
+

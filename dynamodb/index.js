@@ -28,6 +28,7 @@ module.exports = Object.assign(
     require("./delete"),
     require("./get"),
     require("./initialize"),
+    require("./pop"),
     require("./put"),
     require("./query_simple"),
     require("./replace"),
