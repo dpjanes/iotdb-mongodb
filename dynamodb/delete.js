@@ -34,7 +34,7 @@ const util = require("../lib/util");
 
 /**
  */
-const delete = (_self, done) => {
+const _delete = (_self, done) => {
     const self = _.d.clone.shallow(_self)
     const method = "delete";
 
@@ -69,4 +69,4 @@ const delete = (_self, done) => {
 /**
  *  API
  */
-exports.delete = Q.denodeify(delete)
+exports.delete = Q.denodeify(_delete)
