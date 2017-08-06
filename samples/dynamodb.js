@@ -189,15 +189,13 @@ if (action("query-simple")) {
         .done(sd => process.exit(0))
 }
 
-/*
 if (action("scan-simple")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
         query: {
-            title: "The Matrix",
+            year: 1999,
         },
-        keys: [ "title", "#year" ],
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
@@ -206,7 +204,6 @@ if (action("scan-simple")) {
         .catch(error => console.log("#", _.error.message(error)))
         .done(sd => process.exit(0))
 }
-*/
 
 if (action("page-all")) {
     const _run = pager => {
@@ -239,6 +236,7 @@ if (action("page-all")) {
     _run()
 }
 
+// scan and query are aliases in this
 if (action("page-scan")) {
     const _run = pager => {
         Q({
@@ -271,40 +269,3 @@ if (action("page-scan")) {
 
     _run()
 }
-
-
-/*
-if (action("page-query")) {
-    const _run = pager => {
-        Q({
-            mongodbd: mongodbd,
-            table_name: "snapshot",
-            index_name: "user_id-created-index",
-            query_limit: 5,
-            pager: pager,
-            query: {
-                "user_id": "urn:consensas:user:Q-SVYoHm7E",
-            }
-        })
-            .then(mongo.initialize)
-            .then(mongo.dynamodb.initialize)
-            .then(mongo.dynamodb.query_simple)
-            .then(sd => {
-                console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.ledger_id), null, 2))
-                console.log("+", "pager", sd.pager)
-                // console.log("+", "pager", _.id.unpack(sd.pager))
-                
-                if (sd.pager) {
-                    process.nextTick(() => {
-                        _run(sd.pager)
-                    })
-                }
-            })
-            .catch(error => console.log("#", _.error.message(error)))
-            .done(sd => process.exit(0))
-    }
-
-    _run()
-}
-
-*/
