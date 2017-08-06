@@ -49,17 +49,34 @@ const query_simple = (_self, done) => {
     assert.ok(table_schema.keys, `${method}: expected table_schema.keys for ${self.table_name}`)
 
     const sort = table_schema.keys.map(key => [ key, 1 ])
+    const options = {}
+
+    if (self.pager) {
+        options.skip = _.coerce.to.Integer(self.pager, 0)
+    }
+    if (self.query_limit) {
+        options.limit = self.query_limit;
+    }
 
     Q(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.find(self.query, {}).sort(sort).toArray((error, mongo_result) => {
+            sd.mongo_collection.find(self.query, options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
                     return done(error)
                 }
 
                 self.jsons = util.safe_ids(mongo_result);
                 self.json = self.jsons.length ? self.jsons[0] : null;
+
+                if (options.limit) {
+                    self.pager = `${Math.min(options.limit, self.jsons.length) + (options.skip || 0)}`;
+                    if (self.jsons.length < options.limit) {
+                        self.pager = null;
+                    }
+                } else if (self.jsons.length === 0) {
+                    self.pager = null;
+                }
 
                 self.mongo_result = mongo_result;
 
@@ -73,3 +90,4 @@ const query_simple = (_self, done) => {
  *  API
  */
 exports.query_simple = Q.denodeify(query_simple)
+exports.scan_simple = Q.denodeify(query_simple)

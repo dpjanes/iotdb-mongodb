@@ -239,23 +239,22 @@ if (action("page-all")) {
     _run()
 }
 
-/*
 if (action("page-scan")) {
     const _run = pager => {
         Q({
             mongodbd: mongodbd,
-            table_name: "ledger",
+            table_name: "movies",
             query_limit: 5,
             pager: pager,
             query: {
-                "user_id": "urn:consensas:user:Q-SVYoHm7E",
+                "year": 2012,
             }
         })
             .then(mongo.initialize)
             .then(mongo.dynamodb.initialize)
             .then(mongo.dynamodb.scan_simple)
             .then(sd => {
-                console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.ledger_id), null, 2))
+                console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2))
                 console.log("+", "pager", sd.pager)
                 // console.log("+", "pager", _.id.unpack(sd.pager))
                 
@@ -263,16 +262,18 @@ if (action("page-scan")) {
                     process.nextTick(() => {
                         _run(sd.pager)
                     })
+                } else {
+                    process.exit(0);
                 }
             })
             .catch(error => console.log("#", _.error.message(error)))
-            .done(sd => process.exit(0))
     }
 
     _run()
 }
 
 
+/*
 if (action("page-query")) {
     const _run = pager => {
         Q({
