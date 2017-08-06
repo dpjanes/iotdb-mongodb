@@ -22,6 +22,9 @@ const mongodbd = require("./mongodbd.json");
 mongodbd.schema = {
     "movies": {
         keys: [ "title", "year" ],
+        indexes: {
+            "year-title-index": [ "year", "title" ],
+        },
     },
 }
 
@@ -268,4 +271,20 @@ if (action("page-scan")) {
     }
 
     _run()
+}
+
+if (action("query-index")) {
+    Q({
+        mongodbd: mongodbd,
+        table_name: "movies",
+        index_name: "year-title-index",
+        query: {
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.query_simple)
+        .then(sd => console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2)))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }

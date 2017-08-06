@@ -48,7 +48,12 @@ const query_simple = (_self, done) => {
     assert.ok(table_schema, `${method}: expected table_schema for ${self.table_name}`)
     assert.ok(table_schema.keys, `${method}: expected table_schema.keys for ${self.table_name}`)
 
-    const sort = table_schema.keys.map(key => [ key, 1 ])
+    let keys = table_schema.keys;
+    if (self.index_name) {
+        keys = table_schema.indexes[self.index_name]
+    }
+
+    const sort = keys.map(key => [ key, 1 ])
     const options = {}
 
     if (self.pager) {
