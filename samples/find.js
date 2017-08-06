@@ -31,7 +31,7 @@ const mongodb = require('mongodb');
 
 Q({
     mongodbd: require("./mongodbd.json"),
-    collection_name: "test1",
+    table_name: "test1",
 })
     .then(mongo.initialize)
     .then(mongo.collection)
