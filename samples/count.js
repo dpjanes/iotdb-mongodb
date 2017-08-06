@@ -21,16 +21,27 @@
  */
 
 "use strict";
+const mongo = require("..")
+const _ = require("iotdb-helpers");
 
-module.exports = Object.assign(
-    {},
-    require("./collection"),
-    require("./count"),
-    require("./find"),
-    require("./find_one"),
-    require("./initialize"),
-    require("./insert"),
-    require("./remove"),
-    require("./update"),
-    {}
-)
+const assert = require("assert");
+
+const Q = require("bluebird-q");
+const mongodb = require('mongodb');
+
+Q({
+    mongodbd: require("./mongodbd.json"),
+    table_name: "test1",
+})
+    .then(mongo.initialize)
+    .then(mongo.collection)
+
+    .then(mongo.count)
+    .then(sd => {
+        console.log("+", "count", sd.count)
+
+        process.exit()
+    })
+    .catch(error => {
+        console.log("#", error)
+    })
