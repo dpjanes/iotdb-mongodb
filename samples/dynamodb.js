@@ -37,6 +37,7 @@ if (action("initialize")) {
         .then(mongo.dynamodb.initialize)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
 /*
@@ -53,6 +54,7 @@ if (action("create-table")) {
         .then(mongo.dynamodb.create_table)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
 if (action("create-table-wait")) {
@@ -69,6 +71,7 @@ if (action("create-table-wait")) {
         .then(mongo.dynamodb.wait_table_exists)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
 if (action("delete-table")) {
@@ -81,6 +84,7 @@ if (action("delete-table")) {
         .then(mongo.dynamodb.delete_table)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 */
 
@@ -99,10 +103,9 @@ if (action("put")) {
         .then(mongo.dynamodb.put)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
-
-/*
 if (action("get")) {
     Q({
         mongodbd: mongodbd,
@@ -117,8 +120,10 @@ if (action("get")) {
         .then(mongo.dynamodb.get)
         .then(sd => console.log("+", "ok", sd.json))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
+/*
 if (action("query-simple")) {
     Q({
         mongodbd: mongodbd,
@@ -133,6 +138,7 @@ if (action("query-simple")) {
         .then(mongo.dynamodb.query_simple)
         .then(sd => console.log("+", "ok", sd.jsons))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
 if (action("scan-simple")) {
@@ -149,6 +155,7 @@ if (action("scan-simple")) {
         .then(mongo.dynamodb.scan_simple)
         .then(sd => console.log("+", "ok", sd.jsons))
         .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
 }
 
 if (action("page-all")) {
@@ -175,6 +182,7 @@ if (action("page-all")) {
                 }
             })
             .catch(error => console.log("#", _.error.message(error)))
+            .done(sd => process.exit(0))
     }
 
     _run()
@@ -206,6 +214,7 @@ if (action("page-scan")) {
                 }
             })
             .catch(error => console.log("#", _.error.message(error)))
+            .done(sd => process.exit(0))
     }
 
     _run()
@@ -239,6 +248,7 @@ if (action("page-query")) {
                 }
             })
             .catch(error => console.log("#", _.error.message(error)))
+            .done(sd => process.exit(0))
     }
 
     _run()
