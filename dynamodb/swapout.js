@@ -1,5 +1,5 @@
 /*
- *  drop.js
+ *  swapout.js
  *
  *  David Janes
  *  IOTDB.org
@@ -27,38 +27,24 @@ const _ = require("iotdb-helpers");
 const assert = require("assert");
 
 const Q = require("bluebird-q");
-const mongodb = require('mongodb');
 
-const util = require("./util");
+const mongo = require("../lib");
+const util = require("../lib/util");
 
 /**
+ *  Monkey patch outselves into iotdb-awslib
  */
-const drop = (_self, done) => {
+const swapout = (_self, done) => {
     const self = _.d.clone.shallow(_self)
-    const method = "drop";
+    const method = "swapout";
 
-    assert.ok(self.mongo_collection, `${method}: expected self.mongo_collection`)
-    assert.ok(_.is.JSON(self.query) || _.is.Nullish(self.query), `${method}: expected self.query to be a JSON-like object or Null`)
+    const aws = require("iotdb-awslib")
+    aws.dynamodb = require("../dynamodb")
 
-    const query = util.restore_ids(self.query || {});
-
-    self.mongo_collection.drop(query, (error, mongo_result) => {
-        if (error && (error.name === 'MongoError') && (error.code === 26)) {
-            error = null;
-            mongo_result = false;
-        }
-
-        if (error) {
-            return done(error)
-        }
-
-        self.mongo_result = mongo_result;
-
-        done(null, self)
-    })
+    done(null, self)
 }
 
 /**
  *  API
  */
-exports.drop = Q.denodeify(drop)
+exports.swapout = Q.denodeify(swapout)

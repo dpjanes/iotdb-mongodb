@@ -32,5 +32,6 @@ module.exports = Object.assign(
     require("./put"),
     require("./query_simple"),
     require("./replace"),
+    require("./swapout"),
     {}
 )

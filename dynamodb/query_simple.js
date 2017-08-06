@@ -51,6 +51,7 @@ const query_simple = (_self, done) => {
     let keys = table_schema.keys;
     if (self.index_name) {
         keys = table_schema.indexes[self.index_name]
+        assert.ok(keys, `${method}: expected index for ${self.table_name} / ${self.index_name}`)
     }
 
     const sort = keys.map(key => [ key, 1 ])
