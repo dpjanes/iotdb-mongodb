@@ -288,3 +288,49 @@ if (action("query-index")) {
         .catch(error => console.log("#", _.error.message(error)))
         .done(sd => process.exit(0))
 }
+
+
+if (action("replace-fail")) {
+    Q({
+        mongodbd: mongodbd,
+        table_name: "movies",
+        query: {
+            year: 1999,
+            title: _.timestamp.make(),
+        },
+        json: {
+            year: 1999,
+            title: "The Matrix 3D",
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.replace)
+        .then(sd => console.log("+", "ok"))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
+}
+
+
+if (action("replace-ok")) {
+    Q({
+        mongodbd: mongodbd,
+        table_name: "movies",
+        query: {
+            year: 1999,
+            title: "The Matrix 2D",
+        },
+        json: {
+            year: 2017,
+            title: "The Matrix 3D",
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.put)
+        .then(mongo.dynamodb.replace)
+        .then(sd => console.log("+", "ok"))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
+}
+

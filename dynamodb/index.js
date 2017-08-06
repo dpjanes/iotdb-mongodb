@@ -29,5 +29,6 @@ module.exports = Object.assign(
     require("./initialize"),
     require("./put"),
     require("./query_simple"),
+    require("./replace"),
     {}
 )
