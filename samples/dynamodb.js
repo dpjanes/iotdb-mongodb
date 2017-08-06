@@ -88,6 +88,38 @@ if (action("delete-table")) {
 }
 */
 
+if (action("load-movies")) {
+    const movies = require("./data/movies.json")
+
+    const next = () => {
+        if (!movies.length) {
+            process.exit()
+        }
+
+        const movie = movies.pop()
+
+        Q({
+            mongodbd: mongodbd,
+            table_name: "movies",
+            json: movie,
+        })
+            .then(mongo.initialize)
+            .then(mongo.dynamodb.initialize)
+            .then(mongo.dynamodb.put)
+            .then(sd => {
+                console.log("+", "ok added", movie.title)
+
+                process.nextTick(() => next())
+            })
+            .catch(error => {
+                console.log("#", _.error.message(error))
+                process.exit(1)
+            })
+    }
+
+    next();
+}
+
 if (action("put")) {
     Q({
         mongodbd: mongodbd,
@@ -123,7 +155,23 @@ if (action("get")) {
         .done(sd => process.exit(0))
 }
 
-/*
+if (action("get-not-found")) {
+    Q({
+        mongodbd: mongodbd,
+        table_name: "movies",
+        query: {
+            year: 1999,
+            title: "The Matrix Reloaded",
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.get)
+        .then(sd => console.log("+", "ok", sd.json))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
+}
+
 if (action("query-simple")) {
     Q({
         mongodbd: mongodbd,
@@ -141,6 +189,7 @@ if (action("query-simple")) {
         .done(sd => process.exit(0))
 }
 
+/*
 if (action("scan-simple")) {
     Q({
         mongodbd: mongodbd,
@@ -157,12 +206,13 @@ if (action("scan-simple")) {
         .catch(error => console.log("#", _.error.message(error)))
         .done(sd => process.exit(0))
 }
+*/
 
 if (action("page-all")) {
     const _run = pager => {
         Q({
             mongodbd: mongodbd,
-            table_name: "ledger",
+            table_name: "movies",
             query_limit: 5,
             pager: pager,
         })
@@ -170,7 +220,7 @@ if (action("page-all")) {
             .then(mongo.dynamodb.initialize)
             .then(mongo.dynamodb.all)
             .then(sd => {
-                console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.ledger_id), null, 2))
+                console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.title), null, 2))
                 // console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.user_id), null, 2))
                 console.log("+", "pager", sd.pager)
                 // console.log("+", "pager", _.id.unpack(sd.pager))
@@ -188,6 +238,7 @@ if (action("page-all")) {
     _run()
 }
 
+/*
 if (action("page-scan")) {
     const _run = pager => {
         Q({
