@@ -229,10 +229,11 @@ if (action("page-all")) {
                     process.nextTick(() => {
                         _run(sd.pager)
                     })
+                } else {
+                    process.exit(0);
                 }
             })
             .catch(error => console.log("#", _.error.message(error)))
-            .done(sd => process.exit(0))
     }
 
     _run()
