@@ -78,7 +78,6 @@ const query_simple = (_self, done) => {
                 self.json = self.jsons.length ? self.jsons[0] : null;
 
                 self.cursor = null;
-                self.pager = null;
 
                 if (options.limit) {
                     self.cursor = {
@@ -126,9 +125,6 @@ const query_simple = (_self, done) => {
                         }
 
                     }
-
-                    self.cursor = self.cursor;
-                    self.pager = self.cursor.next;
                 }
 
                 self.mongo_result = mongo_result;
