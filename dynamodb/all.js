@@ -53,7 +53,9 @@ const all = (_self, done) => {
     }
 
     const sort = keys.map(key => [ key, 1 ])
-    const options = {}
+    const options = {
+        skip: 0
+    }
 
     if (self.pager) {
         options.skip = _.coerce.to.Integer(self.pager, 0)
@@ -73,13 +75,58 @@ const all = (_self, done) => {
                 self.jsons = util.scrub_ids(mongo_result);
                 self.json = self.jsons.length ? self.jsons[0] : null;
 
+                self.cursor = null;
+                self.pager = null;
+
                 if (options.limit) {
-                    self.pager = `${Math.min(options.limit, self.jsons.length) + (options.skip || 0)}`;
-                    if (self.jsons.length < options.limit) {
-                        self.pager = null;
+                    self.cursor = {
+                        first: "0",
+                        previous: null,
+                        current: `${options.skip}`,
+                        next: null,
+
+                        is_first: null,
+                        is_last: null,
+                        has_next: null,
+                        has_previous: null,
+                        is_previous_first: null,
+
+                        implements_previous: true,
+
+                        n_results: self.jsons.length,
+                        n_start: options.skip,
                     }
-                } else if (self.jsons.length === 0) {
-                    self.pager = null;
+
+                    if (self.jsons.length > 0) {
+                        self.cursor.next = `${Math.min(options.limit, self.jsons.length) + options.skip}`;
+
+                        if (self.jsons.length < options.limit) {
+                            self.cursor.next = null;
+                            self.cursor.is_last = true;
+                            self.cursor.has_next = false;
+                        } else {
+                            self.cursor.has_next = true;
+                        }
+
+                        if (options.skip === 0) {
+                            self.cursor.is_first = true;
+                        }
+
+                        const previous = options.skip - options.limit;
+                        self.cursor.previous = `${previous}`
+                        if (previous === 0) {
+                            self.cursor.has_previous = true;
+                            self.cursor.is_previous_first = true;
+                        } else if (previous < 0) {
+                            self.cursor.has_previous = false;
+                        } else {
+                            self.cursor.has_previous = true;
+                        }
+
+                    }
+
+                    self.cursor = self.cursor;
+                    self.pager = self.cursor.next;
                 }
 
                 self.mongo_result = mongo_result;

@@ -225,9 +225,9 @@ if (action("page-all")) {
                 console.log("+", "pager", sd.pager)
                 // console.log("+", "pager", _.id.unpack(sd.pager))
                 
-                if (sd.pager) {
+                if (sd.cursor && sd.cursor.next) {
                     process.nextTick(() => {
-                        _run(sd.pager)
+                        _run(sd.cursor.next)
                     })
                 } else {
                     process.exit(0);
@@ -259,9 +259,9 @@ if (action("page-scan")) {
                 console.log("+", "pager", sd.pager)
                 // console.log("+", "pager", _.id.unpack(sd.pager))
                 
-                if (sd.pager) {
+                if (sd.cursor && sd.cursor.next) {
                     process.nextTick(() => {
-                        _run(sd.pager)
+                        _run(sd.cursor.next)
                     })
                 } else {
                     process.exit(0);

@@ -64,7 +64,13 @@ Q({
     .then(mongo.drop)
     .then(mongo.collection)
 
-    // create indexes
+    // create the indexes
+    .then(sd => _.d.add(sd, "inputs", 
+        _.values(sd.db.schema.indexes)
+            .concat([ sd.db.schema.keys ])
+            .map(keys => _.object(keys, keys.map(key => key === "created" ? -1 : 1))))
+    )
+    .then(sd => _.promise.each(sd, "indexes", mongo.ensure_index))
     
     // populate
     .then(sd => _.d.update(sd, {
