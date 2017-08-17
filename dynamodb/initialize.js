@@ -39,7 +39,6 @@ const initialize = (_self, done) => {
     const method = "initialize";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongodbd.schema, `${method}: expected self.mongodbd.schema`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
 
     done(null, self)
