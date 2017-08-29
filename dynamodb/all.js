@@ -112,7 +112,7 @@ const all = (_self, done) => {
                         }
 
                         const previous = options.skip - options.limit;
-                        self.cursor.previous = `${previous}`
+                        self.cursor.previous = `${Math.max(0, previous)}`
                         if (previous === 0) {
                             self.cursor.has_previous = true;
                             self.cursor.is_previous_first = true;

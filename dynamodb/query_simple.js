@@ -54,7 +54,7 @@ const query_simple = (_self, done) => {
         assert.ok(keys, `${method}: expected index for ${self.table_name} / ${self.index_name}`)
     }
 
-    const sort = keys.map(key => [ key, 1 ])
+    const sort = keys.map(key => [ key, key === "created" ? -1 : 1 ])
     const options = {
         skip: 0
     }
@@ -114,7 +114,7 @@ const query_simple = (_self, done) => {
                         }
 
                         const previous = options.skip - options.limit;
-                        self.cursor.previous = `${previous}`
+                        self.cursor.previous = `${Math.max(0, previous)}`
                         if (previous === 0) {
                             self.cursor.has_previous = true;
                             self.cursor.is_previous_first = true;
