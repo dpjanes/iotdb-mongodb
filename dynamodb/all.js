@@ -39,17 +39,19 @@ const all = (_self, done) => {
     const method = "all";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongodbd.schema, `${method}: expected self.mongodbd.schema`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
     assert.ok(self.table_name, `${method}: expected self.table_name`)
+    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
+    /*
     const table_schema = self.mongodbd.schema[self.table_name]
     assert.ok(table_schema, `${method}: expected table_schema for ${self.table_name}`)
     assert.ok(table_schema.keys, `${method}: expected table_schema.keys for ${self.table_name}`)
+     */
 
-    let keys = table_schema.keys;
+    let keys = self.table_schema.keys;
     if (self.index_name) {
-        keys = table_schema.indexes[self.index_name]
+        keys = self.table_schema.indexes[self.index_name]
     }
 
     const sort = keys.map(key => [ key, 1 ])

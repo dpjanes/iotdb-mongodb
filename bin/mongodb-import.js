@@ -76,10 +76,10 @@ Q({
     .then(sd => _.d.update(sd, {
         json: sd.db.items,
     }))
-    .then(_.promise.conditional(sd => sd.json.length, mongo.insert))
+    .then(_.promise.conditional(sd => sd.json && sd.json.length, mongo.insert))
 
     .then(sd => {
-        console.log("+", "ok")
+        console.log("+", "ok", sd.db.table_name)
     })
     .catch(error => {
         console.log("ERROR", error)

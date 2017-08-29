@@ -39,18 +39,20 @@ const query_simple = (_self, done) => {
     const method = "query_simple";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongodbd.schema, `${method}: expected self.mongodbd.schema`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
     assert.ok(self.table_name, `${method}: expected self.table_name`)
+    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
 
+    /*
     const table_schema = self.mongodbd.schema[self.table_name]
     assert.ok(table_schema, `${method}: expected table_schema for ${self.table_name}`)
     assert.ok(table_schema.keys, `${method}: expected table_schema.keys for ${self.table_name}`)
+     */
 
-    let keys = table_schema.keys;
+    let keys = self.table_schema.keys;
     if (self.index_name) {
-        keys = table_schema.indexes[self.index_name]
+        keys = self.table_schema.indexes[self.index_name]
         assert.ok(keys, `${method}: expected index for ${self.table_name} / ${self.index_name}`)
     }
 

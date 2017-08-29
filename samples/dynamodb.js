@@ -19,12 +19,12 @@ const minimist = require('minimist');
 
 const mongo = require("..")
 const mongodbd = require("./mongodbd.json");
-mongodbd.schema = {
-    "movies": {
-        keys: [ "title", "year" ],
-        indexes: {
-            "year-title-index": [ "year", "title" ],
-        },
+
+const movies_schema = {
+    table_name: "movies",
+    keys: [ "title", "year" ],
+    indexes: {
+        "year-title-index": [ "year", "title" ],
     },
 }
 
@@ -104,6 +104,7 @@ if (action("load-movies")) {
         Q({
             mongodbd: mongodbd,
             table_name: "movies",
+            table_schema: movies_schema,
             json: movie,
         })
             .then(mongo.initialize)
@@ -127,6 +128,7 @@ if (action("put")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         json: {
             year: 1999,
             title: "The Matrix",
@@ -145,6 +147,7 @@ if (action("get")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         query: {
             year: 1999,
             title: "The Matrix",
@@ -162,6 +165,7 @@ if (action("get-not-found")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         query: {
             year: 1999,
             title: "The Matrix Reloaded",
@@ -179,6 +183,7 @@ if (action("query-simple")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         query: {
             year: 1999,
             title: "The Matrix",
@@ -196,6 +201,7 @@ if (action("scan-simple")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         query: {
             year: 1999,
         },
@@ -213,6 +219,7 @@ if (action("page-all")) {
         Q({
             mongodbd: mongodbd,
             table_name: "movies",
+            table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
         })
@@ -245,6 +252,7 @@ if (action("page-scan")) {
         Q({
             mongodbd: mongodbd,
             table_name: "movies",
+            table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
             query: {
@@ -277,6 +285,7 @@ if (action("query-index")) {
     Q({
         mongodbd: mongodbd,
         table_name: "movies",
+        table_schema: movies_schema,
         index_name: "year-title-index",
         query: {
         },
