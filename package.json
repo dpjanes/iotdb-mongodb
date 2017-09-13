@@ -7,10 +7,9 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb/issues"
     }, 
     "dependencies": {
-        "bluebird-q": "~2.1.1", 
         "iotdb-errors": "~3.0.5", 
+        "iotdb-fs": "~1.0.6", 
         "iotdb-helpers": "~3.1.2", 
-        "iotdb-fs": "",
         "minimist": "~1.2.0", 
         "mongodb": "~2.2.31"
     }, 
@@ -42,5 +41,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.3"
+    "version": "0.0.4"
 }
