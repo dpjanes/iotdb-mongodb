@@ -27,7 +27,6 @@ const errors = require("iotdb-errors");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
 const mongo = require("../lib");
@@ -55,7 +54,7 @@ const replace = (_self, done) => {
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
-    Q(self)
+    _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.findAndModify(query, sort, self.json, { w: 1, upsert: false, }, (error, result) => {
@@ -76,4 +75,4 @@ const replace = (_self, done) => {
 /**
  *  API
  */
-exports.replace = Q.denodeify(replace)
+exports.replace = _.promise.denodeify(replace)

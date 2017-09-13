@@ -14,7 +14,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const minimist = require('minimist');
 
 const mongo = require("..")
@@ -33,7 +32,7 @@ const ad = minimist(process.argv.slice(2));
 const action = (name) => ad._.indexOf(name) > -1;
 
 if (action("initialize")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
     })
         .then(mongo.initialize)
@@ -45,7 +44,7 @@ if (action("initialize")) {
 
 /*
 if (action("create-table")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         partition_key: "#year",
@@ -61,7 +60,7 @@ if (action("create-table")) {
 }
 
 if (action("create-table-wait")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         partition_key: "#year",
@@ -78,7 +77,7 @@ if (action("create-table-wait")) {
 }
 
 if (action("delete-table")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
     })
@@ -101,7 +100,7 @@ if (action("load-movies")) {
 
         const movie = movies.pop()
 
-        Q({
+        _.promise.make({
             mongodbd: mongodbd,
             table_name: "movies",
             table_schema: movies_schema,
@@ -125,7 +124,7 @@ if (action("load-movies")) {
 }
 
 if (action("put")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -144,7 +143,7 @@ if (action("put")) {
 }
 
 if (action("get")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -162,7 +161,7 @@ if (action("get")) {
 }
 
 if (action("get-not-found")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -180,7 +179,7 @@ if (action("get-not-found")) {
 }
 
 if (action("query-simple")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -198,7 +197,7 @@ if (action("query-simple")) {
 }
 
 if (action("scan-simple")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -216,7 +215,7 @@ if (action("scan-simple")) {
 
 if (action("page-all")) {
     const _run = pager => {
-        Q({
+        _.promise.make({
             mongodbd: mongodbd,
             table_name: "movies",
             table_schema: movies_schema,
@@ -249,7 +248,7 @@ if (action("page-all")) {
 // scan and query are aliases in this
 if (action("page-scan")) {
     const _run = pager => {
-        Q({
+        _.promise.make({
             mongodbd: mongodbd,
             table_name: "movies",
             table_schema: movies_schema,
@@ -282,7 +281,7 @@ if (action("page-scan")) {
 }
 
 if (action("query-index")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         table_schema: movies_schema,
@@ -300,7 +299,7 @@ if (action("query-index")) {
 
 
 if (action("replace-fail")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         query: {
@@ -322,7 +321,7 @@ if (action("replace-fail")) {
 
 
 if (action("replace-ok")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         query: {
@@ -345,7 +344,7 @@ if (action("replace-ok")) {
 
 
 if (action("delete")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         json: {
@@ -370,7 +369,7 @@ if (action("delete")) {
 
 
 if (action("pop")) {
-    Q({
+    _.promise.make({
         mongodbd: mongodbd,
         table_name: "movies",
         json: {

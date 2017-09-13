@@ -26,7 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
 const mongo = require("../lib");
@@ -47,4 +46,4 @@ const initialize = (_self, done) => {
 /**
  *  API
  */
-exports.initialize = Q.denodeify(initialize)
+exports.initialize = _.promise.denodeify(initialize)

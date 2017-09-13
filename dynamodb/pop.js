@@ -26,7 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
 const mongo = require("../lib");
@@ -54,7 +53,7 @@ const pop = (_self, done) => {
     const query = _.object(self.table_schema.keys, values)
     // const sort = self.table_schema.keys.map(key => [ key, "ascending" ])
 
-    Q(self)
+    _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.findOneAndDelete(query, { w: 1, }, (error, result) => {
@@ -77,4 +76,4 @@ const pop = (_self, done) => {
 /**
  *  API
  */
-exports.pop = Q.denodeify(pop)
+exports.pop = _.promise.denodeify(pop)

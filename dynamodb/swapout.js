@@ -26,7 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 
 const mongo = require("../lib");
 const util = require("../lib/util");
@@ -47,4 +46,4 @@ const swapout = (_self, done) => {
 /**
  *  API
  */
-exports.swapout = Q.denodeify(swapout)
+exports.swapout = _.promise.denodeify(swapout)

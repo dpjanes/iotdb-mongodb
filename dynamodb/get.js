@@ -26,7 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
 const mongo = require("../lib");
@@ -43,7 +42,7 @@ const get = (_self, done) => {
     assert.ok(self.table_name, `${method}: expected self.table_name`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
 
-    Q(self)
+    _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.findOne(self.query, (error, result) => {
@@ -62,4 +61,4 @@ const get = (_self, done) => {
 /**
  *  API
  */
-exports.get = Q.denodeify(get)
+exports.get = _.promise.denodeify(get)

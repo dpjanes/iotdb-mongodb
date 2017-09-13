@@ -17,7 +17,6 @@ const fs = require("iotdb-fs");
 const path = require("path");
 const os = require("os");
 
-const Q = require("bluebird-q");
 const minimist = require('minimist');
 
 const mongo = require("../index");
@@ -47,7 +46,7 @@ if (ad.url) {
     mongodbd.url = ad.url
 }
 
-Q({
+_.promise.make({
     mongodbd: mongodbd,
 })
     .then(mongo.initialize)

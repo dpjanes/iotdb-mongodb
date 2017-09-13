@@ -26,7 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
 const mongo = require("../lib");
@@ -66,7 +65,7 @@ const all = (_self, done) => {
         options.limit = self.query_limit;
     }
 
-    Q(self)
+    _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.find({}, options).sort(sort).toArray((error, mongo_result) => {
@@ -138,4 +137,4 @@ const all = (_self, done) => {
 /**
  *  API
  */
-exports.all = Q.denodeify(all)
+exports.all = _.promise.denodeify(all)

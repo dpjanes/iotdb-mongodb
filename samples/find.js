@@ -26,10 +26,9 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const Q = require("bluebird-q");
 const mongodb = require('mongodb');
 
-Q({
+_.promise.make({
     mongodbd: require("./mongodbd.json"),
     table_name: "test1",
 })
