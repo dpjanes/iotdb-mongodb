@@ -20,7 +20,7 @@ const mongo = require("..")
 const mongodbd = require("./mongodbd.json");
 
 const movies_schema = {
-    table_name: "movies",
+    name: "movies",
     keys: [ "title", "year" ],
     indexes: {
         "year-title-index": [ "year", "title" ],
@@ -46,7 +46,6 @@ if (action("initialize")) {
 if (action("create-table")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         partition_key: "#year",
         sort_key: "title",
         write_capacity_units: 10,
@@ -62,7 +61,6 @@ if (action("create-table")) {
 if (action("create-table-wait")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         partition_key: "#year",
         sort_key: "title",
         write_capacity_units: 10,
@@ -79,7 +77,6 @@ if (action("create-table-wait")) {
 if (action("delete-table")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
@@ -102,7 +99,6 @@ if (action("load-movies")) {
 
         _.promise.make({
             mongodbd: mongodbd,
-            table_name: "movies",
             table_schema: movies_schema,
             json: movie,
         })
@@ -126,7 +122,6 @@ if (action("load-movies")) {
 if (action("put")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         json: {
             year: 1999,
@@ -145,7 +140,6 @@ if (action("put")) {
 if (action("get")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -163,7 +157,6 @@ if (action("get")) {
 if (action("get-not-found")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -181,7 +174,6 @@ if (action("get-not-found")) {
 if (action("query-simple")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -199,7 +191,6 @@ if (action("query-simple")) {
 if (action("scan-simple")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -217,7 +208,6 @@ if (action("page-all")) {
     const _run = pager => {
         _.promise.make({
             mongodbd: mongodbd,
-            table_name: "movies",
             table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
@@ -250,7 +240,6 @@ if (action("page-scan")) {
     const _run = pager => {
         _.promise.make({
             mongodbd: mongodbd,
-            table_name: "movies",
             table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
@@ -283,7 +272,6 @@ if (action("page-scan")) {
 if (action("query-index")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         table_schema: movies_schema,
         index_name: "year-title-index",
         query: {
@@ -301,7 +289,6 @@ if (action("query-index")) {
 if (action("replace-fail")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         query: {
             year: 1999,
             title: _.timestamp.make(),
@@ -323,7 +310,6 @@ if (action("replace-fail")) {
 if (action("replace-ok")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         query: {
             year: 1999,
             title: "The Matrix 2D",
@@ -346,7 +332,6 @@ if (action("replace-ok")) {
 if (action("delete")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         json: {
             year: 2014,
             title: "The Matrix Unhung",
@@ -371,7 +356,6 @@ if (action("delete")) {
 if (action("pop")) {
     _.promise.make({
         mongodbd: mongodbd,
-        table_name: "movies",
         json: {
             year: 2014,
             title: "The Matrix Unhung",

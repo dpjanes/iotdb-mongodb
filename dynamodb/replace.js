@@ -40,15 +40,8 @@ const replace = (_self, done) => {
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
-    assert.ok(self.table_name, `${method}: expected self.table_name`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
-
-    /*
-    const table_schema = self.mongodbd.schema[self.table_name]
-    assert.ok(table_schema, `${method}: expected table_schema for ${self.table_name}`)
-    assert.ok(table_schema.keys, `${method}: expected table_schema.keys for ${self.table_name}`)
-     */
+    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)

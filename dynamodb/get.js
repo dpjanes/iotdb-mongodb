@@ -39,8 +39,8 @@ const get = (_self, done) => {
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
-    assert.ok(self.table_name, `${method}: expected self.table_name`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
+    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
     _.promise.make(self)
         .then(mongo.collection)
