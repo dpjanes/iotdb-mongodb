@@ -55,7 +55,7 @@ _.promise.make({
     .then(fs.read.json)
     .then(sd => _.d.update(sd, {
         db: sd.json,
-        table_name: sd.json.table_name,
+        table_name: sd.json.table_name || sd.json.name,
     }))
 
     // create an empty version of the table
