@@ -49,7 +49,7 @@ const put = (_self, done) => {
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.findAndModify(query, sort, self.json, { w: 1, upsert: true, }, (error, doc) => {
+            sd.mongo_collection.findAndModify(query, sort, _.d.clone.shallow(self.json), { w: 1, upsert: true, }, (error, doc) => {
                 if (error) {
                     return done(error);
                 }

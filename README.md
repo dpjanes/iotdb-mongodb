@@ -12,7 +12,10 @@ Note that this will also work with
 ## DynamoDB
 
 This folder is to provide a compatibility layer
-with `iotdb-awslib/dynamodb`. 
+with `iotdb-awslib/dynamodb`. It makes MongoDB
+look like AWS's DynamoDB. In particular, the DB
+becomes must more "keyed" so duplicate records
+don't show up so much.
 
 ## Sample Code
 

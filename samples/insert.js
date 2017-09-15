@@ -43,6 +43,7 @@ _.promise.make({
     .then(sd => {
         console.log("+", "mongo_id", sd.mongo_id)
         console.log("+", "mongo_result", sd.mongo_result)
+        console.log("+", "mongo_result", _.is.JSON(sd.mongo_result))
         process.exit()
     })
     .catch(error => {
