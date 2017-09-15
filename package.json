@@ -8,7 +8,7 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.0.5", 
-        "iotdb-fs": "~1.0.6", 
+        "iotdb-fs": "~1.0.7", 
         "iotdb-helpers": "~3.1.2", 
         "minimist": "~1.2.0", 
         "mongodb": "~2.2.31"
@@ -41,5 +41,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.5"
+    "version": "0.0.6"
 }
