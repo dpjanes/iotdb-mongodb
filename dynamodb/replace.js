@@ -55,7 +55,7 @@ const replace = (_self, done) => {
                     return done(error);
                 }
 
-                if (!result.value) {
+                if (!result || !result.value) {
                     return done(new errors.NotFound())
                 }
 

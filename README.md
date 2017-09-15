@@ -13,3 +13,9 @@ Note that this will also work with
 
 This folder is to provide a compatibility layer
 with `iotdb-awslib/dynamodb`. 
+
+## Sample Code
+
+Copy the `mongodbd.json.template` to `mongodbd.json`.
+Then set the `engine` to `mongodb` or `tingodb` 
+as prefered.
