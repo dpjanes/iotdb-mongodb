@@ -55,7 +55,7 @@ _.promise.make({
     .then(fs.read.json)
     .then(sd => _.d.update(sd, {
         db: sd.json,
-        table_name: sd.json.table_name || sd.json.name,
+        table_name: sd.json.table_name || sd.json.schema.name,
     }))
 
     // create an empty version of the table
@@ -78,7 +78,7 @@ _.promise.make({
     .then(_.promise.conditional(sd => sd.json && sd.json.length, mongo.insert))
 
     .then(sd => {
-        console.log("+", "ok", sd.db.table_name)
+        console.log("+", "ok", sd.table_name)
     })
     .catch(error => {
         console.log("ERROR", error)
