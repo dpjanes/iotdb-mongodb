@@ -23,6 +23,7 @@
 "use strict";
 
 const _ = require("iotdb-helpers");
+const errors = require("iotdb-errors");
 
 const assert = require("assert");
 
@@ -61,10 +62,90 @@ const query_simple = (_self, done) => {
         options.limit = self.query_limit;
     }
 
+    // rewrite query to be Mongoish
+    const query = _.d.clone.shallow(self.query)
+    const query_keys = _.keys(query)
+    query_keys
+        .filter(query_key => _.is.Array(query[query_key]))
+        .forEach(query_key => {
+            const parts = query[query_key];
+
+            let position = 0;
+            while (position < parts.length) {
+                let comparitor;
+                let q;
+
+                switch (parts[position].toLowerCase()) {
+                case "=":
+                case "eq":
+                    q = {
+                        "$eq": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "<": case "lt":
+                    q = {
+                        "$lt": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "<=": case "le":
+                    q = {
+                        "$lte": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case ">": case "gt":
+                    q = {
+                        "$gt": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case ">=": case "ge":
+                    q = {
+                        "$gte": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "!=": case "ne":
+                    q = {
+                        "$ne": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+
+                case "between":
+                    q = {
+                        "$gte": parts[position + 1],
+                        "$lte": parts[position + 2],
+                    }
+
+                    position += 3;
+                    break;
+
+                default:
+                    throw new error.Invalid("unknown operator: " + parts[position])
+                }
+
+                query[query_key] = q;
+            }
+        })
+
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.find(self.query, options).sort(sort).toArray((error, mongo_result) => {
+            sd.mongo_collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
                     return done(error)
                 }

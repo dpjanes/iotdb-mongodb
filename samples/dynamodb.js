@@ -285,6 +285,23 @@ if (action("query-index")) {
         .done(sd => process.exit(0))
 }
 
+if (action("query-range")) {
+    _.promise.make({
+        mongodbd: mongodbd,
+        table_schema: movies_schema,
+        index_name: "year-title-index",
+        query: {
+            year: [ ">=", 2013 ],
+        },
+    })
+        .then(mongo.initialize)
+        .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.query_simple)
+        .then(sd => console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2)))
+        .catch(error => console.log("#", _.error.message(error)))
+        .done(sd => process.exit(0))
+}
+
 
 if (action("replace-fail")) {
     _.promise.make({
