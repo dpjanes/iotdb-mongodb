@@ -17,6 +17,17 @@ look like AWS's DynamoDB. In particular, the DB
 becomes must more "keyed" so duplicate records
 don't show up so much.
 
+### Ranged Queries
+
+like this:
+
+    _.promise.make({
+        query: {
+            year: [ ">=", 2013 ],
+        },
+    })
+        .then(mongo.dynamodb.query_simple)
+
 ## Sample Code
 
 Copy the `mongodbd.json.template` to `mongodbd.json`.

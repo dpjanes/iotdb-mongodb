@@ -291,7 +291,8 @@ if (action("query-range")) {
         table_schema: movies_schema,
         index_name: "year-title-index",
         query: {
-            year: [ ">=", 2013 ],
+            //year: [ ">=", 2013 ],
+            year: [ "between", 2012, 2013 ],
         },
     })
         .then(mongo.initialize)
