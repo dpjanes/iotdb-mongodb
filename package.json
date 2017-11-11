@@ -7,11 +7,11 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb/issues"
     }, 
     "dependencies": {
-        "iotdb-errors": "~3.0.5", 
-        "iotdb-fs": "~1.0.7", 
-        "iotdb-helpers": "~3.1.2", 
+        "iotdb-errors": "~3.0.6", 
+        "iotdb-fs": "~1.0.13", 
+        "iotdb-helpers": "~3.1.11", 
         "minimist": "~1.2.0", 
-        "mongodb": "~2.2.31"
+        "mongodb": "~2.2.33"
     }, 
     "description": "POP MongoDB", 
     "devDependencies": {
@@ -23,7 +23,7 @@
         "grunt-jsbeautifier": "~0.2.13", 
         "jshint-stylish": "~2.2.1", 
         "load-grunt-tasks": "~3.5.2", 
-        "request": "~2.81.0"
+        "request": "~2.83.0"
     }, 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
     "iotdb": {}, 
@@ -41,5 +41,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.7"
+    "version": "0.0.8"
 }
