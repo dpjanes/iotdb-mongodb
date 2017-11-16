@@ -50,7 +50,9 @@ const replace = (_self, done) => {
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.findAndModify(query, sort, _.d.clone.shallow(self.json), { w: 1, upsert: false, }, (error, result) => {
+            sd.mongo_collection.findAndModify(
+              query, sort, _.d.clone.deep(self.json), { w: 1, upsert: false, }, 
+              (error, result) => {
                 if (error) {
                     return done(error);
                 }

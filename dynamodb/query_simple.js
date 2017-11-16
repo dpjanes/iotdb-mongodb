@@ -50,6 +50,7 @@ const query_simple = (_self, done) => {
         assert.ok(keys, `${method}: expected index for ${self.table_name||self.table_schema.name} / ${self.index_name}`)
     }
 
+    // XXX - THIS NEEDS TO BE GENERALIZED FFSJFC
     const sort = keys.map(key => [ key, key === "created" ? -1 : 1 ])
     const options = {
         skip: 0
