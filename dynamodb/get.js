@@ -26,8 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const mongodb = require('mongodb');
-
 const mongo = require("../lib");
 const util = require("../lib/util");
 
@@ -50,7 +48,7 @@ const get = (_self, done) => {
                     return done(error);
                 }
 
-                self.json = util.scrub_ids(result)
+                self.json = util.scrub_ids(result) || null;
 
                 done(null, self);
             })
