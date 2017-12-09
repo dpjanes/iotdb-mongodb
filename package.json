@@ -11,7 +11,7 @@
         "iotdb-fs": "~1.0.24", 
         "iotdb-helpers": "~3.1.20", 
         "minimist": "~1.2.0", 
-        "mongodb": "~3.0.0-rc0"
+        "mongodb": "~2.2.33"
     }, 
     "description": "POP MongoDB", 
     "devDependencies": {
@@ -41,5 +41,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.9"
+    "version": "1.0.1"
 }
