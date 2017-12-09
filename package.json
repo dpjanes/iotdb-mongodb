@@ -8,17 +8,17 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.0.6", 
-        "iotdb-fs": "~1.0.13", 
-        "iotdb-helpers": "~3.1.11", 
+        "iotdb-fs": "~1.0.24", 
+        "iotdb-helpers": "~3.1.20", 
         "minimist": "~1.2.0", 
-        "mongodb": "~2.2.33"
+        "mongodb": "~3.0.0-rc0"
     }, 
     "description": "POP MongoDB", 
     "devDependencies": {
         "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.1.0", 
         "grunt-contrib-nodeunit": "~1.0.0", 
-        "grunt-contrib-uglify": "~3.1.0", 
+        "grunt-contrib-uglify": "~3.2.1", 
         "grunt-contrib-watch": "~1.0.0", 
         "grunt-jsbeautifier": "~0.2.13", 
         "jshint-stylish": "~2.2.1", 
@@ -41,5 +41,5 @@
     "scripts": {
         "test": "grunt"
     }, 
-    "version": "0.0.8"
+    "version": "0.0.9"
 }
