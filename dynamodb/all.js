@@ -45,7 +45,7 @@ const all = _.promise.make((self, done) => {
         keys = self.table_schema.indexes[self.index_name]
     }
 
-    const sort = keys.map(key => [ key, 1 ])
+    const sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     const options = {
         skip: 0
     }

@@ -67,6 +67,17 @@ describe("dynamodb/all", function() {
                 .then(_.promise.done(done))
                 .catch(done)
         })
+        it("index (-year, +title)", function(done) {
+            _.promise.make(self)
+                .then(_.promise.add("index_name", "-year-title-index"))
+                .then(mongodb.dynamodb.all)
+                .then(_.promise.make(sd => {
+                    assert.deepEqual(sd.jsons.length, 88);
+                    assert.deepEqual(_util.ordered_forward(sd.jsons, "year"), false)
+                }))
+                .then(_.promise.done(done))
+                .catch(done)
+        })
         it("default index, query limit", function(done) {
             _.promise.make(self)
                 .then(_.promise.add("query_limit", 10))
