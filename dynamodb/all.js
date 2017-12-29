@@ -32,6 +32,94 @@ const mongo = require("../lib");
 const util = require("../lib/util");
 
 /**
+ *  Make a mongo looking query from a DynamoDB one
+ */
+const _make_query = _query => {
+    const query = _.d.clone.shallow(_query || {})
+
+    _.keys(query)
+        .filter(query_key => _.is.Array(query[query_key]))
+        .forEach(query_key => {
+            const parts = query[query_key];
+
+            let position = 0;
+            while (position < parts.length) {
+                let comparitor;
+                let q;
+
+                switch (parts[position].toLowerCase()) {
+                case "=":
+                case "eq":
+                    q = {
+                        "$eq": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "<": case "lt":
+                    q = {
+                        "$lt": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "<=": case "le":
+                    q = {
+                        "$lte": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case ">": case "gt":
+                    q = {
+                        "$gt": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case ">=": case "ge":
+                    q = {
+                        "$gte": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+                    
+                case "!=": case "ne":
+                    q = {
+                        "$ne": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+
+                case "between":
+                    q = {
+                        "$gte": parts[position + 1],
+                        "$lte": parts[position + 2],
+                    }
+
+                    position += 3;
+                    break;
+
+                default:
+                    throw new error.Invalid("unknown operator: " + parts[position])
+                }
+
+                query[query_key] = q;
+            }
+        })
+
+    return query;
+}
+
+/**
+ *  Query the database. Note that this implements
+ *  `all`, `query_simple` and `scan_simple`
  */
 const all = _.promise.make((self, done) => {
     const method = "dynamodb.all";
@@ -39,6 +127,8 @@ const all = _.promise.make((self, done) => {
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
+    assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
+        `${method}: expected self.query to be a JSON or Null`);
 
     let keys = self.table_schema.keys;
     if (self.index_name) {
@@ -131,3 +221,5 @@ const all = _.promise.make((self, done) => {
  *  API
  */
 exports.all = all;
+exports.query_simple = all;
+exports.scan_simple = all;

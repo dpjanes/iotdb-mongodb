@@ -22,6 +22,10 @@
 
 "use strict";
 
+/**
+
+    DELETE ME
+
 const _ = require("iotdb-helpers");
 const errors = require("iotdb-errors");
 
@@ -32,8 +36,6 @@ const mongodb = require('mongodb');
 const mongo = require("../lib");
 const util = require("../lib/util");
 
-/**
- */
 const query_simple = (_self, done) => {
     const self = _.d.clone.shallow(_self)
     const method = "query_simple";
@@ -212,8 +214,8 @@ const query_simple = (_self, done) => {
         .catch(done)
 }
 
+exports.query_simple = _.promise.denodeify(query_simple)
+exports.scan_simple = _.promise.denodeify(query_simple)
 /**
  *  API
  */
-exports.query_simple = _.promise.denodeify(query_simple)
-exports.scan_simple = _.promise.denodeify(query_simple)
