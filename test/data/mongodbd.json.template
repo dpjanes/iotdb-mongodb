@@ -1,0 +1,4 @@
+{
+    "path": "tingo.db",
+    "engine": "tingodb"
+}
