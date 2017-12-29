@@ -8,8 +8,8 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.0.6", 
-        "iotdb-fs": "~1.0.24", 
-        "iotdb-helpers": "~3.1.20", 
+        "iotdb-fs": "~1.0.26", 
+        "iotdb-helpers": "~3.1.26", 
         "minimist": "~1.2.0", 
         "mongodb": "~2.2.33"
     }, 
@@ -18,7 +18,7 @@
         "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.1.0", 
         "grunt-contrib-nodeunit": "~1.0.0", 
-        "grunt-contrib-uglify": "~3.2.1", 
+        "grunt-contrib-uglify": "~3.3.0", 
         "grunt-contrib-watch": "~1.0.0", 
         "grunt-jsbeautifier": "~0.2.13", 
         "jshint-stylish": "~2.2.1", 
@@ -39,7 +39,8 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb"
     }, 
     "scripts": {
-        "test": "grunt"
+        "cover": "istanbul cover _mocha -- --recursive", 
+        "test": "mocha --recursive --bail"
     }, 
     "version": "1.0.1"
 }

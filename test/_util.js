@@ -26,10 +26,9 @@ const _ = require("iotdb-helpers");
 const fs = require("iotdb-fs");
 
 const assert = require("assert");
+const path = require("path");
 
-const minimist = require('minimist');
-
-const mongo = require("..")
+const mongodb = require("..")
 const mongodbd = require("./data/mongodbd.json");
 const movies_schema = require("./data/movies.schema.json");
 
@@ -37,10 +36,21 @@ const movies_schema = require("./data/movies.schema.json");
  *  Sets up MongoDB and initializes
  */
 const initialize = _.promise.make((self, done) => {
+    if (mongodbd.engine === "tingodb") {
+        mongodbd.path = path.join(__dirname, "data", ".tingodb")
+    }
+
     _.promise.make(self)
+        // remove old data
+        .then(_.promise.add("path", mongodbd.path))
+        .then(fs.remove.recursive)
+
+        // initialize
         .then(_.promise.add("mongodbd", mongodbd))
-        .then(mongo.initialize)
-        .then(mongo.dynamodb.initialize)
+        .then(mongodb.initialize)
+        .then(mongodb.dynamodb.initialize)
+
+        // finished
         .then(_.promise.done(done))
         .catch(done)
 })
@@ -50,17 +60,46 @@ const initialize = _.promise.make((self, done) => {
  */
 const load = _.promise.make((self, done) => {
     _.promise.make(self)
-        .then(_.promise.add("movies", require("./data/movies.json")))
+        .then(_.promise.add({
+            movies: require("./data/movies.json").map(movie => {
+                movie.release_date = movie.info.release_date || null;
+                movie.rating = movie.info.rating || null;
+                movie.rank = movie.info.rank || null;
+                return movie;
+            }),
+            table_schema: movies_schema,
+        }))
         .then(_.promise.series({
-            method: mongo.dynamodb.put,
+            method: mongodb.dynamodb.put,
             inputs: "movies:json",
         }))
         .then(_.promise.done(done))
         .catch(done)
 })
 
+/*
+ *  Return true if ordered forward
+ */
+const ordered_forward = (jsons, key) => {
+    const values = jsons.map(json => json[key]).filter(value => value !== null)
+
+    let value_last = null;
+
+    for (let vi = 0; vi < values.length; vi++) {
+        const value = values[vi];
+        if ((value_last !== null) && (value_last > value)) {
+            return false;
+        }
+
+        value_last = value;
+    }
+
+    return true;
+}
+
 /**
  *  API
  */
 exports.initialize = initialize;
 exports.load = load;
+exports.ordered_forward = ordered_forward;

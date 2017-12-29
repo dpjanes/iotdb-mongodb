@@ -33,9 +33,8 @@ const util = require("../lib/util");
 
 /**
  */
-const all = (_self, done) => {
-    const self = _.d.clone.shallow(_self)
-    const method = "all";
+const all = _.promise.make((self, done) => {
+    const method = "dynamodb.all";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
@@ -123,11 +122,12 @@ const all = (_self, done) => {
 
                 done(null, self)
             })
+            return null;
         })
         .catch(done)
-}
+})
 
 /**
  *  API
  */
-exports.all = _.promise.denodeify(all)
+exports.all = all;
