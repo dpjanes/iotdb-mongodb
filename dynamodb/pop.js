@@ -32,6 +32,8 @@ const mongo = require("../lib");
 const util = require("../lib/util");
 
 /**
+ *  Find one and delete it. This isn't a real 
+ *  DynamoDB function but we have it in our AWS code
  */
 const pop = (_self, done) => {
     const self = _.d.clone.shallow(_self)
@@ -44,24 +46,30 @@ const pop = (_self, done) => {
 
     const values = self.table_schema.keys.map(key => self.query[key] || null)
     const query = _.object(self.table_schema.keys, values)
-    // const sort = self.table_schema.keys.map(key => [ key, "ascending" ])
 
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.findOneAndDelete(query, { w: 1, }, (error, result) => {
+            // sd.mongo_collection.findOneAndDelete(query, { w: 1, }, (error, result) => {
+            // sd.mongo_collection.findAndModify(query, {}, { w: 1 }, (error, result) => {
+            sd.mongo_collection.findAndModify(
+              query,
+              [],
+              { remove: true },
+              (error, result) => {
                 if (error) {
                     return done(error);
                 }
 
-                if (result.value) {
-                    self.json = util.scrub_ids(result.value)
+                if (result) {
+                    self.json = util.scrub_ids(result);
                 } else {
                     self.json = null;
                 }
 
                 done(null, self);
             })
+            return null;
         })
         .catch(done)
 }
