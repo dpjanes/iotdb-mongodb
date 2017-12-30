@@ -30,7 +30,6 @@ module.exports = Object.assign(
     require("./initialize"),
     require("./pop"),
     require("./put"),
-    require("./query_simple"),
     require("./replace"),
     require("./swapout"),
     {}
