@@ -32,6 +32,15 @@ const mongodb = require("..")
 const mongodbd = require("./data/mongodbd.json");
 const movies_schema = require("./data/movies.schema.json");
 
+const auto_fail = done => _.promise.make(self => done(new Error("didn't expect to get here")));
+const ok_error = (done, code) => error => {
+    if (code && (_.error.code(error) !== code)) {
+        return done(error)
+    }
+
+    done(null);
+}
+
 /**
  *  Sets up MongoDB and initializes
  */
@@ -100,6 +109,9 @@ const ordered_forward = (jsons, key) => {
 /**
  *  API
  */
+exports.auto_fail = auto_fail;
+exports.ok_error = ok_error;
+
 exports.initialize = initialize;
 exports.load = load;
 exports.ordered_forward = ordered_forward;

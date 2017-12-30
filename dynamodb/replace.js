@@ -33,6 +33,11 @@ const mongo = require("../lib");
 const util = require("../lib/util");
 
 /**
+ *  Requires: self.json, self.table_schema
+ *  Produces: N/A
+ *
+ *  Replace an existing entry. If it does not exist,
+ *  a NotFound error is thrown.
  */
 const replace = (_self, done) => {
     const self = _.d.clone.shallow(_self)
@@ -42,6 +47,10 @@ const replace = (_self, done) => {
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
+
+    if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
+        return done(new errors.Invalid())
+    }
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)
@@ -57,7 +66,7 @@ const replace = (_self, done) => {
                     return done(error);
                 }
 
-                if (!result || !result.value) {
+                if (!result) {
                     return done(new errors.NotFound())
                 }
 
