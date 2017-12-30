@@ -53,22 +53,24 @@ const replace = _.promise.make((self, done) => {
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
+    const json = _.d.clone.deep(self.json)
+
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.findAndModify(
-              query, sort, _.d.clone.deep(self.json), { w: 1, upsert: false, }, 
+              query, sort, json, { w: 1, upsert: false, }, 
               (error, result) => {
-                if (error) {
-                    return done(error);
-                }
-
                 if (!result) {
+                    return done(new errors.NotFound())
+                } else if (result._id) {
+                } else if (!result.value) {
                     return done(new errors.NotFound())
                 }
 
                 done(null, self);
             })
+            return null;
         })
         .catch(done)
 })

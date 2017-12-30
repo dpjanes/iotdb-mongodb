@@ -148,7 +148,7 @@ const all = _.promise.make((self, done) => {
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.find({}, options).sort(sort).toArray((error, mongo_result) => {
+            sd.mongo_collection.find(_make_query(self.query), options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
                     return done(error)
                 }

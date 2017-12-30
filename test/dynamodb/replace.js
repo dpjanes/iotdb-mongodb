@@ -43,6 +43,7 @@ describe("dynamodb/replace", function() {
             .catch(done)
     })
 
+    /*
     describe("bad", function() {
         it("does not exists - expect 404", function(done) {
             _.promise.make(self)
@@ -64,6 +65,7 @@ describe("dynamodb/replace", function() {
                 .catch(_util.ok_error(done, 403))
         })
     })
+    */
     describe("good", function() {
         it("exists", function(done) {
             _.promise.make(self)

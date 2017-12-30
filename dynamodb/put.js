@@ -39,6 +39,10 @@ const put = _.promise.make((self, done) => {
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
+    if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
+        return done(new errors.Invalid())
+    }
+
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
