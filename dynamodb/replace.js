@@ -27,8 +27,6 @@ const errors = require("iotdb-errors");
 
 const assert = require("assert");
 
-const mongodb = require('mongodb');
-
 const mongo = require("../lib");
 const util = require("../lib/util");
 
@@ -39,9 +37,8 @@ const util = require("../lib/util");
  *  Replace an existing entry. If it does not exist,
  *  a NotFound error is thrown.
  */
-const replace = (_self, done) => {
-    const self = _.d.clone.shallow(_self)
-    const method = "replace";
+const replace = _.promise.make((self, done) => {
+    const method = "dynamodb.replace";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
@@ -74,9 +71,9 @@ const replace = (_self, done) => {
             })
         })
         .catch(done)
-}
+})
 
 /**
  *  API
  */
-exports.replace = _.promise.denodeify(replace)
+exports.replace = replace

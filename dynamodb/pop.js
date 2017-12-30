@@ -26,8 +26,6 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const mongodb = require('mongodb');
-
 const mongo = require("../lib");
 const util = require("../lib/util");
 
@@ -35,9 +33,8 @@ const util = require("../lib/util");
  *  Find one and delete it. This isn't a real 
  *  DynamoDB function but we have it in our AWS code
  */
-const pop = (_self, done) => {
-    const self = _.d.clone.shallow(_self)
-    const method = "pop";
+const pop = _.promise.make((self, done) => {
+    const method = "dynamodb.pop";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
@@ -72,9 +69,9 @@ const pop = (_self, done) => {
             return null;
         })
         .catch(done)
-}
+})
 
 /**
  *  API
  */
-exports.pop = _.promise.denodeify(pop)
+exports.pop = pop

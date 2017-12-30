@@ -26,24 +26,19 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const mongodb = require('mongodb');
-
 const mongo = require("../lib");
 const util = require("../lib/util");
 
 /**
  */
-const initialize = (_self, done) => {
-    const self = _.d.clone.shallow(_self)
-    const method = "initialize";
+const initialize = _.promise.make(self => {
+    const method = "dynamodb.initialize";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
-
-    done(null, self)
-}
+})
 
 /**
  *  API
  */
-exports.initialize = _.promise.denodeify(initialize)
+exports.initialize = initialize

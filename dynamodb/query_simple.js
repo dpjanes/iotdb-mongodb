@@ -36,9 +36,9 @@ const mongodb = require('mongodb');
 const mongo = require("../lib");
 const util = require("../lib/util");
 
-const query_simple = (_self, done) => {
+const query_simple = _.promise.make((self, done) => {
     const self = _.d.clone.shallow(_self)
-    const method = "query_simple";
+    const method = "dynamodb.query_simple";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)

@@ -26,16 +26,13 @@ const _ = require("iotdb-helpers");
 
 const assert = require("assert");
 
-const mongodb = require('mongodb');
-
 const mongo = require("../lib");
 const util = require("../lib/util");
 
 /**
  */
-const _delete = (_self, done) => {
-    const self = _.d.clone.shallow(_self)
-    const method = "delete";
+const _delete = _.promise.make((self, done) => {
+    const method = "dynamodb.delete";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
     assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
@@ -58,9 +55,9 @@ const _delete = (_self, done) => {
             })
         })
         .catch(done)
-}
+})
 
 /**
  *  API
  */
-exports.delete = _.promise.denodeify(_delete)
+exports.delete = _delete
