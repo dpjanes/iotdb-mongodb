@@ -7,13 +7,13 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb/issues"
     }, 
     "dependencies": {
-        "iotdb-errors": "~3.0.6", 
+        "iotdb-errors": "~3.1.1", 
         "iotdb-fs": "~1.0.26", 
         "iotdb-helpers": "~3.1.26", 
         "minimist": "~1.2.0", 
         "mongodb": "~2.2.33"
     }, 
-    "description": "POP MongoDB", 
+    "description": "POP wrapper for MongoDB", 
     "devDependencies": {
         "grunt": "~1.0.1", 
         "grunt-contrib-jshint": "~1.1.0", 
@@ -42,5 +42,5 @@
         "cover": "istanbul cover _mocha -- --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.0.1"
+    "version": "1.1.1"
 }
