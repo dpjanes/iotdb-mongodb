@@ -7,9 +7,9 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb/issues"
     }, 
     "dependencies": {
-        "iotdb-errors": "~3.1.1", 
+        "iotdb-errors": "~3.1.2", 
         "iotdb-fs": "~1.0.26", 
-        "iotdb-helpers": "~3.1.26", 
+        "iotdb-helpers": "~3.1.27", 
         "minimist": "~1.2.0", 
         "mongodb": "~2.2.33"
     }, 
@@ -42,5 +42,5 @@
         "cover": "istanbul cover _mocha -- --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.1.2"
+    "version": "1.1.3"
 }
