@@ -2,6 +2,7 @@
     {
         "year": 2014,
         "title": "Rush",
+        "nullfield": null,
         "info": {
             "directors": ["Ron Howard"],
             "release_date": "2014-09-02T00:00:00Z",
