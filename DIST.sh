@@ -36,6 +36,7 @@ echo "=================="
         README.md LICENSE \
         package.json \
         index.js \
+        logger.js \
         lib/*.js \
         dynamodb/*.js \
         bin/*.js \
