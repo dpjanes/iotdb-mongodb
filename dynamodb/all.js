@@ -122,8 +122,7 @@ const _make_query = _query => {
 const all = _.promise.make((self, done) => {
     const method = "dynamodb.all";
 
-    assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
+    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
     assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
         `${method}: expected self.query to be a JSON or Null`);

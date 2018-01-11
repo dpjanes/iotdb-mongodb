@@ -35,7 +35,7 @@ const initialize = _.promise.make(self => {
     const method = "dynamodb.initialize";
 
     assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
+    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
 })
 
 /**

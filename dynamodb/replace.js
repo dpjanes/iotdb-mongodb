@@ -40,8 +40,7 @@ const util = require("../lib/util");
 const replace = _.promise.make((self, done) => {
     const method = "dynamodb.replace";
 
-    assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
+    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 

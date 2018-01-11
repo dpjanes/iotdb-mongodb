@@ -34,8 +34,7 @@ const util = require("../lib/util");
 const _delete = _.promise.make((self, done) => {
     const method = "dynamodb.delete";
 
-    assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
-    assert.ok(self.mongo_db, `${method}: expected self.mongo_db`)
+    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
