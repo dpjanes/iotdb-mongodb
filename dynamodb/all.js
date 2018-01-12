@@ -214,9 +214,35 @@ const all = _.promise.make((self, done) => {
         .catch(done)
 })
 
+const count = _.promise.make((self, done) => {
+    const method = "dynamodb.count";
+
+    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
+    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
+    assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
+        `${method}: expected self.query to be a JSON or Null`);
+
+    _.promise.make(self)
+        .then(mongo.collection)
+        .then(sd => {
+            sd.mongo_collection.count(_make_query(self.query), (error, count) => {
+                if (error) {
+                    return done(error)
+                }
+
+                self.count = count;
+
+                done(null, self)
+            })
+            return null;
+        })
+        .catch(done)
+})
+
 /**
  *  API
  */
+exports.count = count;
 exports.all = all;
 exports.query_simple = all;
 exports.scan_simple = all;
