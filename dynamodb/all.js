@@ -176,7 +176,10 @@ const all = _.promise.make((self, done) => {
                         n_start: options.skip,
                     }
 
-                    if (self.jsons.length > 0) {
+                    if (self.jsons.length === 0) {
+                        self.cursor.is_first = true;
+                        self.cursor.is_last = true;
+                    } else {
                         self.cursor.next = `${Math.min(options.limit, self.jsons.length) + options.skip}`;
 
                         if (self.jsons.length < options.limit) {
