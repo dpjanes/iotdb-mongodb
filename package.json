@@ -26,7 +26,6 @@
         "request": "~2.83.0"
     }, 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
-    "iotdb": {}, 
     "license": "Apache-2.0", 
     "main": "index.js", 
     "name": "iotdb-mongodb", 
@@ -39,7 +38,7 @@
         "url": "https://github.com/dpjanes/iotdb-mongodb"
     }, 
     "scripts": {
-        "cover": "istanbul cover _mocha -- --recursive", 
+        "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
     "version": "1.1.6"
