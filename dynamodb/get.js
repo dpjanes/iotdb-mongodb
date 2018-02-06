@@ -40,17 +40,17 @@ const get = _.promise.make((self, done) => {
 
     _.promise.make(self)
         .then(mongo.collection)
-        .then(sd => {
+        .then(_.promise.make(sd => {
             sd.mongo_collection.findOne(self.query, (error, result) => {
                 if (error) {
-                    return done(error);
+                    return done(util.intercept(self)(error))
                 }
 
                 self.json = util.scrub_ids(result) || null;
 
                 done(null, self);
             })
-        })
+        }))
         .catch(done)
 })
 

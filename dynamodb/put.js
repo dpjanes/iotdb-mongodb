@@ -48,15 +48,15 @@ const put = _.promise.make((self, done) => {
 
     _.promise.make(self)
         .then(mongo.collection)
-        .then(sd => {
+        .then(_.promise.make(sd => {
             sd.mongo_collection.findAndModify(query, sort, _.d.clone.shallow(self.json), { w: 1, upsert: true, }, (error, doc) => {
                 if (error) {
-                    return done(error);
+                    return done(util.intercept(self)(error))
                 }
 
                 done(null, self);
             })
-        })
+        }))
         .catch(done)
 })
 

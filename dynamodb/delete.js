@@ -44,15 +44,15 @@ const _delete = _.promise.make((self, done) => {
 
     _.promise.make(self)
         .then(mongo.collection)
-        .then(sd => {
+        .then(_.promise.make(sd => {
             sd.mongo_collection.findAndRemove(query, sort, { w: 1, }, (error, result) => {
                 if (error) {
-                    return done(error);
+                    return done(util.intercept(self)(error))
                 }
 
                 done(null, self);
             })
-        })
+        }))
         .catch(done)
 })
 

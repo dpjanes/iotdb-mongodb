@@ -149,7 +149,7 @@ const all = _.promise.make((self, done) => {
         .then(sd => {
             sd.mongo_collection.find(_make_query(self.query), options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
-                    return done(error)
+                    return done(util.intercept(self)(error))
                 }
 
                 self.jsons = util.scrub_ids(mongo_result);
@@ -227,18 +227,17 @@ const count = _.promise.make((self, done) => {
 
     _.promise.make(self)
         .then(mongo.collection)
-        .then(sd => {
+        .then(_.promise.make(sd => {
             sd.mongo_collection.count(_make_query(self.query), (error, count) => {
                 if (error) {
-                    return done(error)
+                    return done(util.intercept(self)(error))
                 }
 
                 self.count = count;
 
                 done(null, self)
             })
-            return null;
-        })
+        }))
         .catch(done)
 })
 

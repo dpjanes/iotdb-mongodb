@@ -56,7 +56,7 @@ const replace = _.promise.make((self, done) => {
 
     _.promise.make(self)
         .then(mongo.collection)
-        .then(sd => {
+        .then(_.promise.make(sd => {
             sd.mongo_collection.findAndModify(
               query, sort, json, { w: 1, upsert: false, }, 
               (error, result) => {
@@ -70,7 +70,7 @@ const replace = _.promise.make((self, done) => {
                 done(null, self);
             })
             return null;
-        })
+        }))
         .catch(done)
 })
 
