@@ -23,6 +23,7 @@
 "use strict";
 
 const _ = require("iotdb-helpers");
+const errors = require("iotdb-errors")
 
 const assert = require("assert");
 
@@ -39,7 +40,7 @@ const put = _.promise.make((self, done) => {
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
-        return done(new errors.Invalid())
+        return done(new errors.Invalid(`key=${key} value is missing`)
     }
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
