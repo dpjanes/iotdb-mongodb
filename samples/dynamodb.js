@@ -24,6 +24,7 @@ const movies_schema = {
     keys: [ "title", "year" ],
     indexes: {
         "year-title-index": [ "year", "title" ],
+        // "year--title-index": [ "year", "-title" ],
     },
 }
 

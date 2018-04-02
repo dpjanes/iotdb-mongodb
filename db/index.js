@@ -26,6 +26,7 @@ module.exports = Object.assign(
     {},
     require("./all"),
     require("./delete"),
+    require("./ensure_schema"),
     require("./get"),
     require("./initialize"),
     require("./pop"),

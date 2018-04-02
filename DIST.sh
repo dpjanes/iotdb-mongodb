@@ -38,7 +38,7 @@ echo "=================="
         index.js \
         logger.js \
         lib/*.js \
-        dynamodb/*.js \
+        db/*.js \
         bin/*.js \
         |
     ( cd "${NPM_DST}" && tar xvf - && npm publish ) || exit 1

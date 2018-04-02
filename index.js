@@ -23,5 +23,5 @@
 "use strict";
 
 module.exports = require("./lib");
-module.exports.dynamodb = require("./dynamodb");
-module.exports.db = require("./dynamodb");
+module.exports.dynamodb = require("./db");
+module.exports.db = require("./db");

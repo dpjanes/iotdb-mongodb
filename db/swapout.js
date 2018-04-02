@@ -33,7 +33,7 @@ const swapout = _.promise.make(self => {
     const method = "dynamodb.swapout";
 
     const aws = require("iotdb-awslib")
-    aws.dynamodb = require("../dynamodb")
+    aws.dynamodb = require("../db")
 })
 
 /**
