@@ -104,6 +104,7 @@ if (action("load-movies")) {
         })
             .then(mongo.initialize)
             .then(mongo.dynamodb.initialize)
+            .then(mongo.dynamodb.ensure_schema)
             .then(mongo.dynamodb.put)
             .then(sd => {
                 console.log("+", "ok added", movie.title)
@@ -131,6 +132,7 @@ if (action("put")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.put)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
@@ -148,6 +150,7 @@ if (action("get")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.get)
         .then(sd => console.log("+", "ok", sd.json))
         .catch(error => console.log("#", _.error.message(error)))
@@ -165,6 +168,7 @@ if (action("get-not-found")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.get)
         .then(sd => console.log("+", "ok", sd.json))
         .catch(error => console.log("#", _.error.message(error)))
@@ -182,6 +186,7 @@ if (action("query-simple")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.query_simple)
         .then(sd => console.log("+", "ok", sd.jsons))
         .catch(error => console.log("#", _.error.message(error)))
@@ -198,6 +203,7 @@ if (action("scan-simple")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.scan_simple)
         .then(sd => console.log("+", "ok", sd.jsons))
         .catch(error => console.log("#", _.error.message(error)))
@@ -214,6 +220,7 @@ if (action("page-all")) {
         })
             .then(mongo.initialize)
             .then(mongo.dynamodb.initialize)
+            .then(mongo.dynamodb.ensure_schema)
             .then(mongo.dynamodb.all)
             .then(sd => {
                 console.log("+", "ok", JSON.stringify(sd.jsons.map(l => l.title), null, 2))
@@ -249,6 +256,7 @@ if (action("page-scan")) {
         })
             .then(mongo.initialize)
             .then(mongo.dynamodb.initialize)
+            .then(mongo.dynamodb.ensure_schema)
             .then(mongo.dynamodb.scan_simple)
             .then(sd => {
                 console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2))
@@ -279,6 +287,7 @@ if (action("query-index")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.query_simple)
         .then(sd => console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2)))
         .catch(error => console.log("#", _.error.message(error)))
@@ -297,6 +306,7 @@ if (action("query-range")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.query_simple)
         .then(sd => console.log("+", "ok", JSON.stringify(sd.jsons.map(l => `${l.year}: ${l.title}`), null, 2)))
         .catch(error => console.log("#", _.error.message(error)))
@@ -307,6 +317,7 @@ if (action("query-range")) {
 if (action("replace-fail")) {
     _.promise.make({
         mongodbd: mongodbd,
+        table_schema: movies_schema,
         query: {
             year: 1999,
             title: _.timestamp.make(),
@@ -318,6 +329,7 @@ if (action("replace-fail")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.replace)
         .then(sd => console.log("+", "ok"))
         .catch(error => console.log("#", _.error.message(error)))
@@ -328,6 +340,7 @@ if (action("replace-fail")) {
 if (action("replace-ok")) {
     _.promise.make({
         mongodbd: mongodbd,
+        table_schema: movies_schema,
         query: {
             year: 1999,
             title: "The Matrix 2D",
@@ -339,6 +352,7 @@ if (action("replace-ok")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.put)
         .then(mongo.dynamodb.replace)
         .then(sd => console.log("+", "ok"))
@@ -350,6 +364,7 @@ if (action("replace-ok")) {
 if (action("delete")) {
     _.promise.make({
         mongodbd: mongodbd,
+        table_schema: movies_schema,
         json: {
             year: 2014,
             title: "The Matrix Unhung",
@@ -361,6 +376,7 @@ if (action("delete")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.put)
         .then(mongo.dynamodb.delete)
         .then(mongo.dynamodb.delete)
@@ -374,6 +390,7 @@ if (action("delete")) {
 if (action("pop")) {
     _.promise.make({
         mongodbd: mongodbd,
+        table_schema: movies_schema,
         json: {
             year: 2014,
             title: "The Matrix Unhung",
@@ -385,6 +402,7 @@ if (action("pop")) {
     })
         .then(mongo.initialize)
         .then(mongo.dynamodb.initialize)
+        .then(mongo.dynamodb.ensure_schema)
         .then(mongo.dynamodb.put)
         .then(mongo.dynamodb.pop)
         .then(sd => console.log("+", "ok", sd.json))
