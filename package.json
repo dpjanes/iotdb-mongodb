@@ -9,9 +9,9 @@
     "dependencies": {
         "iotdb-errors": "~3.1.6", 
         "iotdb-fs": "~1.0.30", 
-        "iotdb-helpers": "~3.2.8", 
+        "iotdb-helpers": "~3.2.9", 
         "minimist": "~1.2.0", 
-        "mongodb": "~3.0.4"
+        "mongodb": "~3.0.5"
     }, 
     "description": "POP wrapper for MongoDB", 
     "devDependencies": {
@@ -41,5 +41,5 @@
         "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.1.11"
+    "version": "1.1.12"
 }
