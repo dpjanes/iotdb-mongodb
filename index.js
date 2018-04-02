@@ -24,3 +24,4 @@
 
 module.exports = require("./lib");
 module.exports.dynamodb = require("./dynamodb");
+module.exports.db = require("./dynamodb");

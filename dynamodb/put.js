@@ -40,7 +40,7 @@ const put = _.promise.make((self, done) => {
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
-        return done(new errors.Invalid(`key=${key} value is missing`)
+        return done(new errors.Invalid(`missing keys: ${self.table_schema.keys}`))
     }
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
