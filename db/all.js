@@ -132,6 +132,8 @@ const all = _.promise.make((self, done) => {
         keys = self.table_schema.indexes[self.index_name]
     }
 
+    const query = _make_query(self.query)
+
     const sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     const options = {
         skip: 0
@@ -144,10 +146,20 @@ const all = _.promise.make((self, done) => {
         options.limit = self.query_limit;
     }
 
+    /*
+    console.log("===")
+    console.trace()
+    console.log("HERE:XXX.1", "query", query)
+    console.log("HERE:XXX.2", "sort", sort)
+    console.log("HERE:XXX.3", "schema", self.table_schema)
+    console.log("HERE:XXX.4", "index", self.index_name)
+    console.log("===")
+    */
+
     _.promise.make(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.find(_make_query(self.query), options).sort(sort).toArray((error, mongo_result) => {
+            sd.mongo_collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
