@@ -61,7 +61,10 @@ const replace = _.promise.make((self, done) => {
               query, sort, json, { w: 1, upsert: false, }, 
               (error, result) => {
                 if (!result) {
-                    return done(new errors.NotFound())
+                    const nerror = new errors.NotFound()
+                    nerror.error = error
+                    
+                    return done(nerror)
                 } else if (result._id) {
                 } else if (!result.value) {
                     return done(new errors.NotFound())
