@@ -9,7 +9,7 @@
     "dependencies": {
         "iotdb-errors": "~3.1.6", 
         "iotdb-fs": "~1.0.31", 
-        "iotdb-helpers": "~3.2.19", 
+        "iotdb-helpers": "~3.2.20", 
         "minimist": "~1.2.0", 
         "mongodb": "~3.1.1"
     }, 
@@ -41,5 +41,5 @@
         "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.1.16"
+    "version": "1.1.17"
 }
