@@ -104,6 +104,15 @@ const _make_query = _query => {
                     position += 3;
                     break;
 
+                case "in":
+                case "∈":
+                    q = {
+                        "$in": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+
                 default:
                     throw new error.Invalid("unknown operator: " + parts[position])
                 }
