@@ -154,6 +154,14 @@ const all = _.promise.make((self, done) => {
     if (self.query_limit) {
         options.limit = self.query_limit;
     }
+    if (self.projection) {
+        if (_.is.Array(self.projection)) {
+            options.projection = {}
+            self.projection.forEach(key => options.projection[key] = 1)
+        } else {
+            options.projection = _.d.clone(self.projection)
+        }
+    }
 
     /*
     console.log("===")
