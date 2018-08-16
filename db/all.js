@@ -7,7 +7,7 @@
  *
  *  Copyright [2013-2018] [David P. Janes]
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  Licensed under the Apache License, Version 2.0 (the "License")
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
@@ -20,14 +20,15 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
-const _ = require("iotdb-helpers");
+const _ = require("iotdb-helpers")
+const errors = require("iotdb-errors")
 
-const assert = require("assert");
+const assert = require("assert")
 
-const mongo = require("../lib");
-const util = require("../lib/util");
+const mongo = require("../lib")
+const util = require("../lib/util")
 
 /**
  *  Make a mongo looking query from a DynamoDB one
@@ -114,7 +115,7 @@ const _make_query = _query => {
                     break;
 
                 default:
-                    throw new error.Invalid("unknown operator: " + parts[position])
+                    throw new errors.Invalid("unknown operator: " + parts[position])
                 }
 
                 query[query_key] = q;
