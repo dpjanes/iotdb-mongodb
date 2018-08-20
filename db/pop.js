@@ -35,7 +35,7 @@ const util = require("../lib/util")
  *  DynamoDB function but we have it in our AWS code
  */
 const pop = _.promise.make((self, done) => {
-    const method = "dynamodb.pop";
+    const method = "db.pop";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)

@@ -131,7 +131,7 @@ const _make_query = _query => {
  *  `all`, `query_simple` and `scan_simple`
  */
 const all = _.promise.make((self, done) => {
-    const method = "dynamodb.all";
+    const method = "db.all";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
@@ -255,7 +255,7 @@ const all = _.promise.make((self, done) => {
 /**
  */
 const count = _.promise.make((self, done) => {
-    const method = "dynamodb.count";
+    const method = "db.count";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)

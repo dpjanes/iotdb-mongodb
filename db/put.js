@@ -34,7 +34,7 @@ const util = require("../lib/util")
 /**
  */
 const put = _.promise.make((self, done) => {
-    const method = "dynamodb.put";
+    const method = "db.put";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)

@@ -32,7 +32,7 @@ const util = require("../lib/util")
 /**
  */
 const _ensure_one = _.promise.make((self, done) => {
-    const method = "dynamodb.ensure_schema/_ensure_one";
+    const method = "db.ensure_schema/_ensure_one";
     const mongo = require("../lib");
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -62,7 +62,7 @@ const _ensure_one = _.promise.make((self, done) => {
  *  This makes sure all the indicies exist
  */
 const ensure_schema = _.promise.make((self, done) => {
-    const method = "dynamodb.ensure_schema";
+    const method = "db.ensure_schema";
     const mongo = require("../lib");
 
     logger.trace({

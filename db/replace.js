@@ -39,7 +39,7 @@ const util = require("../lib/util")
  *  a NotFound error is thrown.
  */
 const replace = _.promise.make((self, done) => {
-    const method = "dynamodb.replace";
+    const method = "db.replace";
 
     // console.log("HERE:XXX", require("util").inspect(self.json, {showHidden: false, depth: null}))
 

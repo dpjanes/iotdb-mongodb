@@ -57,7 +57,7 @@ const initialize = _.promise.make((self, done) => {
         // initialize
         .then(_.promise.add("mongodbd", mongodbd))
         .then(mongodb.initialize)
-        .then(mongodb.dynamodb.initialize)
+        .then(mongodb.db.initialize)
 
         // finished
         .then(_.promise.done(done))
@@ -79,7 +79,7 @@ const load = _.promise.make((self, done) => {
             table_schema: movies_schema,
         }))
         .then(_.promise.series({
-            method: mongodb.dynamodb.put,
+            method: mongodb.db.put,
             inputs: "movies:json",
         }))
         .then(_.promise.done(done))
