@@ -7,7 +7,7 @@
  *
  *  Copyright [2013-2018] [David P. Janes]
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  Licensed under the Apache License, Version 2.0 (the "License")
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
@@ -22,12 +22,13 @@
 
 "use strict";
 
-const _ = require("iotdb-helpers");
+const _ = require("iotdb-helpers")
 
-const assert = require("assert");
+const assert = require("assert")
 
-const mongo = require("../lib");
-const util = require("../lib/util");
+const logger = require("../logger")(__filename)
+const mongo = require("../lib")
+const util = require("../lib/util")
 
 /**
  */
@@ -37,6 +38,10 @@ const get = _.promise.make((self, done) => {
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
     assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
+
+    logger.trace({
+        method: method,
+    }, "called")
 
     _.promise.make(self)
         .then(mongo.collection)

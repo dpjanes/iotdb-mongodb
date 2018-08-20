@@ -27,6 +27,7 @@ const errors = require("iotdb-errors")
 
 const assert = require("assert")
 
+const logger = require("../logger")(__filename)
 const mongo = require("../lib")
 const util = require("../lib/util")
 
@@ -136,6 +137,10 @@ const all = _.promise.make((self, done) => {
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
     assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
         `${method}: expected self.query to be a JSON or Null`);
+
+    logger.trace({
+        method: method,
+    }, "called")
 
     let keys = self.table_schema.keys;
     if (self.index_name) {
@@ -247,6 +252,8 @@ const all = _.promise.make((self, done) => {
         .catch(done)
 })
 
+/**
+ */
 const count = _.promise.make((self, done) => {
     const method = "dynamodb.count";
 
@@ -254,6 +261,10 @@ const count = _.promise.make((self, done) => {
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
     assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
         `${method}: expected self.query to be a JSON or Null`);
+
+    logger.trace({
+        method: method,
+    }, "called")
 
     _.promise.make(self)
         .then(mongo.collection)
