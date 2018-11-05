@@ -33,7 +33,7 @@ const util = require("../lib/util")
 
 /**
  */
-const put = _.promise.make((self, done) => {
+const _put = document => _.promise.make((self, done) => {
     const method = "db.put";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -52,6 +52,11 @@ const put = _.promise.make((self, done) => {
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
+    const json = _.d.clone(self.json)
+    if (binary) {
+        json.document = document
+    }
+
     _.promise.make(self)
         .then(mongo.collection)
         .then(_.promise.make(sd => {
@@ -67,6 +72,22 @@ const put = _.promise.make((self, done) => {
 })
 
 /**
+ *  BLOB handling
+ */
+const put_document = _.promise((self, done) => {
+    const Binary = require("mongodb").Binary
+
+    assert.ok(_.is.Buffer(self.document), `${method}: expected self.document to be Buffer`)
+
+    const document = Binary(self.document)
+
+    _.promise(self)
+        .then(_put(document))
+        .end(done, self)
+})
+
+/**
  *  API
  */
-exports.put = put
+exports.put = _put(null)
+exports.put.document = put_document
