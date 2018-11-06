@@ -34,7 +34,7 @@ const put = _.promise((self, done) => {
     const gridfs = require("gridfs")
 
     logger.trace({
-        method: parse_path.method,
+        method: put.method,
         bucket: self.bucket,
         filename: self.filename,
     }, "called")

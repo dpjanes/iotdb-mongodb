@@ -32,7 +32,7 @@ const logger = require("../logger")(__filename)
  */
 const list = _.promise((self, done) => {
     logger.trace({
-        method: parse_path.method,
+        method: list.method,
         bucket: self.bucket,
         filename: self.filename,
     }, "called")
