@@ -41,7 +41,6 @@ const remove = _.promise((self, done) => {
         .validate(remove)
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
-            grid.collection(self.bucket || "fs")
 
             grid.remove({
                 filename: self.filename,

@@ -42,7 +42,6 @@ const get = _.promise((self, done) => {
         .validate(get)
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
-            grid.collection(self.bucket || "fs")
 
             const initd = {
                 filename: self.filename,
