@@ -33,6 +33,10 @@ const logger = require("../logger")(__filename)
 const initialize = _.promise((self, done) => {
     const gridfs = require("gridfs")
 
+    // https://github.com/aheckmann/gridfs-stream/issues/125#issuecomment-376446255
+    const Grid = require("gridfs-stream");
+    eval(`Grid.prototype.findOne = ${Grid.prototype.findOne.toString().replace('nextObject', 'next')}`);
+
     logger.trace({
         method: initialize.method,
     }, "called")
