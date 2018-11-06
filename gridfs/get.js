@@ -23,6 +23,7 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
+const errors = require("iotdb-errors")
 
 const assert = require("assert")
 
@@ -48,6 +49,10 @@ const get = _.promise((self, done) => {
             }
 
             grid.findOne(initd, (error, stat) => {
+                if (stat === null) {
+                    return sdone(new errors.NotFound())
+                }
+
                 if (error) {
                     return sdone(error)
                 }

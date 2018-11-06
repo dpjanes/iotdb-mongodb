@@ -34,7 +34,9 @@ const mongodbd = require("./mongodbd.json")
 
 const ad = minimist(process.argv.slice(2))
 
-const action = (name) => ad._.indexOf(name) > -1
+const command = ad._[0]
+const filename = ad._[1]
+const action = (name) => name === command
 
 const _on_error = error => {
     console.log("#", _.error.message(error))
@@ -59,7 +61,7 @@ if (action("initialize")) {
 if (action("put")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
         document: fs.readFileSync("data/movies.json"),
         document_media_type: "text/plain",
     })
@@ -75,7 +77,7 @@ if (action("put")) {
 if (action("put.json")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
         json: JSON.parse(fs.readFileSync("data/movies.json")),
     })
         .then(mongo.initialize)
@@ -90,7 +92,7 @@ if (action("put.json")) {
 if (action("get")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
@@ -110,7 +112,7 @@ if (action("get")) {
 if (action("get.utf8")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
@@ -130,7 +132,7 @@ if (action("get.utf8")) {
 if (action("get.json")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
@@ -151,7 +153,7 @@ if (action("get.json")) {
 if (action("get.buffer")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies.json",
+        filename: filename || "movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
