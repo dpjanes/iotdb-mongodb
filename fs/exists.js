@@ -41,6 +41,7 @@ const exists = _.promise((self, done) => {
 
     _.promise(self)
         .validate(exists)
+        .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
 

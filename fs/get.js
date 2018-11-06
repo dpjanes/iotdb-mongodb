@@ -39,6 +39,7 @@ const get = _.promise((self, done) => {
 
     _.promise(self)
         .validate(get)
+        .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
 

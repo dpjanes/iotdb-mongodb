@@ -38,6 +38,7 @@ const put = _.promise((self, done) => {
 
     _.promise(self)
         .validate(put)
+        .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
 

@@ -40,6 +40,7 @@ const list = _.promise((self, done) => {
 
     _.promise(self)
         .validate(list)
+        .then(mongodb.fs.parse_path)
         .end(done, self)
 })
 
