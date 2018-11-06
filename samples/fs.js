@@ -1,5 +1,5 @@
 /**
- *  samples/gridfs.js
+ *  samples/fs.js
  *
  *  David Janes
  *  IOTDB
@@ -53,7 +53,7 @@ if (action("initialize")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
+        .then(mongo.fs.initialize)
         .then(mongo.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
@@ -69,8 +69,8 @@ if (action("put")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.put)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.put)
         .then(mongo.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
@@ -85,8 +85,8 @@ if (action("put.json")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.put.json)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.put.json)
         .then(mongo.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
@@ -100,8 +100,8 @@ if (action("get")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.get)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.get)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
@@ -121,8 +121,8 @@ if (action("get.utf8")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.get.utf8)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.get.utf8)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
@@ -142,8 +142,8 @@ if (action("get.json")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.get.json)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.get.json)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "json", _.is.JSON(sd.json) ? true : false)
@@ -164,8 +164,8 @@ if (action("get.buffer")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.get.buffer)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.get.buffer)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "json", _.is.JSON(sd.json) ? true : false)
@@ -186,8 +186,8 @@ if (action("exists")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.exists)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.exists)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "exists", sd.exists)
@@ -204,8 +204,8 @@ if (action("remove")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.remove)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.remove)
         .then(mongo.close)
         .make(sd => {
             console.log("+", "ok")
@@ -220,8 +220,8 @@ if (action("list")) {
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
-        .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.list)
+        .then(mongo.fs.initialize)
+        .then(mongo.fs.list)
         .then(mongo.close)
         .make(sd => {
             sd.paths.forEach(path => {
