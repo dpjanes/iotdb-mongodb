@@ -61,6 +61,7 @@ if (action("put")) {
         mongodbd: mongodbd,
         filename: "movies.json",
         document: fs.readFileSync("data/movies.json"),
+        document_media_type: "text/plain",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
@@ -68,6 +69,25 @@ if (action("put")) {
         .then(mongo.gridfs.put)
         .then(mongo.close)
         .make(sd => console.log("+", "ok"))
+        .catch(_on_error)
+}
+
+if (action("get")) {
+    _.promise({
+        mongodbd: mongodbd,
+        filename: "movies.json",
+    })
+        .then(mongo.initialize)
+        .then(mongo.db.initialize)
+        .then(mongo.gridfs.initialize)
+        .then(mongo.gridfs.get)
+        .then(mongo.close)
+        .make(sd => {
+            console.log("+", "ok")
+            console.log("+", "document_encoding", sd.document_encoding)
+            console.log("+", "document_media_type", sd.document_media_type)
+            console.log("+", "document_name", sd.document_name)
+        })
         .catch(_on_error)
 }
 

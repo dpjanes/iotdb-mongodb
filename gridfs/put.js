@@ -42,11 +42,6 @@ const put = _.promise((self, done) => {
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
 
-            let document = self.document
-            if (_.is.String(document)) {
-                document = Buffer.from(document, self.document_encoding || "utf8")
-            }
-
             const initd = {
                 filename: self.filename,
                 bucket: self.bucket || null,
@@ -54,7 +49,16 @@ const put = _.promise((self, done) => {
             }
 
             if (self.document_media_type) {
-                initd.metadata.document_media_type = self.document_media_type
+                initd.content_type = self.document_media_type
+            }
+
+            let document = self.document
+            if (_.is.String(document)) {
+                initd.metadata.document_encoding = self.document_encoding || "utf8"
+
+                document = Buffer.from(document, initd.metadata.document_encoding)
+            } else if (self.document_encoding) {
+                initd.metadata.document_encoding = self.document_encoding 
             }
 
             grid.remove({

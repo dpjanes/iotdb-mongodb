@@ -39,7 +39,46 @@ const get = _.promise((self, done) => {
 
     _.promise(self)
         .validate(get)
-        .end(done, self)
+        .make((sd, sdone) => {
+            const grid = self.mongodb.__grid
+
+            const initd = {
+                filename: self.filename,
+                bucket: self.bucket || null,
+            }
+
+            grid.findOne(initd, (error, stat) => {
+                if (error) {
+                    return sdone(error)
+                }
+
+                grid.readFile(initd, (error, result) => {
+                    if (error) {
+                        return sdone(error)
+                    }
+
+                    self.document = result
+                    self.document_name = self.filename
+                    self.document_media_type = stat.contentType
+
+                    if (self.document_encoding === "binary") {
+                        self.document_encoding = null
+                    } else if (self.document_encoding) {
+                        self.document = result.toString(self.document_encoding)
+                    } else if (stat.metadata.document_encoding === "binary") {
+                        self.document_encoding = null
+                    } else if (stat.metadata.document_encoding) {
+                        self.document_encoding = stat.metadata.document_encoding
+                        self.document = result.toString(self.document_encoding)
+                    } else {
+                        self.document_encoding = null
+                    }
+
+                    sdone(null, self)
+                })
+            })
+        })
+        .end(done, self, "document,document_encoding,document_media_type,document_name")
 })
 
 get.method = "gridfs.get"
@@ -49,6 +88,7 @@ get.required = {
 }
 get.accepts = {
     bucket: _.is.String, 
+    document_encoding: _.is.String, 
 }
 
 /**
