@@ -53,7 +53,7 @@ const _put = document => _.promise.make((self, done) => {
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
     const json = _.d.clone(self.json)
-    if (binary) {
+    if (document) {
         json.document = document
     }
 
