@@ -44,9 +44,11 @@ const get = _.promise((self, done) => {
 
 get.method = "gridfs.get"
 get.required = {
-    bucket: [ _.is.String, null ],
     filename: _.is.String,
     mongodb: _.is.Object,
+}
+get.accepts = {
+    bucket: _.is.String, 
 }
 
 /**

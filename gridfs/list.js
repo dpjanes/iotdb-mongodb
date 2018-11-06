@@ -44,9 +44,11 @@ const list = _.promise((self, done) => {
 
 list.method = "gridfs.list"
 list.required = {
-    bucket: [ _.is.String, null ],
     filename: _.is.String,
     mongodb: _.is.Object,
+}
+list.accepts = {
+    bucket: _.is.String, 
 }
 
 /**
