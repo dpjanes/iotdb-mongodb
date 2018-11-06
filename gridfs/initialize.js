@@ -31,12 +31,17 @@ const logger = require("../logger")(__filename)
 /**
  */
 const initialize = _.promise((self, done) => {
+    const gridfs = require("gridfs")
+
     logger.trace({
         method: initialize.method,
     }, "called")
 
     _.promise(self)
         .validate(initialize)
+        .make(sd => {
+            sd.mongodb.__grid = gridfs(self.mongodb, self.mongodb.__engine)
+        })
         .end(done, self)
 })
 

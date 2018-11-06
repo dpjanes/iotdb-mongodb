@@ -31,8 +31,6 @@ const logger = require("../logger")(__filename)
 /**
  */
 const put = _.promise((self, done) => {
-    const gridfs = require("gridfs")
-
     logger.trace({
         method: put.method,
         bucket: self.bucket,
@@ -42,6 +40,8 @@ const put = _.promise((self, done) => {
     _.promise(self)
         .validate(put)
         .make((sd, sdone) => {
+            const grid = self.mongodb.__grid
+
             let document = self.document
             if (_.is.String(document)) {
                 document = Buffer.from(document, self.document_encoding || "utf8")
@@ -49,23 +49,25 @@ const put = _.promise((self, done) => {
 
             const initd = {
                 filename: self.filename,
+                bucket: self.bucket || null,
                 metadata: {},
-            }
-
-            if (self.bucket) {
-                initd.bucket = self.bucket
             }
 
             if (self.document_media_type) {
                 initd.metadata.document_media_type = self.document_media_type
             }
 
-            gridfs.writeFile(initd, document, (error, result) => {
-                if (error) {
-                    return sdone(error)
-                }
+            grid.remove({
+                filename: self.filename,
+                bucket: self.bucket || null,
+            }, () => {
+                grid.writeFile(initd, document, (error, result) => {
+                    if (error) {
+                        return sdone(error)
+                    }
 
-                sdone(null, self)
+                    sdone(null, self)
+                })
             })
         })
         .end(done, self)
@@ -74,8 +76,10 @@ const put = _.promise((self, done) => {
 put.method = "gridfs.put"
 put.required = {
     filename: _.is.String,
-    mongodb: _.is.Object,
     document: [ _.is.String, _.is.Buffer ],
+    mongodb: {
+        __grid: _.is.Object,
+    },
 }
 put.accepts = {
     bucket: _.is.String, 
@@ -87,12 +91,13 @@ put.accepts = {
  */
 const put_json = _.promise((self, done) => {
     _.promise(self)
-        .validate(put)
+        .validate(put_json)
         .add({
             document: JSON.stringify(self.json),
             document_media_type: "application/json",
             document_encoding: "utf8",
         })
+        .then(put)
         .end(done, self)
 })
 
@@ -100,7 +105,9 @@ put_json.method = "gridfs.put.json"
 put_json.required = {
     filename: _.is.String,
     json: _.is.JSON,
-    mongodb: _.is.Object,
+    mongodb: {
+        __grid: _.is.Object,
+    },
 }
 put_json.accepts = {
     bucket: _.is.String, 
