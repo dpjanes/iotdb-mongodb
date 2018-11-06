@@ -1,5 +1,5 @@
 /*
- *  gridfs/get.js
+ *  fs/get.js
  *
  *  David Janes
  *  IOTDB.org
@@ -86,7 +86,7 @@ const get = _.promise((self, done) => {
         .end(done, self, "document,document_encoding,document_media_type,document_name")
 })
 
-get.method = "gridfs.get"
+get.method = "fs.get"
 get.required = {
     filename: _.is.String,
     mongodb: _.is.Object,
@@ -111,7 +111,7 @@ const get_json = _.promise((self, done) => {
         .end(done, self, "json")
 })
 
-get_json.method = "gridfs.get.json"
+get_json.method = "fs.get.json"
 get_json.required = {
     filename: _.is.String,
     mongodb: {
@@ -134,7 +134,7 @@ const get_buffer = _.promise((self, done) => {
         .end(done, self, "document,document_encoding,document_media_type,document_name")
 })
 
-get_buffer.method = "gridfs.get.json"
+get_buffer.method = "fs.get.json"
 get_buffer.required = {
     filename: _.is.String,
     mongodb: {
@@ -157,7 +157,7 @@ const get_utf8 = _.promise((self, done) => {
         .end(done, self, "document,document_encoding,document_media_type,document_name")
 })
 
-get_utf8.method = "gridfs.get.json"
+get_utf8.method = "fs.get.json"
 get_utf8.required = {
     filename: _.is.String,
     mongodb: {

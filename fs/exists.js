@@ -1,5 +1,5 @@
 /*
- *  gridfs/exists.js
+ *  fs/exists.js
  *
  *  David Janes
  *  IOTDB.org
@@ -61,7 +61,7 @@ const exists = _.promise((self, done) => {
         .end(done, self, "exists")
 })
 
-exists.method = "gridfs.exists"
+exists.method = "fs.exists"
 exists.required = {
     filename: _.is.String,
     mongodb: {

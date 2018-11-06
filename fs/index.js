@@ -1,5 +1,5 @@
 /*
- *  index.js
+ *  fs/index.js
  *
  *  David Janes
  *  IOTDB.org

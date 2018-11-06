@@ -1,5 +1,5 @@
 /*
- *  gridfs/initialize.js
+ *  fs/initialize.js
  *
  *  David Janes
  *  IOTDB.org
@@ -31,10 +31,10 @@ const logger = require("../logger")(__filename)
 /**
  */
 const initialize = _.promise((self, done) => {
-    const gridfs = require("gridfs")
+    const fs = require("fs")
 
-    // https://github.com/aheckmann/gridfs-stream/issues/125#issuecomment-376446255
-    const Grid = require("gridfs-stream");
+    // https://github.com/aheckmann/fs-stream/issues/125#issuecomment-376446255
+    const Grid = require("fs-stream");
     eval(`Grid.prototype.findOne = ${Grid.prototype.findOne.toString().replace('nextObject', 'next')}`);
 
     logger.trace({
@@ -44,12 +44,12 @@ const initialize = _.promise((self, done) => {
     _.promise(self)
         .validate(initialize)
         .make(sd => {
-            sd.mongodb.__grid = gridfs(self.mongodb, self.mongodb.__engine)
+            sd.mongodb.__grid = fs(self.mongodb, self.mongodb.__engine)
         })
         .end(done, self)
 })
 
-initialize.method = "gridfs.initialize"
+initialize.method = "fs.initialize"
 initialize.required = {
     mongodb: _.is.Object,
 }

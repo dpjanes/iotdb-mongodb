@@ -1,5 +1,5 @@
 /*
- *  gridfs/list.js
+ *  fs/list.js
  *
  *  David Janes
  *  IOTDB.org
@@ -42,7 +42,7 @@ const list = _.promise((self, done) => {
         .end(done, self)
 })
 
-list.method = "gridfs.list"
+list.method = "fs.list"
 list.required = {
     filename: _.is.String,
     mongodb: _.is.Object,

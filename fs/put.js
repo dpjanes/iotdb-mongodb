@@ -1,5 +1,5 @@
 /*
- *  gridfs/put.js
+ *  fs/put.js
  *
  *  David Janes
  *  IOTDB.org
@@ -77,7 +77,7 @@ const put = _.promise((self, done) => {
         .end(done, self)
 })
 
-put.method = "gridfs.put"
+put.method = "fs.put"
 put.required = {
     filename: _.is.String,
     document: [ _.is.String, _.is.Buffer ],
@@ -105,7 +105,7 @@ const put_json = _.promise((self, done) => {
         .end(done, self)
 })
 
-put_json.method = "gridfs.put.json"
+put_json.method = "fs.put.json"
 put_json.required = {
     filename: _.is.String,
     json: _.is.JSON,

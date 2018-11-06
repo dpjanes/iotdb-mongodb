@@ -1,5 +1,5 @@
 /*
- *  gridfs/parse_path.js
+ *  fs/parse_path.js
  *
  *  David Janes
  *  IOTDB.org
@@ -31,16 +31,16 @@ const url = require("url")
 const logger = require("../logger")(__filename)
 
 /**
- *  gridfs:/hello/ => (fs/hello .)
- *  gridfs:/hello/bla.txt => (fs/hello bla.txt)
- *  gridfs:/foo.txt => (fs foo.txt)
- *  gridfs: => (fs .)
+ *  fs:/hello/ => (fs/hello .)
+ *  fs:/hello/bla.txt => (fs/hello bla.txt)
+ *  fs:/foo.txt => (fs foo.txt)
+ *  fs: => (fs .)
  */
 const parse_path = _.promise(self => {
     assert.ok(_.is.String(self.path), `${parse_path.method}: self.path must be a String`);
 
     const urlp = url.parse(self.path)
-    assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "gridfs:"`);
+    assert.ok(urlp.protocol === "fs:", `${parse_path.method}: self.path: protocol must be "fs:"`);
     assert.ok(urlp.hostname.length === 0, `${parse_path.method}: self.path: no hostname allowed yet`)
 
     console.log(urlp)
@@ -54,7 +54,7 @@ const parse_path = _.promise(self => {
     self.filename = path.basename(scrubbed)
 })
 
-parse_path.method = "gridfs.parse_path"
+parse_path.method = "fs.parse_path"
 parse_path.required = {
     path: _.is.String,
 }
@@ -66,10 +66,10 @@ exports.parse_path = parse_path
 
 /*
 _.promise({
-    path: "gridfs:/hello/",
-    path: "gridfs:/hello/bla.txt",
-    path: "gridfs:",
-    path: "gridfs:/foo.txt",
+    path: "fs:/hello/",
+    path: "fs:/hello/bla.txt",
+    path: "fs:",
+    path: "fs:/foo.txt",
 })
     .then(parse_path)
     .make(sd => {

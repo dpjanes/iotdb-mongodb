@@ -1,5 +1,5 @@
 /*
- *  gridfs/remove.js
+ *  fs/remove.js
  *
  *  David Janes
  *  IOTDB.org
@@ -52,7 +52,7 @@ const remove = _.promise((self, done) => {
         .end(done, self)
 })
 
-remove.method = "gridfs.remove"
+remove.method = "fs.remove"
 remove.required = {
     filename: _.is.String,
     mongodb: {
