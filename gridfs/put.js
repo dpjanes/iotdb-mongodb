@@ -31,6 +31,8 @@ const logger = require("../logger")(__filename)
 /**
  */
 const put = _.promise((self, done) => {
+    const gridfs = require("gridfs")
+
     logger.trace({
         method: parse_path.method,
         bucket: self.bucket,
@@ -39,6 +41,33 @@ const put = _.promise((self, done) => {
 
     _.promise(self)
         .validate(put)
+        .make((sd, sdone) => {
+            let document = self.document
+            if (_.is.String(document)) {
+                document = Buffer.from(document, self.document_encoding || "utf8")
+            }
+
+            const initd = {
+                filename: self.filename,
+                metadata: {},
+            }
+
+            if (self.bucket) {
+                initd.bucket = self.bucket
+            }
+
+            if (self.document_media_type) {
+                initd.metadata.document_media_type = self.document_media_type
+            }
+
+            gridfs.writeFile(initd, document, (error, result) => {
+                if (error) {
+                    return sdone(error)
+                }
+
+                sdone(null, self)
+            })
+        })
         .end(done, self)
 })
 
@@ -47,9 +76,36 @@ put.required = {
     bucket: [ _.is.String, null ],
     filename: _.is.String,
     mongodb: _.is.Object,
+    document: [ _.is.String, _.is.Buffer ],
+}
+put.accepts = {
+    document_media_type: _.is.String,
+    document_encoding: _.is.String,
+}
+
+/**
+ */
+const put_json = _.promise((self, done) => {
+    _.promise(self)
+        .validate(put)
+        .add({
+            document: JSON.stringify(self.json),
+            document_media_type: "application/json",
+            document_encoding: "utf8",
+        })
+        .end(done, self)
+})
+
+put_json.method = "gridfs.put.json"
+put_json.required = {
+    bucket: [ _.is.String, null ],
+    filename: _.is.String,
+    json: _.is.JSON,
+    mongodb: _.is.Object,
 }
 
 /**
  *  API
  */
 exports.put = put
+exports.put.json = put_json
