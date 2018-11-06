@@ -1,5 +1,5 @@
 /*
- *  gridfs/put.js
+ *  gridfs/initialize.js
  *
  *  David Janes
  *  IOTDB.org
@@ -30,26 +30,22 @@ const logger = require("../logger")(__filename)
 
 /**
  */
-const put = _.promise((self, done) => {
+const initialize = _.promise((self, done) => {
     logger.trace({
         method: parse_path.method,
-        bucket: self.bucket,
-        filename: self.filename,
     }, "called")
 
     _.promise(self)
-        .validate(put)
+        .validate(initialize)
         .end(done, self)
 })
 
-put.method = "gridfs.put"
-put.required = {
-    bucket: [ _.is.String, null ],
-    filename: _.is.String,
+initialize.method = "gridfs.initialize"
+initialize.required = {
     mongodb: _.is.Object,
 }
 
 /**
  *  API
  */
-exports.put = put
+exports.initialize = initialize

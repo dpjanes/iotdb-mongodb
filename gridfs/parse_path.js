@@ -20,7 +20,7 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
 const _ = require("iotdb-helpers")
 
@@ -36,17 +36,8 @@ const logger = require("../logger")(__filename)
  *  gridfs:/foo.txt => (fs foo.txt)
  *  gridfs: => (fs .)
  */
-const parse_path = _.promise((self, done) => {
-    const method = "db.parse_path";
-
+const parse_path = _.promise(self => {
     assert.ok(_.is.String(self.path), `${parse_path.method}: self.path must be a String`);
-
-    /*
-    logger.trace({
-        method: parse_path.method,
-        path: path,
-    }, "called")
-    */
 
     const urlp = url.parse(self.path)
     assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "gridfs:"`);
@@ -61,8 +52,6 @@ const parse_path = _.promise((self, done) => {
 
     self.bucket = path.dirname(scrubbed)
     self.filename = path.basename(scrubbed)
-
-    done(null, self);
 })
 
 parse_path.method = "gridfs.parse_path"
