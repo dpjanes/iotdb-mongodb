@@ -72,6 +72,21 @@ if (action("put")) {
         .catch(_on_error)
 }
 
+if (action("put.json")) {
+    _.promise({
+        mongodbd: mongodbd,
+        filename: "movies.json",
+        json: JSON.parse(fs.readFileSync("data/movies.json")),
+    })
+        .then(mongo.initialize)
+        .then(mongo.db.initialize)
+        .then(mongo.gridfs.initialize)
+        .then(mongo.gridfs.put.json)
+        .then(mongo.close)
+        .make(sd => console.log("+", "ok"))
+        .catch(_on_error)
+}
+
 if (action("get")) {
     _.promise({
         mongodbd: mongodbd,
@@ -84,6 +99,7 @@ if (action("get")) {
         .then(mongo.close)
         .make(sd => {
             console.log("+", "ok")
+            console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
             console.log("+", "document_encoding", sd.document_encoding)
             console.log("+", "document_media_type", sd.document_media_type)
             console.log("+", "document_name", sd.document_name)
@@ -91,17 +107,64 @@ if (action("get")) {
         .catch(_on_error)
 }
 
-if (action("put-json")) {
+if (action("get.utf8")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: "movies-2.json",
-        json: JSON.parse(fs.readFileSync("data/movies.json")),
+        filename: "movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
         .then(mongo.gridfs.initialize)
-        .then(mongo.gridfs.put.json)
+        .then(mongo.gridfs.get.utf8)
         .then(mongo.close)
-        .make(sd => console.log("+", "ok"))
+        .make(sd => {
+            console.log("+", "ok")
+            console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
+            console.log("+", "document_encoding", sd.document_encoding)
+            console.log("+", "document_media_type", sd.document_media_type)
+            console.log("+", "document_name", sd.document_name)
+        })
+        .catch(_on_error)
+}
+
+if (action("get.json")) {
+    _.promise({
+        mongodbd: mongodbd,
+        filename: "movies.json",
+    })
+        .then(mongo.initialize)
+        .then(mongo.db.initialize)
+        .then(mongo.gridfs.initialize)
+        .then(mongo.gridfs.get.json)
+        .then(mongo.close)
+        .make(sd => {
+            console.log("+", "ok")
+            console.log("+", "json", _.is.JSON(sd.json) ? true : false)
+            console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
+            console.log("+", "document_encoding", sd.document_encoding)
+            console.log("+", "document_media_type", sd.document_media_type)
+            console.log("+", "document_name", sd.document_name)
+        })
+        .catch(_on_error)
+}
+
+if (action("get.buffer")) {
+    _.promise({
+        mongodbd: mongodbd,
+        filename: "movies.json",
+    })
+        .then(mongo.initialize)
+        .then(mongo.db.initialize)
+        .then(mongo.gridfs.initialize)
+        .then(mongo.gridfs.get.buffer)
+        .then(mongo.close)
+        .make(sd => {
+            console.log("+", "ok")
+            console.log("+", "json", _.is.JSON(sd.json) ? true : false)
+            console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
+            console.log("+", "document_encoding", sd.document_encoding)
+            console.log("+", "document_media_type", sd.document_media_type)
+            console.log("+", "document_name", sd.document_name)
+        })
         .catch(_on_error)
 }

@@ -92,6 +92,81 @@ get.accepts = {
 }
 
 /**
+ */
+const get_json = _.promise((self, done) => {
+    _.promise(self)
+        .validate(get_json)
+        .add({
+            document_encoding: "utf8",
+        })
+        .then(get)
+        .make(sd => {
+            sd.json = JSON.parse(sd.document)
+        })
+        .end(done, self, "json")
+})
+
+get_json.method = "gridfs.get.json"
+get_json.required = {
+    filename: _.is.String,
+    mongodb: {
+        __grid: _.is.Object,
+    },
+}
+get_json.accepts = {
+    bucket: _.is.String, 
+}
+
+/**
+ */
+const get_buffer = _.promise((self, done) => {
+    _.promise(self)
+        .validate(get_buffer)
+        .add({
+            document_encoding: "binary",
+        })
+        .then(get)
+        .end(done, self, "document,document_encoding,document_media_type,document_name")
+})
+
+get_buffer.method = "gridfs.get.json"
+get_buffer.required = {
+    filename: _.is.String,
+    mongodb: {
+        __grid: _.is.Object,
+    },
+}
+get_buffer.accepts = {
+    bucket: _.is.String, 
+}
+
+/**
+ */
+const get_utf8 = _.promise((self, done) => {
+    _.promise(self)
+        .validate(get_utf8)
+        .add({
+            document_encoding: "utf8",
+        })
+        .then(get)
+        .end(done, self, "document,document_encoding,document_media_type,document_name")
+})
+
+get_utf8.method = "gridfs.get.json"
+get_utf8.required = {
+    filename: _.is.String,
+    mongodb: {
+        __grid: _.is.Object,
+    },
+}
+get_utf8.accepts = {
+    bucket: _.is.String, 
+}
+
+/**
  *  API
  */
 exports.get = get
+exports.get.json = get_json
+exports.get.utf8 = get_utf8
+exports.get.buffer = get_buffer
