@@ -23,6 +23,7 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
+const errors = require("iotdb-errors")
 
 const assert = require("assert")
 
@@ -42,16 +43,19 @@ const exists = _.promise((self, done) => {
         .make((sd, sdone) => {
             const grid = self.mongodb.__grid
 
+            const initd = {
+                filename: self.filename,
+                bucket: self.bucket || null,
+            }
+
             grid.findOne(initd, (error, stat) => {
-                if (stat === null) {
-                    return sdone(new errors.NotFound())
-                } 
-                
                 if (error) {
                     return sdone(error)
                 }
 
-                sdone(null, self)
+                sd.exists = stat ? true : false
+
+                sdone(null, sd)
             })
         })
         .end(done, self, "exists")

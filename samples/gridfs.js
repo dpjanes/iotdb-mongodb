@@ -170,3 +170,20 @@ if (action("get.buffer")) {
         })
         .catch(_on_error)
 }
+
+if (action("exists")) {
+    _.promise({
+        mongodbd: mongodbd,
+        filename: filename || "movies.json",
+    })
+        .then(mongo.initialize)
+        .then(mongo.db.initialize)
+        .then(mongo.gridfs.initialize)
+        .then(mongo.gridfs.exists)
+        .then(mongo.close)
+        .make(sd => {
+            console.log("+", "ok")
+            console.log("+", "exists", sd.exists)
+        })
+        .catch(_on_error)
+}
