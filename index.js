@@ -20,9 +20,9 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
-module.exports = require("./lib");
-module.exports.dynamodb = require("./db");
-module.exports.db = require("./db");
-module.exports.gridfs = require("./gridfs");
+module.exports = require("./lib")
+module.exports.dynamodb = require("./db")
+module.exports.db = require("./db")
+module.exports.fs = require("./fs")
