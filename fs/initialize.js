@@ -31,10 +31,10 @@ const logger = require("../logger")(__filename)
 /**
  */
 const initialize = _.promise((self, done) => {
-    const fs = require("fs")
+    const gridfs = require("gridfs")
 
-    // https://github.com/aheckmann/fs-stream/issues/125#issuecomment-376446255
-    const Grid = require("fs-stream");
+    // https://github.com/aheckmann/gridfs-stream/issues/125#issuecomment-376446255
+    const Grid = require("gridfs-stream");
     eval(`Grid.prototype.findOne = ${Grid.prototype.findOne.toString().replace('nextObject', 'next')}`);
 
     logger.trace({
@@ -44,7 +44,7 @@ const initialize = _.promise((self, done) => {
     _.promise(self)
         .validate(initialize)
         .make(sd => {
-            sd.mongodb.__grid = fs(self.mongodb, self.mongodb.__engine)
+            sd.mongodb.__grid = gridfs(self.mongodb, self.mongodb.__engine)
         })
         .end(done, self)
 })
