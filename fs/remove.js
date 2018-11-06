@@ -31,10 +31,11 @@ const logger = require("../logger")(__filename)
 /**
  */
 const remove = _.promise((self, done) => {
+    const mongodb = require("..")
+
     logger.trace({
         method: remove.method,
-        bucket: self.bucket,
-        filename: self.filename,
+        path: self.path,
     }, "called")
 
     _.promise(self)
@@ -54,13 +55,12 @@ const remove = _.promise((self, done) => {
 
 remove.method = "fs.remove"
 remove.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 remove.accepts = {
-    bucket: _.is.String, 
 }
 
 /**

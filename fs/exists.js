@@ -32,10 +32,11 @@ const logger = require("../logger")(__filename)
 /**
  */
 const exists = _.promise((self, done) => {
+    const mongodb = require("..")
+
     logger.trace({
         method: exists.method,
-        bucket: self.bucket,
-        filename: self.filename,
+        path: self.path,
     }, "called")
 
     _.promise(self)
@@ -63,13 +64,12 @@ const exists = _.promise((self, done) => {
 
 exists.method = "fs.exists"
 exists.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 exists.accepts = {
-    bucket: _.is.String, 
 }
 
 /**

@@ -33,8 +33,7 @@ const logger = require("../logger")(__filename)
 const put = _.promise((self, done) => {
     logger.trace({
         method: put.method,
-        bucket: self.bucket,
-        filename: self.filename,
+        path: self.path,
     }, "called")
 
     _.promise(self)
@@ -79,14 +78,13 @@ const put = _.promise((self, done) => {
 
 put.method = "fs.put"
 put.required = {
-    filename: _.is.String,
+    path: _.is.String,
     document: [ _.is.String, _.is.Buffer ],
     mongodb: {
         __grid: _.is.Object,
     },
 }
 put.accepts = {
-    bucket: _.is.String, 
     document_media_type: _.is.String,
     document_encoding: _.is.String,
 }
@@ -94,6 +92,8 @@ put.accepts = {
 /**
  */
 const put_json = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise(self)
         .validate(put_json)
         .add({
@@ -107,14 +107,13 @@ const put_json = _.promise((self, done) => {
 
 put_json.method = "fs.put.json"
 put_json.required = {
-    filename: _.is.String,
+    path: _.is.String,
     json: _.is.JSON,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 put_json.accepts = {
-    bucket: _.is.String, 
 }
 
 /**

@@ -34,8 +34,7 @@ const logger = require("../logger")(__filename)
 const get = _.promise((self, done) => {
     logger.trace({
         method: get.method,
-        bucket: self.bucket,
-        filename: self.filename,
+        path: self.path,
     }, "called")
 
     _.promise(self)
@@ -88,17 +87,18 @@ const get = _.promise((self, done) => {
 
 get.method = "fs.get"
 get.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: _.is.Object,
 }
 get.accepts = {
-    bucket: _.is.String, 
     document_encoding: _.is.String, 
 }
 
 /**
  */
 const get_json = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise(self)
         .validate(get_json)
         .add({
@@ -113,13 +113,12 @@ const get_json = _.promise((self, done) => {
 
 get_json.method = "fs.get.json"
 get_json.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 get_json.accepts = {
-    bucket: _.is.String, 
 }
 
 /**
@@ -136,13 +135,12 @@ const get_buffer = _.promise((self, done) => {
 
 get_buffer.method = "fs.get.json"
 get_buffer.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 get_buffer.accepts = {
-    bucket: _.is.String, 
 }
 
 /**
@@ -159,13 +157,12 @@ const get_utf8 = _.promise((self, done) => {
 
 get_utf8.method = "fs.get.json"
 get_utf8.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: {
         __grid: _.is.Object,
     },
 }
 get_utf8.accepts = {
-    bucket: _.is.String, 
 }
 
 /**

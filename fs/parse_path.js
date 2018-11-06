@@ -35,23 +35,23 @@ const logger = require("../logger")(__filename)
  *  gridfs:/hello/bla.txt => (fs/hello bla.txt)
  *  gridfs:/foo.txt => (fs foo.txt)
  *  gridfs: => (fs .)
+ *
+ *  This is mainly for internal use
  */
 const parse_path = _.promise(self => {
     assert.ok(_.is.String(self.path), `${parse_path.method}: self.path must be a String`);
 
     const urlp = url.parse(self.path)
     assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "fs:"`);
-    assert.ok(urlp.hostname.length === 0, `${parse_path.method}: self.path: no hostname allowed yet`)
 
-    console.log(urlp)
-
-    let scrubbed = "fs/" + (urlp.pathname || "").replace(/^\//, '')
+    let scrubbed = "/" + (urlp.pathname || "").replace(/^\//, '')
     if (scrubbed.endsWith("/")) {
         scrubbed += "."
     }
 
-    self.bucket = path.dirname(scrubbed)
-    self.filename = path.basename(scrubbed)
+    self.bucket = urlp.hostname || "fs"
+    self.dirname = path.dirname(scrubbed)
+    self.filename = scrubbed
 })
 
 parse_path.method = "fs.parse_path"
@@ -64,19 +64,18 @@ parse_path.required = {
  */
 exports.parse_path = parse_path
 
-/*
 _.promise({
     path: "gridfs:/hello/",
     path: "gridfs:/hello/bla.txt",
     path: "gridfs:",
+    path: "gridfs://bucket/foo.txt",
     path: "gridfs:/foo.txt",
 })
     .then(parse_path)
     .make(sd => {
-        console.log(`${sd.path} => (${sd.bucket} ${sd.filename})`)
+        console.log(`${sd.path} => (${sd.bucket} ${sd.dirname} ${sd.filename})`)
     })
     .except(error => {
         delete error.self
         console.log(error)
     })
-*/

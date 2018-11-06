@@ -31,10 +31,11 @@ const logger = require("../logger")(__filename)
 /**
  */
 const list = _.promise((self, done) => {
+    const mongodb = require("..")
+
     logger.trace({
         method: list.method,
-        bucket: self.bucket,
-        filename: self.filename,
+        path: self.path,
     }, "called")
 
     _.promise(self)
@@ -44,11 +45,10 @@ const list = _.promise((self, done) => {
 
 list.method = "fs.list"
 list.required = {
-    filename: _.is.String,
+    path: _.is.String,
     mongodb: _.is.Object,
 }
 list.accepts = {
-    bucket: _.is.String, 
 }
 
 /**
