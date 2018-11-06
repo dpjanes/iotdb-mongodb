@@ -73,12 +73,12 @@ const put = _.promise((self, done) => {
 
 put.method = "gridfs.put"
 put.required = {
-    bucket: [ _.is.String, null ],
     filename: _.is.String,
     mongodb: _.is.Object,
     document: [ _.is.String, _.is.Buffer ],
 }
 put.accepts = {
+    bucket: _.is.String, 
     document_media_type: _.is.String,
     document_encoding: _.is.String,
 }
@@ -98,10 +98,12 @@ const put_json = _.promise((self, done) => {
 
 put_json.method = "gridfs.put.json"
 put_json.required = {
-    bucket: [ _.is.String, null ],
     filename: _.is.String,
     json: _.is.JSON,
     mongodb: _.is.Object,
+}
+put_json.accepts = {
+    bucket: _.is.String, 
 }
 
 /**
