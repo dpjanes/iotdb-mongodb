@@ -24,6 +24,10 @@
 
 module.exports = Object.assign(
     {},
+    require("./get"),
+    require("./initialize"),
+    require("./list"),
     require("./parse_path"),
+    require("./put"),
     {}
 )
