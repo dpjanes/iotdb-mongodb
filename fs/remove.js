@@ -42,13 +42,12 @@ const remove = _.promise((self, done) => {
         .validate(remove)
         .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
-            const grid = self.mongodb.__grid
+            const grid = sd.mongodb.__grid
 
             grid.remove({
-                filename: self.filename,
-                bucket: self.bucket || null,
+                filename: sd.filename,
             }, error => {
-                sdone(null, self)
+                sdone(null, sd)
             })
         })
         .end(done, self)

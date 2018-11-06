@@ -62,7 +62,7 @@ if (action("initialize")) {
 if (action("put")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         document: fs.readFileSync("data/movies.json"),
         document_media_type: "text/plain",
         bucket: bucket,
@@ -79,7 +79,7 @@ if (action("put")) {
 if (action("put.json")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         json: JSON.parse(fs.readFileSync("data/movies.json")),
         bucket: bucket,
     })
@@ -95,7 +95,7 @@ if (action("put.json")) {
 if (action("get")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)
@@ -116,7 +116,7 @@ if (action("get")) {
 if (action("get.utf8")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)
@@ -137,7 +137,7 @@ if (action("get.utf8")) {
 if (action("get.json")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)
@@ -159,7 +159,7 @@ if (action("get.json")) {
 if (action("get.buffer")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)
@@ -181,7 +181,7 @@ if (action("get.buffer")) {
 if (action("exists")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)
@@ -199,7 +199,7 @@ if (action("exists")) {
 if (action("remove")) {
     _.promise({
         mongodbd: mongodbd,
-        filename: filename || "movies.json",
+        path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
         .then(mongo.initialize)

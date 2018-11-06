@@ -41,11 +41,10 @@ const get = _.promise((self, done) => {
         .validate(get)
         .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
-            const grid = self.mongodb.__grid
+            const grid = sd.mongodb.__grid
 
             const initd = {
-                filename: self.filename,
-                bucket: self.bucket || null,
+                filename: sd.filename,
             }
 
             grid.findOne(initd, (error, stat) => {
@@ -62,24 +61,24 @@ const get = _.promise((self, done) => {
                         return sdone(error)
                     }
 
-                    self.document = result
-                    self.document_name = self.filename
-                    self.document_media_type = stat.contentType
+                    sd.document = result
+                    sd.document_name = sd.filename
+                    sd.document_media_type = stat.contentType
 
-                    if (self.document_encoding === "binary") {
-                        self.document_encoding = null
-                    } else if (self.document_encoding) {
-                        self.document = result.toString(self.document_encoding)
+                    if (sd.document_encoding === "binary") {
+                        sd.document_encoding = null
+                    } else if (sd.document_encoding) {
+                        sd.document = result.toString(sd.document_encoding)
                     } else if (stat.metadata.document_encoding === "binary") {
-                        self.document_encoding = null
+                        sd.document_encoding = null
                     } else if (stat.metadata.document_encoding) {
-                        self.document_encoding = stat.metadata.document_encoding
-                        self.document = result.toString(self.document_encoding)
+                        sd.document_encoding = stat.metadata.document_encoding
+                        sd.document = result.toString(sd.document_encoding)
                     } else {
-                        self.document_encoding = null
+                        sd.document_encoding = null
                     }
 
-                    sdone(null, self)
+                    sdone(null, sd)
                 })
             })
         })

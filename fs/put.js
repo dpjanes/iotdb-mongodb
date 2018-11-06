@@ -31,6 +31,8 @@ const logger = require("../logger")(__filename)
 /**
  */
 const put = _.promise((self, done) => {
+    const mongodb = require("..")
+
     logger.trace({
         method: put.method,
         path: self.path,
@@ -40,37 +42,35 @@ const put = _.promise((self, done) => {
         .validate(put)
         .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
-            const grid = self.mongodb.__grid
+            const grid = sd.mongodb.__grid
 
             const initd = {
-                filename: self.filename,
-                bucket: self.bucket || null,
+                filename: sd.filename,
                 metadata: {},
             }
 
-            if (self.document_media_type) {
-                initd.content_type = self.document_media_type
+            if (sd.document_media_type) {
+                initd.content_type = sd.document_media_type
             }
 
-            let document = self.document
+            let document = sd.document
             if (_.is.String(document)) {
-                initd.metadata.document_encoding = self.document_encoding || "utf8"
+                initd.metadata.document_encoding = sd.document_encoding || "utf8"
 
                 document = Buffer.from(document, initd.metadata.document_encoding)
-            } else if (self.document_encoding) {
-                initd.metadata.document_encoding = self.document_encoding 
+            } else if (sd.document_encoding) {
+                initd.metadata.document_encoding = sd.document_encoding 
             }
 
             grid.remove({
-                filename: self.filename,
-                bucket: self.bucket || null,
+                filename: sd.filename,
             }, () => {
                 grid.writeFile(initd, document, (error, result) => {
                     if (error) {
                         return sdone(error)
                     }
 
-                    sdone(null, self)
+                    sdone(null, sd)
                 })
             })
         })
@@ -93,8 +93,6 @@ put.accepts = {
 /**
  */
 const put_json = _.promise((self, done) => {
-    const mongodb = require("..")
-
     _.promise(self)
         .validate(put_json)
         .add({

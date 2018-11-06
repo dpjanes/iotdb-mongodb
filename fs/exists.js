@@ -43,11 +43,10 @@ const exists = _.promise((self, done) => {
         .validate(exists)
         .then(mongodb.fs.parse_path)
         .make((sd, sdone) => {
-            const grid = self.mongodb.__grid
+            const grid = sd.mongodb.__grid
 
             const initd = {
-                filename: self.filename,
-                bucket: self.bucket || null,
+                filename: sd.filename,
             }
 
             grid.findOne(initd, (error, stat) => {

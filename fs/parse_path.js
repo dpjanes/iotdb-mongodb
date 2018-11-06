@@ -42,7 +42,7 @@ const parse_path = _.promise(self => {
     assert.ok(_.is.String(self.path), `${parse_path.method}: self.path must be a String`);
 
     const urlp = url.parse(self.path)
-    assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "fs:"`);
+    assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "gridfs:"`);
 
     let scrubbed = "/" + (urlp.pathname || "").replace(/^\//, '')
     if (scrubbed.endsWith("/")) {
@@ -64,6 +64,7 @@ parse_path.required = {
  */
 exports.parse_path = parse_path
 
+/*
 _.promise({
     path: "gridfs:/hello/",
     path: "gridfs:/hello/bla.txt",
@@ -79,3 +80,4 @@ _.promise({
         delete error.self
         console.log(error)
     })
+*/
