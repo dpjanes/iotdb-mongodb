@@ -216,7 +216,7 @@ if (action("remove")) {
 if (action("list")) {
     _.promise({
         mongodbd: mongodbd,
-        bucket: bucket,
+        path: filename || "gridfs:/movies.json",
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)

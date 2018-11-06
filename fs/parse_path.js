@@ -45,9 +45,6 @@ const parse_path = _.promise(self => {
     assert.ok(urlp.protocol === "gridfs:", `${parse_path.method}: self.path: protocol must be "gridfs:"`);
 
     let scrubbed = "/" + (urlp.pathname || "").replace(/^\//, '')
-    if (scrubbed.endsWith("/")) {
-        scrubbed += "."
-    }
 
     self.bucket = urlp.hostname || "fs"
     self.dirname = path.dirname(scrubbed)

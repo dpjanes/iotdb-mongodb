@@ -30,6 +30,39 @@ const logger = require("../logger")(__filename)
 
 /**
  */
+const _list_folder = _.promise((self, done) => {
+    if (self.filename !== self.dirname) {
+        return done(null, self)
+    }
+    console.log("HERE: _list_folder", self.filename, self.dirname)
+
+    _.promise(self)
+        .end(done, self)
+})
+
+/**
+ */
+const _list_file = _.promise((self, done) => {
+    const mongodb = require("..")
+
+    if (self.filename === self.dirname) {
+        return done(null, self)
+    }
+    console.log("HERE: _list_file", self.filename, self.dirname)
+
+    _.promise(self)
+        .then(mongodb.fs.exists)
+        .make(sd => {
+
+            if (sd.exists) {
+                sd.paths.push(sd.path)
+            }
+        })
+        .end(done, self)
+})
+
+/**
+ */
 const list = _.promise((self, done) => {
     const mongodb = require("..")
 
@@ -40,8 +73,11 @@ const list = _.promise((self, done) => {
 
     _.promise(self)
         .validate(list)
+        .add("paths", [])
         .then(mongodb.fs.parse_path)
-        .end(done, self)
+        .then(_list_folder)
+        .then(_list_file)
+        .end(done, self, "paths")
 })
 
 list.method = "fs.list"
