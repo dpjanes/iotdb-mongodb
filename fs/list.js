@@ -31,13 +31,24 @@ const logger = require("../logger")(__filename)
 /**
  */
 const _list_folder = _.promise((self, done) => {
+    const mongodb = require("..")
+
     if (self.filename !== self.dirname) {
         return done(null, self)
     }
-    console.log("HERE: _list_folder", self.filename, self.dirname)
 
     _.promise(self)
-        .end(done, self)
+        .add({
+            table_name: `${self.bucket}.files`,
+            query: {
+                "metadata.dirname": self.dirname,
+            },
+            projection: [ "filename" ],
+        })
+        .then(mongodb.collection)
+        .then(mongodb.find)
+        .add("paths", sd => sd.jsons.map(json => json.filename))
+        .end(done, self, "paths")
 })
 
 /**
@@ -48,7 +59,6 @@ const _list_file = _.promise((self, done) => {
     if (self.filename === self.dirname) {
         return done(null, self)
     }
-    console.log("HERE: _list_file", self.filename, self.dirname)
 
     _.promise(self)
         .then(mongodb.fs.exists)
