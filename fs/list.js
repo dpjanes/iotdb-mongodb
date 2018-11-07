@@ -77,6 +77,11 @@ const list = _.promise((self, done) => {
         .add("paths", [])
         .then(mongodb.fs.parse_path)
         .conditional(sd => sd.filename === sd.folder, _list_folder, _list_file)
+        .make(sd => {
+            if (sd.filter) {
+                sd.paths = sd.paths.filter(path => sd.filter(path))
+            }
+        })
         .end(done, self, "paths")
 })
 
@@ -86,6 +91,7 @@ list.required = {
     mongodb: _.is.Object,
 }
 list.accepts = {
+    filter: _.is.Function,
 }
 
 /**
