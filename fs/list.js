@@ -33,10 +33,6 @@ const logger = require("../logger")(__filename)
 const _list_folder = _.promise((self, done) => {
     const mongodb = require("..")
 
-    if (self.filename !== self.dirname) {
-        return done(null, self)
-    }
-
     _.promise(self)
         .add({
             table_name: `${self.bucket}.files`,
@@ -55,10 +51,6 @@ const _list_folder = _.promise((self, done) => {
  */
 const _list_file = _.promise((self, done) => {
     const mongodb = require("..")
-
-    if (self.filename === self.dirname) {
-        return done(null, self)
-    }
 
     _.promise(self)
         .then(mongodb.fs.exists)
@@ -84,8 +76,7 @@ const list = _.promise((self, done) => {
         .validate(list)
         .add("paths", [])
         .then(mongodb.fs.parse_path)
-        .then(_list_folder)
-        .then(_list_file)
+        .conditional(sd => sd.filename === sd.dirname, _list_folder, _list_file)
         .end(done, self, "paths")
 })
 
