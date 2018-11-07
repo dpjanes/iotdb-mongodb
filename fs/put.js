@@ -47,7 +47,7 @@ const put = _.promise((self, done) => {
             const initd = {
                 filename: sd.filename,
                 metadata: {
-                    dirname: sd.dirname,
+                    folder: sd.folder,
                 },
             }
 

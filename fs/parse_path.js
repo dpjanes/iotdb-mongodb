@@ -47,7 +47,7 @@ const parse_path = _.promise(self => {
     let scrubbed = "/" + (urlp.pathname || "").replace(/^\//, '')
 
     self.bucket = urlp.hostname || "fs"
-    self.dirname = path.dirname(scrubbed)
+    self.folder = path.dirname(scrubbed)
     self.filename = scrubbed
 })
 
@@ -71,7 +71,7 @@ _.promise({
 })
     .then(parse_path)
     .make(sd => {
-        console.log(`${sd.path} => (${sd.bucket} ${sd.dirname} ${sd.filename})`)
+        console.log(`${sd.path} => (${sd.bucket} ${sd.folder} ${sd.filename})`)
     })
     .except(error => {
         delete error.self

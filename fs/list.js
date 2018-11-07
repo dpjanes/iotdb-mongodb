@@ -37,7 +37,7 @@ const _list_folder = _.promise((self, done) => {
         .add({
             table_name: `${self.bucket}.files`,
             query: {
-                "metadata.dirname": self.dirname,
+                "metadata.folder": self.folder,
             },
             projection: [ "filename" ],
         })
@@ -76,7 +76,7 @@ const list = _.promise((self, done) => {
         .validate(list)
         .add("paths", [])
         .then(mongodb.fs.parse_path)
-        .conditional(sd => sd.filename === sd.dirname, _list_folder, _list_file)
+        .conditional(sd => sd.filename === sd.folder, _list_folder, _list_file)
         .end(done, self, "paths")
 })
 
