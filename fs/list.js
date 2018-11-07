@@ -63,7 +63,6 @@ const _list_file = _.promise((self, done) => {
     _.promise(self)
         .then(mongodb.fs.exists)
         .make(sd => {
-
             if (sd.exists) {
                 sd.paths.push(sd.path)
             }
