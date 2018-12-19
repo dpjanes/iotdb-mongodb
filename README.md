@@ -2,12 +2,16 @@
 POP MongoDB interface
 
 ## TingoDB
-Note that this will also work with
+Note that this will SORT OF work with
 [TingoDB](http://www.tingodb.com/).
 
 * set `mongodbd.engine: "tingodb"`
 * set `mongodbd.path: "some-folder"`
 * make sure the `tingodb` module is installed
+
+Tingo seems to be a bit flaky and doesn't have
+compatibility with the 3 version of MongoDB,
+so this may disappear
 
 ## DynamoDB
 

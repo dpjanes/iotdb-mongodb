@@ -33,7 +33,7 @@ const util = require("../lib/util")
 
 /**
  */
-const _put = document => _.promise.make((self, done) => {
+const _put = document => _.promise((self, done) => {
     const method = "db.put";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -57,17 +57,21 @@ const _put = document => _.promise.make((self, done) => {
         json.document = document
     }
 
-    _.promise.make(self)
+    _.promise(self)
         .then(mongo.collection)
-        .then(_.promise.make(sd => {
-            sd.mongo_collection.findAndModify(query, sort, _.d.clone.shallow(self.json), { w: 1, upsert: true, }, (error, doc) => {
+        .make(sd => {
+            sd.mongo_collection.findOneAndReplace(query, json, {
+                sort: sort,
+                upsert: true,
+                returnOriginal: false,
+            }, (error, doc) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
 
                 done(null, self);
             })
-        }))
+        })
         .catch(done)
 })
 

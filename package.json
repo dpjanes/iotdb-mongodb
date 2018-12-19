@@ -11,19 +11,10 @@
         "iotdb-fs": "~1.0.33", 
         "iotdb-helpers": "~3.3.1", 
         "minimist": "~1.2.0", 
-        "mongodb": "~3.1.9"
+        "mongodb": "~3.1.10"
     }, 
     "description": "POP wrapper for MongoDB", 
     "devDependencies": {
-        "grunt": "~1.0.3", 
-        "grunt-contrib-jshint": "~1.1.0", 
-        "grunt-contrib-nodeunit": "~1.0.0", 
-        "grunt-contrib-uglify": "~3.4.0", 
-        "grunt-contrib-watch": "~1.1.0", 
-        "grunt-jsbeautifier": "~0.2.13", 
-        "jshint-stylish": "~2.2.1", 
-        "load-grunt-tasks": "~3.5.2", 
-        "request": "~2.88.0"
     }, 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
     "license": "Apache-2.0", 
@@ -41,5 +32,5 @@
         "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.1.20"
+    "version": "1.2.0"
 }

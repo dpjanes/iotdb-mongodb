@@ -34,7 +34,7 @@ const util = require("../lib/util")
  *  Find one and delete it. This isn't a real 
  *  DynamoDB function but we have it in our AWS code
  */
-const pop = _.promise.make((self, done) => {
+const pop = _.promise((self, done) => {
     const method = "db.pop";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -48,16 +48,10 @@ const pop = _.promise.make((self, done) => {
     const values = self.table_schema.keys.map(key => self.query[key] || null)
     const query = _.object(self.table_schema.keys, values)
 
-    _.promise.make(self)
+    _.promise(self)
         .then(mongo.collection)
-        .then(_.promise.make(sd => {
-            // sd.mongo_collection.findOneAndDelete(query, { w: 1, }, (error, result) => {
-            // sd.mongo_collection.findAndModify(query, {}, { w: 1 }, (error, result) => {
-            sd.mongo_collection.findAndModify(
-              query,
-              [],
-              { remove: true },
-              (error, result) => {
+        .make(sd => {
+            sd.mongo_collection.findOneAndDelete(query, {}, (error, result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
@@ -71,7 +65,7 @@ const pop = _.promise.make((self, done) => {
                 done(null, self);
             })
             return null;
-        }))
+        })
         .catch(done)
 })
 

@@ -38,7 +38,7 @@ const util = require("../lib/util")
  *  Replace an existing entry. If it does not exist,
  *  a NotFound error is thrown.
  */
-const replace = _.promise.make((self, done) => {
+const replace = _.promise((self, done) => {
     const method = "db.replace";
 
     // console.log("HERE:XXX", require("util").inspect(self.json, {showHidden: false, depth: null}))
@@ -61,9 +61,29 @@ const replace = _.promise.make((self, done) => {
 
     const json = _.d.clone.deep(self.json)
 
-    _.promise.make(self)
+    _.promise(self)
         .then(mongo.collection)
-        .then(_.promise.make(sd => {
+        .make(sd => {
+            sd.mongo_collection.findOneAndReplace(query, json, {
+                sort: sort,
+                upsert: false,
+                returnOriginal: true,
+            }, (error, result) => {
+                if (!result) {
+                    const nerror = new errors.NotFound()
+                    nerror.error = error
+                    
+                    return done(nerror)
+                } else if (result._id) {
+                } else if (!result.value) {
+                    return done(new errors.NotFound())
+                }
+
+                done(null, self);
+            })
+        })
+        /*
+        .then(_.promise(sd => {
             sd.mongo_collection.findAndModify(
               query, sort, json, { w: 1, upsert: false, }, 
               (error, result) => {
@@ -81,6 +101,7 @@ const replace = _.promise.make((self, done) => {
             })
             return null;
         }))
+        */
         .catch(done)
 })
 
