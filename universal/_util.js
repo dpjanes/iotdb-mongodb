@@ -5,7 +5,7 @@
  *  Consensas
  *  2019-01-07
  *
- *  THIS IS AN EXAMPLE
+ *  THIS IS AN EXAMPLE.
  */
 
 "use strict"
@@ -15,22 +15,22 @@ const _ = require("iotdb-helpers")
 /**
  *  The name of the module
  */
-exports.name = "APPLICATION.db"
+exports.name = "APPLICATION.db.ROW"
 
 /**
  *  The name of a single record
  */
-exports.one = "row"
+exports.one = "ROW"
 
 /**
  *  The name of multiple records
  */
-exports.one = "rows"
+exports.one = "ROWs"
 
 /**
  *  The name of the primary key in a record
  */
-exports.primary_id = "row_id"
+exports.primary_id = "ROW_id"
 
 /**
  *  This sets up the database
@@ -56,12 +56,36 @@ exports.setup = _.promise(self => {
     self.projection = null
 })
 
+exports.setup.method = "APPLICATION.db.ROW._util.setup"
+exports.setup.description = `Setup database for ROW`
+exports.setup.requires = {
+}
+exports.setup.accepts = {
+    ROW: exports.validate,
+}
+exports.setup.produces = {
+    ROW: exports.validate,
+}
+
 /**
  *  This cleans up one record
  */
 exports.scrub = _.promise(self => {
     _.promise.validate(self, exports.scrub)
+
+    self.ROW = _.d.clone(self.ROW)
 })
+
+exports.scrub.method = "APPLICATION.db.ROW._util.scrub"
+exports.scrub.description = `Clean up one ROW`
+exports.scrub.requires = {
+}
+exports.scrub.accepts = {
+    ROW: exports.validate,
+}
+exports.scrub.produces = {
+    ROW: exports.validate,
+}
 
 /**
  *  This creates a new record.
@@ -72,8 +96,24 @@ exports.scrub = _.promise(self => {
  */
 exports.create = _.promise(self => {
     _.promise.validate(self, exports.create)
+
+    self.ROW = _.d.clone(self.ROW)
+    self.ROW.ROW_id = _.id.uuid.v4()
 })
+
+exports.create.method = "APPLICATION.db.ROW._util.create"
+exports.create.description = `Finish creating one ROW`
+exports.create.requires = {
+}
+exports.create.accepts = {
+    ROW: exports.validate,
+}
+exports.create.produces = {
+    ROW: exports.validate,
+}
 
 /**
  */
-exports.validate = record => _.is.Dictionary;
+exports.validate = ROW => _.is.Dictionary;
+exports.validate.method = "APPLICATION.db.ROW._util.validate"
+exports.validate.description = "Test if ROW is valid"
