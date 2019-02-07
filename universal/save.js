@@ -15,36 +15,44 @@ const assert = require("assert")
 
 /**
  */
-const save = _.promise((self, done) => {
-    _.promise(self)
-        .validate(save)
+const save = _util => {
+    assert(_.is.String(_util.name))
+    assert(_.is.String(_util.one))
+    assert(_.is.String(_util.many))
+    assert(_.is.String(_util.primary_key))
+    assert(_.is.Function(_util.scrub))
+    assert(_.is.Function(_util.setup))
+    assert(_.is.Function(_util.validate))
 
-        .then(_util.setup_db)
-        .make(sd => {
-            sd.machine = _util.scrub(sd.machine, sd)
-            sd.json = sd.machine
-            sd.query = {
-                machine_id: self.machine_id,
-            }
-        })
-        .then(mongodb.db.replace)
+    const f = _.promise((self, done) => {
+        _.promise(self)
+            .validate(f)
 
-        .end(done, self)
-})
+            .then(_util.setup)
+            .then(_util.scrub)
+            .then(sd => {
+                sd.json = sd[_util.one]
+                sd.json.updated = _.timestamp.make()
+                sd.query = {
+                    [ _util.primary_key ]: sd[_util.one][_util.primary_key],
+                }
+            })
+            .then(mongodb.db.replace)
+            .then(_util.updated)
 
-save.method = "db.machine.save"
-save.requires = {
-    machine: {
-        machine_id: consensas.util.validate.machine_id,
-        name: _.is.String,
-    },
-}
-save.accepts = {
-    machine: {
-        ping: _.is.Timestamp,
-    },
-}
-save.produces = {
+            .done(done, self, _util.one)
+    })
+
+    f.method = `${_util.name}.save`
+    f.description = `Remove one ${_util.one}`
+    f.requires = {
+        [ _util.one ]: _util.validate,
+    }
+    f.accepts = {
+    }
+    f.produces = {
+        [ _util.one ]: _util.validate,
+    }
 }
 
 /**

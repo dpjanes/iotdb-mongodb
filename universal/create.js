@@ -27,7 +27,7 @@ const create = _util => {
 
     const f = _.promise((self, done) => {
         _.promise(self)
-            .validate(create)
+            .validate(f)
 
             .then(_util.setup)
 
@@ -52,9 +52,10 @@ const create = _util => {
                 sd[_util.one] = sd.json
                 sd[_util.primary_key] = sd.json || {}[_util.primary_key]
             })
+            .then(_util.updated)
 
             .done(done, self, _util.many, _util.one, _util.primary_key)
-    }
+    })
 
     f.method = `${_util.name}.create`
     f.description = `Create one record ${_util.one}`
@@ -67,7 +68,7 @@ const create = _util => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
-})
+}
 
 /**
  *  API

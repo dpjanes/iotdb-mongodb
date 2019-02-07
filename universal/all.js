@@ -24,7 +24,7 @@ const all = _util => {
 
     const f = _.promise((self, done) => {
         _.promise(self)
-            .validate(all)
+            .validate(f)
 
             .then(_util.setup)
             .then(mongodb.db.all)
@@ -37,7 +37,7 @@ const all = _util => {
             })
 
             .done(done, self, _util.many, "cursor")
-    }
+    })
 
     f.method = `${_util.name}.all`
     f.description = `Return all ${_util.many}`
@@ -50,7 +50,7 @@ const all = _util => {
         [ _util.many ]: _.is.Array,
         cursor: _.is.Dictionary,
     }
-})
+}
 
 
 /**

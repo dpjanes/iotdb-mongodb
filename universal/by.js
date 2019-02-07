@@ -15,7 +15,7 @@ const assert = require("assert")
 
 /**
  */
-const by = (_util, _descriptor) => {
+const by = (_util, _key, _index) => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
@@ -23,16 +23,18 @@ const by = (_util, _descriptor) => {
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
     assert(_.is.Function(_util.validate))
-    assert(_.is.String(_descriptor.key))
-    assert(_.is.String(_descriptor.index) || !_descriptor.index)
+    assert(_.is.String(_key))
+    assert(_.is.String(_index) || !_index)
 
     const f = _.promise((self, done) => {
         _.promise(self)
-            .validate(by)
+            .validate(f)
 
             .then(_util.setup)
-            .add("query", {
-                [ _descriptor.key ]: self[_descriptor.key ],
+            .then(sd => {
+                sd.query = {
+                    [ _key ]: sd[_key],
+                }
             })
             .then(mongodb.db.get)
             .make(sd => {
@@ -44,10 +46,10 @@ const by = (_util, _descriptor) => {
             })
 
             .done(done, self, _util.many, _util.one, _util.primary_key)
-    }
+    })
 
     f.method = `${_util.name}.by`
-    f.description = `Return one record ${_util.one} matching ${_descriptor.key}`
+    f.description = `Return one record ${_util.one} matching ${_key}`
     f.requires = {
     }
     f.accepts = {
@@ -57,7 +59,7 @@ const by = (_util, _descriptor) => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
-})
+}
 
 /**
  *  API

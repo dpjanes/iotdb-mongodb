@@ -88,6 +88,42 @@ exports.scrub.produces = {
 }
 
 /**
+ *  This is called after any operation which changes the record.
+ */
+exports.updated = _.promise(self => {
+    _.promise.validate(self, exports.updated)
+})
+
+exports.updated.method = "APPLICATION.db.ROW._util.updated"
+exports.updated.description = ``
+exports.updated.requires = {
+}
+exports.updated.accepts = {
+    ROW: exports.validate,
+}
+exports.updated.produces = {
+    ROW: exports.validate,
+}
+
+/**
+ *  This is called after any operation which removes the record
+ */
+exports.removed = _.promise(self => {
+    _.promise.validate(self, exports.removed)
+})
+
+exports.removed.method = "APPLICATION.db.ROW._util.removed"
+exports.removed.description = ``
+exports.removed.requires = {
+}
+exports.removed.accepts = {
+    ROW: exports.validate,
+}
+exports.removed.produces = {
+    ROW: exports.validate,
+}
+
+/**
  *  This creates a new record.
  *  There will always be a stub record,
  *  but you must set an ID.
