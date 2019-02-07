@@ -54,7 +54,7 @@ const create = _util => {
             })
             .then(_util.updated)
 
-            .done(done, self, _util.many, _util.one, _util.primary_key)
+            .end(done, self, _util.many, _util.one, _util.primary_key)
     })
 
     f.method = `${_util.name}.create`

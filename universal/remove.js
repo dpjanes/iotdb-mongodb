@@ -37,7 +37,7 @@ const remove = _util => {
             .then(mongodb.db.delete)
             .then(_util.removed)
 
-            .done(done, self)
+            .end(done, self)
     })
 
     f.method = `${_util.name}.remove`

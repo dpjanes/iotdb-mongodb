@@ -45,7 +45,7 @@ const by = (_util, _key, _index) => {
                 sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
             })
 
-            .done(done, self, _util.many, _util.one, _util.primary_key)
+            .end(done, self, _util.many, _util.one, _util.primary_key)
     })
 
     f.method = `${_util.name}.by`

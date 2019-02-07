@@ -36,7 +36,7 @@ const all = _util => {
                 output_filter: x => x,
             })
 
-            .done(done, self, _util.many, "cursor")
+            .end(done, self, _util.many, "cursor")
     })
 
     f.method = `${_util.name}.all`

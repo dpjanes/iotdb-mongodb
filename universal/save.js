@@ -40,7 +40,7 @@ const save = _util => {
             .then(mongodb.db.replace)
             .then(_util.updated)
 
-            .done(done, self, _util.one)
+            .end(done, self, _util.one)
     })
 
     f.method = `${_util.name}.save`

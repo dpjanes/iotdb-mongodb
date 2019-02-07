@@ -38,15 +38,13 @@ exports.primary_id = "ROW_id"
 exports.setup = _.promise(self => {
     _.promise.validate(self, exports.setup)
 
-    self.table_schema = {
-        "schema": { 
-            "name": exports.one,
-            "indexes": {},
-            "keys": [
-                exports.primary_id,
-            ]
-        } 
-    }
+    self.table_schema = { 
+        "name": exports.one,
+        "indexes": {},
+        "keys": [
+            exports.primary_id,
+        ]
+    } 
 
     self.table_name = self.table_schema.name
 

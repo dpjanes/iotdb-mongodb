@@ -49,7 +49,7 @@ const upsert = (_util, _key, _index) => {
             })
             .conditional(sd => sd._save, mongodb.universal.save(_util), mongodb.universal.create(_util))
 
-            .done(done, self)
+            .end(done, self)
     })
 
     f.method = `${_util.name}.upsert`
