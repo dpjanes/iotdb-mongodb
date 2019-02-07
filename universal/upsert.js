@@ -9,7 +9,29 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("iotdb-mongodb")
+const mongodb = require("..")
+
+const assert = require("assert")
+
+/**
+ */
+const save = _.promise((self, done) => {
+    _.promise(self)
+        .validate(save)
+
+        .then(_util.setup_db)
+        .make(sd => {
+            sd.machine = _util.scrub(sd.machine, sd)
+            sd.json = sd.machine
+            sd.query = {
+                machine_id: self.machine_id,
+            }
+        })
+        .then(mongodb.db.replace)
+
+        .end(done, self)
+})
+
 
 const logger = require("../../logger")(__filename)
 const _util = require("./_util")

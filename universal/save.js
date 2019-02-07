@@ -9,10 +9,9 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("iotdb-mongodb")
+const mongodb = require("..")
 
-const logger = require("../../logger")(__filename)
-const _util = require("./_util")
+const assert = require("assert")
 
 /**
  */
