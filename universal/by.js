@@ -59,6 +59,8 @@ const by = (_util, _key, _index) => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
+
+    return f
 }
 
 /**

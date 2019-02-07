@@ -25,7 +25,7 @@ exports.one = "ROW"
 /**
  *  The name of multiple records
  */
-exports.one = "ROWs"
+exports.many = "ROWs"
 
 /**
  *  The name of the primary key in a record

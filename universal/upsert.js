@@ -65,6 +65,8 @@ const upsert = (_util, _key, _index) => {
     }
     f.produces = {
     }
+
+    return f
 }
 
 /**

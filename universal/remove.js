@@ -49,6 +49,8 @@ const remove = _util => {
     }
     f.produces = {
     }
+
+    return f
 }
 
 /**

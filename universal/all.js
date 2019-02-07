@@ -50,6 +50,8 @@ const all = _util => {
         [ _util.many ]: _.is.Array,
         cursor: _.is.Dictionary,
     }
+
+    return f
 }
 
 

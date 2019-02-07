@@ -53,6 +53,8 @@ const save = _util => {
     f.produces = {
         [ _util.one ]: _util.validate,
     }
+
+    return f
 }
 
 /**
