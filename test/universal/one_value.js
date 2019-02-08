@@ -3,7 +3,7 @@
  *
  *  David Janes
  *  IOTDB
- *  2017-01-29
+ *  2019-02-08
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -20,11 +20,11 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
-const _ = require("iotdb-helpers");
+const _ = require("iotdb-helpers")
 
-const assert = require("assert");
+const assert = require("assert")
 
 const mongodb = require("../..")
 const _util = require("./../_util")
