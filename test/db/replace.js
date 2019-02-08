@@ -33,32 +33,31 @@ describe("dynamodb/replace", function() {
     let self = {}
 
     before(function(done) {
-        _.promise.make(self)
+        _.promise(self)
             .then(_util.initialize)
             .then(_util.load)
-            .then(_.promise.make(sd => {
+            .make(sd => {
                 self = sd;
-            }))
-            .then(_.promise.done(done))
-            .catch(done)
+            })
+            .end(done)
     })
 
     describe("bad", function() {
         it("does not exists - expect 404", function(done) {
-            _.promise.make(self)
-                .then(_.promise.add("json", {
+            _.promise(self)
+                .add("json", {
                     "year": 2014,
                     "title": "Rush XXX",
-                }))
+                })
                 .then(mongodb.dynamodb.replace)
                 .then(_util.auto_fail(done))
                 .catch(_util.ok_error(done, 404))
         })
         it("missing keys - expect 403", function(done) {
-            _.promise.make(self)
-                .then(_.promise.add("json", {
+            _.promise(self)
+                .add("json", {
                     "year": 2014,
-                }))
+                })
                 .then(mongodb.dynamodb.replace)
                 .then(_util.auto_fail(done))
                 .catch(_util.ok_error(done, 403))
@@ -66,37 +65,36 @@ describe("dynamodb/replace", function() {
     })
     describe("good", function() {
         it("exists", function(done) {
-            _.promise.make(self)
-                .then(_.promise.add("query", {
+            _.promise(self)
+                .add("query", {
                     "year": 2014,
                     "title": "Rush",
-                }))
+                })
                 .then(mongodb.dynamodb.get)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     assert.ok(sd.json)
-                }))
+                })
 
-                .then(_.promise.add("json", {
+                .add("json", {
                     "year": 2014,
                     "title": "Rush",
                     "description": "Never going to give you up",
-                }))
+                })
                 .then(mongodb.dynamodb.replace)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     assert.ok(sd.json)
-                }))
+                })
 
-                .then(_.promise.add("query", {
+                .add("query", {
                     "year": 2014,
                     "title": "Rush",
-                }))
+                })
                 .then(mongodb.dynamodb.get)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     assert.deepEqual(sd.json.description, "Never going to give you up")
-                }))
+                })
 
-                .then(_.promise.done(done))
-                .catch(done)
+                .end(done)
         })
     })
 })

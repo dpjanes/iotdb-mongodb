@@ -33,41 +33,38 @@ describe("dynamodb/query", function() {
     let self = {}
 
     before(function(done) {
-        _.promise.make(self)
+        _.promise(self)
             .then(_util.initialize)
             .then(_util.load)
-            .then(_.promise.make(sd => {
+            .make(sd => {
                 self = sd;
-            }))
-            .then(_.promise.done(done))
-            .catch(done)
+            })
+            .end(done)
     })
 
     /**
      *  There is exactly one record with "nullfield": null
      */
     it("= null", function(done) {
-        _.promise.make(self)
-            .then(_.promise.add("query", {
+        _.promise(self)
+            .add("query", {
                 "nullfield": [ "=", null ],
-            }))
+            })
             .then(mongodb.dynamodb.all)
-            .then(_.promise.make(sd => {
+            .make(sd => {
                 assert.deepEqual(sd.jsons.length, 1);
-            }))
-            .then(_.promise.done(done))
-            .catch(done)
+            })
+            .end(done)
     })
     it("!= null", function(done) {
-        _.promise.make(self)
-            .then(_.promise.add("query", {
+        _.promise(self)
+            .add("query", {
                 "nullfield": [ "!=", null ],
-            }))
+            })
             .then(mongodb.dynamodb.all)
-            .then(_.promise.make(sd => {
+            .make(sd => {
                 assert.deepEqual(sd.jsons.length, 0);
-            }))
-            .then(_.promise.done(done))
-            .catch(done)
+            })
+            .end(done)
     })
 })

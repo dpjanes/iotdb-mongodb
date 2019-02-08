@@ -33,10 +33,10 @@ describe("dynamodb/all", function() {
     let self = {}
 
     before(function(done) {
-        _.promise.make(self)
+        _.promise(self)
             .then(_util.initialize)
             .then(_util.load)
-            .then(_.promise.make(sd => {
+            .then(_.promise(sd => {
                 self = sd;
             }))
             .then(_.promise.done(done))
@@ -45,9 +45,9 @@ describe("dynamodb/all", function() {
 
     describe("good", function() {
         it("default index (+title, +year)", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), true)
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "year"), false)
@@ -56,10 +56,10 @@ describe("dynamodb/all", function() {
                 .catch(done)
         })
         it("index (+year, +title)", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(_.promise.add("index_name", "year-title-index"))
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), false)
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "year"), true)
@@ -68,10 +68,10 @@ describe("dynamodb/all", function() {
                 .catch(done)
         })
         it("index (-year, +title)", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(_.promise.add("index_name", "-year-title-index"))
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "year"), false)
                 }))
@@ -79,10 +79,10 @@ describe("dynamodb/all", function() {
                 .catch(done)
         })
         it("default index, query limit", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(_.promise.add("query_limit", 10))
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 10);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), true)
                 }))
@@ -90,22 +90,22 @@ describe("dynamodb/all", function() {
                 .catch(done)
         })
         it("default index, pager past end + query", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(_.promise.add("pager", 100))
                 .then(_.promise.add("query_limit", 10))
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 0);
                 }))
                 .then(_.promise.done(done))
                 .catch(done)
         })
         it("default index, pager near + query", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(_.promise.add("pager", 80))
                 .then(_.promise.add("query_limit", 10))
                 .then(mongodb.dynamodb.all)
-                .then(_.promise.make(sd => {
+                .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 8);
                 }))
                 .then(_.promise.done(done))

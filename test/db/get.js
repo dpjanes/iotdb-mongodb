@@ -33,44 +33,41 @@ describe("dynamodb/get", function() {
     let self = {}
 
     before(function(done) {
-        _.promise.make(self)
+        _.promise(self)
             .then(_util.initialize)
             .then(_util.load)
-            .then(_.promise.make(sd => {
+            .make(sd => {
                 self = sd;
-            }))
-            .then(_.promise.done(done))
-            .catch(done)
+            })
+            .end(done)
     })
 
     describe("good", function() {
         it("exists", function(done) {
-            _.promise.make(self)
-                .then(_.promise.add("query", {
+            _.promise(self)
+                .add("query", {
                     "year": 2014,
                     "title": "Rush",
-                }))
+                })
                 .then(mongodb.dynamodb.get)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     assert.ok(sd.json)
                     assert.deepEqual(sd.json.year, 2014)
                     assert.deepEqual(sd.json.title, "Rush")
-                }))
-                .then(_.promise.done(done))
-                .catch(done)
+                })
+                .end(done)
         })
         it("does not exists", function(done) {
-            _.promise.make(self)
-                .then(_.promise.add("query", {
+            _.promise(self)
+                .add("query", {
                     "year": 2014,
                     "title": "Rush XXX",
-                }))
+                })
                 .then(mongodb.dynamodb.get)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     assert.deepEqual(sd.json, null)
-                }))
-                .then(_.promise.done(done))
-                .catch(done)
+                })
+                .end(done)
         })
     })
 })

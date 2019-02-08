@@ -34,14 +34,13 @@ describe("dynamodb/swapout", function() {
 
     describe("good", function() {
         it("exists", function(done) {
-            _.promise.make(self)
+            _.promise(self)
                 .then(mongodb.dynamodb.swapout)
-                .then(_.promise.make(sd => {
+                .make(sd => {
                     const aws = require("iotdb-awslib")
                     assert.strictEqual(aws.dynamodb, mongodb.dynamodb)
-                }))
-                .then(_.promise.done(done))
-                .catch(done)
+                })
+                .end(done)
         })
     })
 })
