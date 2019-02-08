@@ -152,6 +152,8 @@ exports.create = _.promise(self => {
 
     self.ROW = _.d.clone(self.ROW)
     self.ROW.ROW_id = _.id.uuid.v4()
+    self.ROW.created = self.ROW.created || _.timestamp.make()
+    self.ROW.updated = self.ROW.updated || self.ROW.created
 })
 
 exports.create.method = "APPLICATION.db.ROW._util.create"

@@ -45,16 +45,15 @@ const create = _util => {
             .then(_util.setup)
 
             .make(sd => {
-                const json = _.d.clone(self[_util.one] || {})
-                json.created = json.created || _.timestamp.make()
-                json.updated = json.updated || json.created
-
-                self[_util].one = json
+                self[_util.one] = _.d.clone(self[_util.one] || {})
             })
             .then(_util.create)
             .make(sd => {
                 assert.ok(self[_util.one])
-                assert.ok(self[_util.one][_util.primary_key])
+
+                self.table_schema.keys.forEach(key => {
+                    assert.ok(!_.is.Undefined(self[_util.one][key]))
+                })
             })
             .then(_util.scrub)
 
@@ -81,6 +80,16 @@ const create = _util => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
+
+    /**
+     *  Parameterized
+     */
+    f.p = value => _.promise((self, done) => {
+        _.promise(self)
+            .add(_util.one, value)
+            .then(f)
+            .end(done, self, _util.one, _util.primary_key)
+    })
 
     return f
 }

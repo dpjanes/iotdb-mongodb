@@ -31,6 +31,7 @@ const _descriptor = require("./_descriptor")
  *  Simulate how we like to do this at Consensas
  */
 const movie = {
+    create: mongodb.universal.create(_descriptor),
     by: {
         query: mongodb.universal.one_query(_descriptor),
         title: mongodb.universal.one_value(_descriptor, "title"),
