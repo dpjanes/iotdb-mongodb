@@ -46,10 +46,8 @@ const movie = {
 movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
 movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
 
-/*
-module.exports.movie.list.title.year_up = mongodb.universal.list_value(_descriptor, "title", "year-title-index")
-module.exports.movie.list.title.year_down = mongodb.universal.list_value(_descriptor, "title", "-year-title-index")
-*/
+movie.list.year.title_up = mongodb.universal.list_value(_descriptor, "year", "year-title-index")
+movie.list.year.title_down = mongodb.universal.list_value(_descriptor, "year", "year--title-index")
 
 module.exports = {
     movie: movie,

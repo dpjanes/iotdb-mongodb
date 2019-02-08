@@ -60,7 +60,8 @@ exports.setup = _.promise(self => {
         "name": "movies", 
         "indexes": {
             "year-title-index": [ "year", "title" ],
-            "-year-title-index": [ "-year", "title" ]
+            "-year-title-index": [ "-year", "title" ],
+            "year--title-index": [ "year", "-title" ],
         },
         "keys": [ "title", "year" ],
     }

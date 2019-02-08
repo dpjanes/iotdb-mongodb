@@ -53,7 +53,7 @@ const list_value = (_util, _key, _index) => {
                 }
             })
 
-            .then(mongodb.db.list)
+            .then(mongodb.db.all)
             .each({
                 method: _util.scrub,
                 inputs: `jsons:${_util.one}`,
@@ -62,6 +62,9 @@ const list_value = (_util, _key, _index) => {
                 output_filter: x => x,
             })
 
+            .except(x => {
+                console.log(x)
+            })
             .end(done, self, _util.many, "cursor")
     })
 
@@ -86,7 +89,7 @@ const list_value = (_util, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _util.many, _util.primary_key)
     })
 
     return f

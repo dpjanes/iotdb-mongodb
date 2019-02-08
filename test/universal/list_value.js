@@ -45,67 +45,55 @@ describe("universal/list.year", function() {
     })
 
     describe("good", function() {
-        it("default index (+title, +year)", function(done) {
+        it("year", function(done) {
             _.promise(self)
-                .add("year", 1990)
+                .add("year", 2013)
                 .then(db.movie.list.year)
                 .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
+                    assert.deepEqual(sd.movies.length, 54);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
                 .end(done)
         })
-        /*
-        it("index (+year, +title)", function(done) {
+        it("year - title backwards", function(done) {
             _.promise(self)
-                .then(db.movie.list.year.year_up)
+                .add("year", 2013)
+                .then(db.movie.list.year.title_down)
                 .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
+                    assert.deepEqual(sd.movies.length, 54);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
                 .end(done)
         })
-        it("index (-year, +title)", function(done) {
+        it("year - title backwards, parameterized", function(done) {
             _.promise(self)
-                .then(db.movie.list.year.year_down)
+                .then(db.movie.list.year.title_down.p(2013))
                 .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
+                    // console.log(sd.movies.map(m => m.title))
+                    assert.deepEqual(sd.movies.length, 54);
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
+                    assert.deepEqual(sd.movies[0].title, "jOBS")
+
                 })
                 .end(done)
         })
-        it("default index, query limit", function(done) {
+        it("year - title backwards, parameterized, pager, query", function(done) {
             _.promise(self)
                 .add("mongodb$limit", 10)
-                .then(db.movie.list.year)
+                .add("mongodb$start", 15)
+                .then(db.movie.list.year.title_down.p(2013))
                 .make(sd => {
+                    // console.log(sd.movies.map(m => m.title))
                     assert.deepEqual(sd.movies.length, 10);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
+                    assert.deepEqual(sd.movies[0].title, "The Butler")
+
                 })
                 .end(done)
         })
-        it("default index, pager past end + query", function(done) {
-            _.promise(self)
-                .add("mongodb$page", 10)
-                .add("mongodb$start", 100)
-                .then(db.movie.list.year)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 0);
-                })
-                .end(done)
-        })
-        it("default index, pager near + query", function(done) {
-            _.promise(self)
-                .add("mongodb$page", 10)
-                .add("mongodb$start", 80)
-                .then(db.movie.list.year)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 8);
-                })
-                .end(done)
-        })
-        */
     })
 })

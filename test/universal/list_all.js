@@ -86,7 +86,7 @@ describe("universal/list_all", function() {
         })
         it("default index, pager past end + query", function(done) {
             _.promise(self)
-                .add("mongodb$page", 10)
+                .add("mongodb$limit", 10)
                 .add("mongodb$start", 100)
                 .then(db.movie.list.all)
                 .make(sd => {
@@ -96,7 +96,7 @@ describe("universal/list_all", function() {
         })
         it("default index, pager near + query", function(done) {
             _.promise(self)
-                .add("mongodb$page", 10)
+                .add("mongodb$limit", 10)
                 .add("mongodb$start", 80)
                 .then(db.movie.list.all)
                 .make(sd => {
