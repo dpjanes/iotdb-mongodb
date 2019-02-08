@@ -30,6 +30,7 @@ module.exports = Object.assign(
     require("./list_value"),
     require("./one_value"),
     require("./one_query"),
+    require("./delete"),
     require("./remove"),
     require("./save"),
     require("./upsert"),

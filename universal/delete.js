@@ -1,5 +1,5 @@
 /*
- *  universal/save.js
+ *  universal/delete.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert")
 
 /**
  */
-const save = _util => {
+const delete_ = _util => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
@@ -42,9 +42,7 @@ const save = _util => {
             .validate(f)
 
             .then(_util.setup)
-            .then(_util.scrub)
             .make(sd => {
-                sd.json = sd[_util.one]
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {
                     sd.query[key] = sd[_util.one][key]
@@ -52,22 +50,21 @@ const save = _util => {
                 })
             })
 
-            .conditional(_util.update, _util.update)
-            .then(mongodb.db.replace)
-            .conditional(_util.updated, _util.updated)
+            .conditional(_util.delete, _util.delete)
+            .then(mongodb.db.delete)
+            .conditional(_util.deleted, _util.deleted)
 
-            .end(done, self, _util.one)
+            .end(done, self)
     })
 
-    f.method = `${_util.name}.save`
-    f.description = `Save a ${_util.one}`
+    f.method = `${_util.name}.delete`
+    f.description = `Remove one ${_util.one}`
     f.requires = {
         [ _util.one ]: _util.validate,
     }
     f.accepts = {
     }
     f.produces = {
-        [ _util.one ]: _util.validate,
     }
 
     return f
@@ -76,4 +73,4 @@ const save = _util => {
 /**
  *  API
  */
-exports.save = save
+exports.delete = delete_
