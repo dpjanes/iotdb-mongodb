@@ -62,9 +62,6 @@ const list_value = (_util, _key, _index) => {
                 output_filter: x => x,
             })
 
-            .except(x => {
-                console.log(x)
-            })
             .end(done, self, _util.many, "cursor")
     })
 
