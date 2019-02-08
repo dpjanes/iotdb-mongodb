@@ -1,9 +1,9 @@
 /*
- *  universal/by.js
+ *  universal/one_query.js
  *
  *  David Janes
  *  IOTDB
- *  2019-01-07
+ *  2019-01-08
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -29,26 +29,20 @@ const assert = require("assert")
 
 /**
  */
-const by = (_util, _key, _index) => {
+const one_query = _util => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
     assert(_.is.Function(_util.validate))
-    assert(_.is.String(_key))
-    assert(_.is.String(_index) || !_index)
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
             .then(_util.setup)
-            .make(sd => {
-                sd.query = {
-                    [ _key ]: sd[_key],
-                }
-            })
+            .add("query", self.query)
             .then(mongodb.db.get)
             .make(sd => {
                 sd[_util.one] = sd.json
@@ -60,12 +54,13 @@ const by = (_util, _key, _index) => {
                 }
             })
 
-            .end(done, self, _util.many, _util.one, _util.primary_key)
+            .end(done, self, _util.one, _util.primary_key)
     })
 
-    f.method = `${_util.name}.by`
-    f.description = `Return one record ${_util.one} matching ${_key}`
+    f.method = `${_util.name}.one_query`
+    f.description = `Return one record ${_util.one} matching query`
     f.requires = {
+        query: _.is.Dictionary,
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
@@ -78,9 +73,9 @@ const by = (_util, _key, _index) => {
     /**
      *  Parameterized
      */
-    f.p = value => _.promise((self, done) => {
+    f.p = query => _.promise((self, done) => {
         _.promise(self)
-            .add(_key, value)
+            .add("query", query)
             .then(f)
             .end(done, self, _util.one, _util.primary_key)
     })
@@ -91,5 +86,4 @@ const by = (_util, _key, _index) => {
 /**
  *  API
  */
-exports.by = by
-
+exports.one_query = one_query

@@ -44,11 +44,11 @@ describe("universal", function() {
             .end(done)
     })
 
-    describe("all", function() {
+    describe("list/all", function() {
         describe("good", function() {
             it("default index (+title, +year)", function(done) {
                 _.promise(self)
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 88);
                         assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
@@ -60,7 +60,7 @@ describe("universal", function() {
                 _.promise(self)
                     // .then(db.query.index("year-title-index"))
                     .add("mongodb$index", "year-title-index")
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 88);
                         assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
@@ -71,7 +71,7 @@ describe("universal", function() {
             it("index (-year, +title)", function(done) {
                 _.promise(self)
                     .add("mongodb$index", "-year-title-index")
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 88);
                         assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
@@ -81,7 +81,7 @@ describe("universal", function() {
             it("default index, query limit", function(done) {
                 _.promise(self)
                     .add("mongodb$limit", 10)
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 10);
                         assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
@@ -92,7 +92,7 @@ describe("universal", function() {
                 _.promise(self)
                     .add("mongodb$page", 10)
                     .add("mongodb$start", 100)
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 0);
                     })
@@ -102,7 +102,7 @@ describe("universal", function() {
                 _.promise(self)
                     .add("mongodb$page", 10)
                     .add("mongodb$start", 80)
-                    .then(db.movie.all)
+                    .then(db.movie.list.all)
                     .make(sd => {
                         assert.deepEqual(sd.movies.length, 8);
                     })

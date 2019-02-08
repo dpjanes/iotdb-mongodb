@@ -32,11 +32,15 @@ const _descriptor = require("./_descriptor")
  */
 module.exports = {
     movie: {
-        all: mongodb.universal.all(_descriptor),
         by: {
-            title: mongodb.universal.by(_descriptor, "title"),
-            query: mongodb.universal.by_query(_descriptor),
-        }
+            title: mongodb.universal.one_value(_descriptor, "title"),
+            query: mongodb.universal.one_query(_descriptor),
+        },
+        list: {
+            all: mongodb.universal.list_all(_descriptor),
+            title: mongodb.universal.list_value(_descriptor, "title"),
+            query: mongodb.universal.list_query(_descriptor),
+        },
     },
 }
 

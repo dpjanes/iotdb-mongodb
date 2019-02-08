@@ -1,9 +1,9 @@
 /*
- *  universal/by_query.js
+ *  universal/list_all.js
  *
  *  David Janes
  *  IOTDB
- *  2019-01-08
+ *  2019-01-07
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -29,61 +29,51 @@ const assert = require("assert")
 
 /**
  */
-const by_query = _util => {
+const list_all = _util => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
             .then(_util.setup)
-            .add("query", self.query)
-            .then(mongodb.db.get)
-            .make(sd => {
-                sd[_util.one] = sd.json
-            })
-            .then(_util.scrub)
-            .make(sd => {
-                if (_util.primary_key) {
-                    sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
-                }
+            .conditional(self.mongodb$index, _.promise.add("index_name", self.mongodb$index))
+            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
+            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
+
+            .then(mongodb.db.all)
+            .each({
+                method: _util.scrub,
+                inputs: `jsons:${_util.one}`,
+                outputs: _util.many,
+                output_selector: sd => sd[_util.one],
+                output_filter: x => x,
             })
 
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _util.many, "cursor")
     })
 
-    f.method = `${_util.name}.by_query`
-    f.description = `Return one record ${_util.one} matching query`
+    f.method = `${_util.name}.list_all`
+    f.description = `Return list_all ${_util.many}`
     f.requires = {
-        query: _.is.Dictionary,
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _util.one ]: [ _util.validate, _.is.Null ],
-        [ _util.primary_key ]: [ _util.validate, _.is.Null ],
+        [ _util.many ]: _.is.Array,
+        cursor: _.is.Dictionary,
     }
-
-    /**
-     *  Parameterized
-     */
-    f.p = query => _.promise((self, done) => {
-        _.promise(self)
-            .add("query", query)
-            .then(f)
-            .end(done, self, _util.one, _util.primary_key)
-    })
 
     return f
 }
 
+
 /**
  *  API
  */
-exports.by_query = by_query
+exports.list_all = list_all

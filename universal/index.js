@@ -24,10 +24,12 @@
 
 module.exports = Object.assign(
     {},
-    require("./all"),
     require("./create"),
-    require("./by"),
-    require("./by_query"),
+    require("./list_all"),
+    require("./list_query"),
+    require("./list_value"),
+    require("./one_value"),
+    require("./one_query"),
     require("./remove"),
     require("./save"),
     require("./upsert"),

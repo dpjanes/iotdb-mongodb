@@ -1,5 +1,5 @@
 /*
- *  universal/all.js
+ *  universal/one_value.js
  *
  *  David Janes
  *  IOTDB
@@ -29,51 +29,67 @@ const assert = require("assert")
 
 /**
  */
-const all = _util => {
+const one_value = (_util, _key, _index) => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
+    assert(_.is.Function(_util.validate))
+    assert(_.is.String(_key))
+    assert(_.is.String(_index) || !_index)
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
             .then(_util.setup)
-            .conditional(self.mongodb$index, _.promise.add("index_name", self.mongodb$index))
-            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
-            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
-
-            .then(mongodb.db.all)
-            .each({
-                method: _util.scrub,
-                inputs: `jsons:${_util.one}`,
-                outputs: _util.many,
-                output_selector: sd => sd[_util.one],
-                output_filter: x => x,
+            .make(sd => {
+                sd.query = {
+                    [ _key ]: sd[_key],
+                }
+            })
+            .then(mongodb.db.get)
+            .make(sd => {
+                sd[_util.one] = sd.json
+            })
+            .then(_util.scrub)
+            .make(sd => {
+                if (_util.primary_key) {
+                    sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
+                }
             })
 
-            .end(done, self, _util.many, "cursor")
+            .end(done, self, _util.many, _util.one, _util.primary_key)
     })
 
-    f.method = `${_util.name}.all`
-    f.description = `Return all ${_util.many}`
+    f.method = `${_util.name}.one_value`
+    f.description = `Return one record ${_util.one} matching ${_key}`
     f.requires = {
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _util.many ]: _.is.Array,
-        cursor: _.is.Dictionary,
+        [ _util.one ]: [ _util.validate, _.is.Null ],
+        [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
+
+    /**
+     *  Parameterized
+     */
+    f.p = value => _.promise((self, done) => {
+        _.promise(self)
+            .add(_key, value)
+            .then(f)
+            .end(done, self, _util.one, _util.primary_key)
+    })
 
     return f
 }
 
-
 /**
  *  API
  */
-exports.all = all
+exports.one_value = one_value
+
