@@ -27,6 +27,7 @@ module.exports = Object.assign(
     require("./all"),
     require("./create"),
     require("./by"),
+    require("./by_query"),
     require("./remove"),
     require("./save"),
     require("./upsert"),

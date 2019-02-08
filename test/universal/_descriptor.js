@@ -90,6 +90,11 @@ exports.setup.produces = {
 exports.scrub = _.promise(self => {
     _.promise.validate(self, exports.scrub)
 
+    if (!self.movie) {
+        self.movie = null
+        return
+    }
+
     self.movie = _.d.clone(self.movie)
 })
 

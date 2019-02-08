@@ -85,6 +85,11 @@ exports.setup.produces = {
 exports.scrub = _.promise(self => {
     _.promise.validate(self, exports.scrub)
 
+    if (!self.ROW) {
+        self.ROW = null
+        return
+    }
+
     self.ROW = _.d.clone(self.ROW)
 })
 
