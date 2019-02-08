@@ -27,6 +27,10 @@ const all = _util => {
             .validate(f)
 
             .then(_util.setup)
+            .conditional(self.mongodb$index, _.promise.add("index_name", self.mongodb$index))
+            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
+            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
+
             .then(mongodb.db.all)
             .each({
                 method: _util.scrub,

@@ -71,6 +71,7 @@ const load = _.promise.make((self, done) => {
     _.promise.make(self)
         .then(_.promise.add({
             movies: require("./data/movies.json").map(movie => {
+                movie.movie_id = `urn:movie:${movie.year}:${_.id.slugify(movie.title)}`
                 movie.release_date = movie.info.release_date || null;
                 movie.rating = movie.info.rating || null;
                 movie.rank = movie.info.rank || null;
