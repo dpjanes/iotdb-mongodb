@@ -33,7 +33,6 @@ const by_query = _util => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
-    // assert(_.is.String(_util.primary_key))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
     assert(_.is.Function(_util.validate))
@@ -55,7 +54,7 @@ const by_query = _util => {
                 }
             })
 
-            .end(done, self, _util.one) // , _util.primary_key || null)
+            .end(done, self, _util.one, _util.primary_key)
     })
 
     f.method = `${_util.name}.by_query`
@@ -70,6 +69,16 @@ const by_query = _util => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
+
+    /**
+     *  Parameterized
+     */
+    f.p = query => _.promise((self, done) => {
+        _.promise(self)
+            .add("query", query)
+            .then(f)
+            .end(done, self, _util.one, _util.primary_key)
+    })
 
     return f
 }

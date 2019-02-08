@@ -32,20 +32,20 @@ const _util = require("./../_util")
 const db = require("./movie")
 
 describe("universal", function() {
+    let self = {}
+
+    before(function(done) {
+        _.promise(self)
+            .then(_util.initialize)
+            .then(_util.load)
+            .make(sd => {
+                self = sd;
+            })
+            .end(done)
+    })
+
     describe("by", function() {
         describe("token", function() {
-            let self = {}
-
-            before(function(done) {
-                _.promise(self)
-                    .then(_util.initialize)
-                    .then(_util.load)
-                    .make(sd => {
-                        self = sd;
-                    })
-                    .end(done)
-            })
-
             describe("good", function() {
                 it("exists", function(done) {
                     _.promise(self)
@@ -54,6 +54,19 @@ describe("universal", function() {
                             "title": "Rush",
                         })
                         .then(db.movie.by.query)
+                        .make(sd => {
+                            assert.ok(sd.movie)
+                            assert.deepEqual(sd.movie.year, 2014)
+                            assert.deepEqual(sd.movie.title, "Rush")
+                        })
+                        .end(done)
+                })
+                it("parameterized", function(done) {
+                    _.promise(self)
+                        .then(db.movie.by.query.p({
+                            "year": 2014,
+                            "title": "Rush",
+                        }))
                         .make(sd => {
                             assert.ok(sd.movie)
                             assert.deepEqual(sd.movie.year, 2014)

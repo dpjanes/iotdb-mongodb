@@ -31,7 +31,7 @@ const _util = require("./../_util")
 
 const db = require("./movie")
 
-describe("dynamodb/all", function() {
+describe("universal", function() {
     let self = {}
 
     before(function(done) {
@@ -44,68 +44,70 @@ describe("dynamodb/all", function() {
             .end(done)
     })
 
-    describe("good", function() {
-        it("default index (+title, +year)", function(done) {
-            _.promise(self)
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
-                })
-                .end(done)
-        })
-        it("index (+year, +title)", function(done) {
-            _.promise(self)
-                // .then(db.query.index("year-title-index"))
-                .add("mongodb$index", "year-title-index")
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
-                })
-                .end(done)
-        })
-        it("index (-year, +title)", function(done) {
-            _.promise(self)
-                .add("mongodb$index", "-year-title-index")
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 88);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
-                })
-                .end(done)
-        })
-        it("default index, query limit", function(done) {
-            _.promise(self)
-                .add("mongodb$limit", 10)
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 10);
-                    assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
-                })
-                .end(done)
-        })
-        it("default index, pager past end + query", function(done) {
-            _.promise(self)
-                .add("mongodb$page", 10)
-                .add("mongodb$start", 100)
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 0);
-                })
-                .end(done)
-        })
-        it("default index, pager near + query", function(done) {
-            _.promise(self)
-                .add("mongodb$page", 10)
-                .add("mongodb$start", 80)
-                .then(db.movie.all)
-                .make(sd => {
-                    assert.deepEqual(sd.movies.length, 8);
-                })
-                .end(done)
+    describe("all", function() {
+        describe("good", function() {
+            it("default index (+title, +year)", function(done) {
+                _.promise(self)
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 88);
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
+                    })
+                    .end(done)
+            })
+            it("index (+year, +title)", function(done) {
+                _.promise(self)
+                    // .then(db.query.index("year-title-index"))
+                    .add("mongodb$index", "year-title-index")
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 88);
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
+                    })
+                    .end(done)
+            })
+            it("index (-year, +title)", function(done) {
+                _.promise(self)
+                    .add("mongodb$index", "-year-title-index")
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 88);
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
+                    })
+                    .end(done)
+            })
+            it("default index, query limit", function(done) {
+                _.promise(self)
+                    .add("mongodb$limit", 10)
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 10);
+                        assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
+                    })
+                    .end(done)
+            })
+            it("default index, pager past end + query", function(done) {
+                _.promise(self)
+                    .add("mongodb$page", 10)
+                    .add("mongodb$start", 100)
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 0);
+                    })
+                    .end(done)
+            })
+            it("default index, pager near + query", function(done) {
+                _.promise(self)
+                    .add("mongodb$page", 10)
+                    .add("mongodb$start", 80)
+                    .then(db.movie.all)
+                    .make(sd => {
+                        assert.deepEqual(sd.movies.length, 8);
+                    })
+                    .end(done)
+            })
         })
     })
 })
