@@ -30,19 +30,28 @@ const _descriptor = require("./_descriptor")
 /**
  *  Simulate how we like to do this at Consensas
  */
-module.exports = {
-    movie: {
-        by: {
-            title: mongodb.universal.one_value(_descriptor, "title"),
-            query: mongodb.universal.one_query(_descriptor),
-        },
-        list: {
-            all: mongodb.universal.list_all(_descriptor),
-            title: mongodb.universal.list_value(_descriptor, "title"),
-            query: mongodb.universal.list_query(_descriptor),
-        },
+const movie = {
+    by: {
+        query: mongodb.universal.one_query(_descriptor),
+        title: mongodb.universal.one_value(_descriptor, "title"),
+    },
+    list: {
+        all: mongodb.universal.list_all(_descriptor),
+        query: mongodb.universal.list_query(_descriptor),
+        year: mongodb.universal.list_value(_descriptor, "year"),
+        title: mongodb.universal.list_value(_descriptor, "title"),
     },
 }
 
-module.exports.movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
-module.exports.movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
+movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
+movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
+
+/*
+module.exports.movie.list.title.year_up = mongodb.universal.list_value(_descriptor, "title", "year-title-index")
+module.exports.movie.list.title.year_down = mongodb.universal.list_value(_descriptor, "title", "-year-title-index")
+*/
+
+module.exports = {
+    movie: movie,
+}
+

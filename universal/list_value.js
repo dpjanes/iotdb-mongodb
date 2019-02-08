@@ -44,7 +44,7 @@ const list_value = (_util, _key, _index) => {
             .validate(f)
 
             .then(_util.setup)
-            .conditional(self.mongodb$index, _.promise.add("index_name", self.mongodb$index))
+            .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
             .make(sd => {
@@ -68,6 +68,7 @@ const list_value = (_util, _key, _index) => {
     f.method = `${_util.name}.list_value`
     f.description = `Return records ${_util.one} matching ${_key}`
     f.requires = {
+        [ _key ]: _.is.Atomic,
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
@@ -75,6 +76,7 @@ const list_value = (_util, _key, _index) => {
     }
     f.produces = {
         [ _util.many ]: _.is.Array,
+        cursor: _.is.Dictionary,
     }
 
     /**

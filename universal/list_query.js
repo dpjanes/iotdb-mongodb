@@ -29,7 +29,7 @@ const assert = require("assert")
 
 /**
  */
-const list_query = _util => {
+const list_query = (_util, _index) => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
@@ -43,6 +43,9 @@ const list_query = _util => {
 
             .then(_util.setup)
             .add("query", self.query)
+            .conditional(_index, _.promise.add("index_name", _index))
+            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
+            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
 
             .then(mongodb.db.list)
             .each({
@@ -67,6 +70,7 @@ const list_query = _util => {
     }
     f.produces = {
         [ _util.many ]: _.is.Array,
+        cursor: _.is.Dictionary,
     }
 
     /**
