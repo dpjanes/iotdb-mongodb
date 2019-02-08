@@ -57,9 +57,7 @@ describe("universal/list_all", function() {
         })
         it("index (+year, +title)", function(done) {
             _.promise(self)
-                // .then(db.query.index("year-title-index"))
-                .add("mongodb$index", "year-title-index")
-                .then(db.movie.list.all)
+                .then(db.movie.list.all.year_up)
                 .make(sd => {
                     assert.deepEqual(sd.movies.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
@@ -69,8 +67,7 @@ describe("universal/list_all", function() {
         })
         it("index (-year, +title)", function(done) {
             _.promise(self)
-                .add("mongodb$index", "-year-title-index")
-                .then(db.movie.list.all)
+                .then(db.movie.list.all.year_down)
                 .make(sd => {
                     assert.deepEqual(sd.movies.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)

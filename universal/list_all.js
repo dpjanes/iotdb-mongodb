@@ -29,7 +29,7 @@ const assert = require("assert")
 
 /**
  */
-const list_all = _util => {
+const list_all = (_util, _index) => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
@@ -41,7 +41,7 @@ const list_all = _util => {
             .validate(f)
 
             .then(_util.setup)
-            .conditional(self.mongodb$index, _.promise.add("index_name", self.mongodb$index))
+            .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
 
