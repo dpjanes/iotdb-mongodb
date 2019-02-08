@@ -150,6 +150,12 @@ const all = _.promise.make((self, done) => {
     const query = _make_query(self.query)
 
     const sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
+    /*
+    const sort = {}
+    keys.forEach(key => {
+        sort[key.replace(/^[-+]/, "")] = key.startsWith("-") ? -1 : 1
+    })
+    */
     const options = {
         skip: 0
     }
@@ -171,7 +177,7 @@ const all = _.promise.make((self, done) => {
 
     /*
     console.log("===")
-    console.trace()
+    // console.trace()
     console.log("HERE:XXX.1", "query", query)
     console.log("HERE:XXX.2", "sort", sort)
     console.log("HERE:XXX.3", "schema", self.table_schema)

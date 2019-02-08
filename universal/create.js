@@ -45,24 +45,25 @@ const create = _util => {
             .then(_util.setup)
 
             .make(sd => {
-                self[_util.one] = _.d.clone(self[_util.one] || {})
+                sd[_util.one] = _.d.clone(sd[_util.one] || {})
             })
             .then(_util.create)
             .make(sd => {
-                assert.ok(self[_util.one])
+                assert.ok(sd[_util.one])
 
-                self.table_schema.keys.forEach(key => {
-                    assert.ok(!_.is.Undefined(self[_util.one][key]))
+                sd.table_schema.keys.forEach(key => {
+                    assert.ok(!_.is.Undefined(sd[_util.one][key]))
                 })
             })
             .then(_util.scrub)
 
-            .add("json", self[_util.one])
+            .add("json", sd => sd[_util.one])
             .then(mongodb.db.put)
 
             .make(sd => {
-                sd[_util.one] = sd.json
-                sd[_util.primary_key] = sd.json || {}[_util.primary_key]
+                if (_util.primary_key) {
+                    sd[_util.primary_key] = sd[_util.one][_util.primary_key]
+                }
             })
             .then(_util.updated)
 

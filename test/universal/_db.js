@@ -38,7 +38,7 @@ const movie = {
     },
     list: {
         all: mongodb.universal.list_all(_descriptor),
-        query: mongodb.universal.list_query(_descriptor),
+        query: mongodb.universal.list_query(_descriptor, "year-title-index"),
         year: mongodb.universal.list_value(_descriptor, "year"),
         title: mongodb.universal.list_value(_descriptor, "title"),
     },

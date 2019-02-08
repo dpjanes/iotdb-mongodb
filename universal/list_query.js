@@ -47,7 +47,7 @@ const list_query = (_util, _index) => {
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
 
-            .then(mongodb.db.list)
+            .then(mongodb.db.all)
             .each({
                 method: _util.scrub,
                 inputs: `jsons:${_util.one}`,
