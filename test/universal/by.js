@@ -45,8 +45,8 @@ describe("universal", function() {
     })
 
     describe("by", function() {
-        describe("token", function() {
-            describe("good", function() {
+        describe("query", function() {
+            if (0) describe("good", function() {
                 it("exists", function(done) {
                     _.promise(self)
                         .add("query", {
@@ -81,6 +81,39 @@ describe("universal", function() {
                             "title": "Rush XXX",
                         })
                         .then(db.movie.load)
+                        .make(sd => {
+                            assert.deepEqual(sd.movie, null)
+                        })
+                        .end(done)
+                })
+            })
+        })
+        describe("query", function() {
+            describe("good", function() {
+                it("exists", function(done) {
+                    _.promise(self)
+                        .add("title", "Rush")
+                        .then(db.movie.by.title)
+                        .make(sd => {
+                            assert.ok(sd.movie)
+                            assert.deepEqual(sd.movie.year, 2014)
+                            assert.deepEqual(sd.movie.title, "Rush")
+                        })
+                        .end(done)
+                })
+                it("parameterized", function(done) {
+                    _.promise(self)
+                        .then(db.movie.by.title.p("Rush"))
+                        .make(sd => {
+                            assert.ok(sd.movie)
+                            assert.deepEqual(sd.movie.year, 2014)
+                            assert.deepEqual(sd.movie.title, "Rush")
+                        })
+                        .end(done)
+                })
+                it("does not exists", function(done) {
+                    _.promise(self)
+                        .then(db.movie.by.title.p("Rush XXX"))
                         .make(sd => {
                             assert.deepEqual(sd.movie, null)
                         })

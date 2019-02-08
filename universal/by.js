@@ -33,7 +33,6 @@ const by = (_util, _key, _index) => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
-    assert(_.is.String(_util.primary_key))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
     assert(_.is.Function(_util.validate))
@@ -45,7 +44,7 @@ const by = (_util, _key, _index) => {
             .validate(f)
 
             .then(_util.setup)
-            .then(sd => {
+            .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
                 }
@@ -56,7 +55,9 @@ const by = (_util, _key, _index) => {
             })
             .then(_util.scrub)
             .make(sd => {
-                sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
+                if (_util.primary_key) {
+                    sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
+                }
             })
 
             .end(done, self, _util.many, _util.one, _util.primary_key)
@@ -73,6 +74,16 @@ const by = (_util, _key, _index) => {
         [ _util.one ]: [ _util.validate, _.is.Null ],
         [ _util.primary_key ]: [ _util.validate, _.is.Null ],
     }
+
+    /**
+     *  Parameterized
+     */
+    f.p = value => _.promise((self, done) => {
+        _.promise(self)
+            .add(_key, value)
+            .then(f)
+            .end(done, self, _util.one, _util.primary_key)
+    })
 
     return f
 }

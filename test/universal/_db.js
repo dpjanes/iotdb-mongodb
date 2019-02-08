@@ -34,6 +34,7 @@ module.exports = {
     movie: {
         all: mongodb.universal.all(_descriptor),
         by: {
+            title: mongodb.universal.by(_descriptor, "title"),
             query: mongodb.universal.by_query(_descriptor),
         }
     },
