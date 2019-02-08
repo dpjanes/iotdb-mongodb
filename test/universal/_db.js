@@ -1,5 +1,5 @@
 /**
- *  test/universal/movie.js
+ *  test/universal/_db.js
  *
  *  David Janes
  *  IOTDB

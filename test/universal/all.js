@@ -29,7 +29,7 @@ const assert = require("assert")
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-const db = require("./movie")
+const db = require("./_db")
 
 describe("universal", function() {
     let self = {}
