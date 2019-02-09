@@ -42,38 +42,146 @@ describe("universal/remove", function() {
             .end(done)
     })
 
-    it("works", function(done) {
-        const movie = {
-            movie_id: _.id.uuid.v4(),
-            title: "Avengers : Infinity War",
-            year: 2018,
-        }
-            
-        _.promise(self)
-            // create
-            .then(db.movie.create.p(movie))
-            .make(sd => {
-                assert.ok(sd.movie)
-                assert.deepEqual(sd.movie.year, 2018)
-                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
-            })
+    describe("works", function() {
+        it("one_value", function(done) {
+            const movie = {
+                movie_id: _.id.uuid.v4(),
+                title: "Avengers : Infinity War",
+                year: 2018,
+            }
+                
+            _.promise(self)
+                // create
+                .then(db.movie.create.p(movie))
+                .make(sd => {
+                    assert.ok(sd.movie)
+                    assert.deepEqual(sd.movie.year, 2018)
+                    assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+                })
 
-            // make sure it exists
-            .then(db.movie.by.movie_id.p(movie.movie_id))
-            .make(sd => {
-                assert.ok(_.d.is.subset(movie, sd.movie))
-            })
+                // make sure it exists
+                .then(db.movie.by.movie_id.p(movie.movie_id))
+                .make(sd => {
+                    assert.ok(_.d.is.subset(movie, sd.movie))
+                })
 
-            // remove it
-            .then(db.movie.remove)
+                // remove it
+                .then(db.movie.remove)
 
-            // it should be gone for one_value
-            .then(db.movie.by.movie_id.p(movie.movie_id))
-            .make(sd => {
-                console.log("MOVIE", sd.movie)
-                assert.deepEqual(null, sd.movie)
-            })
+                // it should be gone 
+                .then(db.movie.by.movie_id.p(movie.movie_id))
+                .make(sd => {
+                    assert.deepEqual(null, sd.movie)
+                })
 
-            .end(done)
+                .end(done)
+        })
+        it("one_query", function(done) {
+            const movie = {
+                movie_id: _.id.uuid.v4(),
+                title: "Avengers : Infinity War",
+                year: 2018,
+            }
+                
+            _.promise(self)
+                // create
+                .then(db.movie.create.p(movie))
+                .make(sd => {
+                    assert.ok(sd.movie)
+                    assert.deepEqual(sd.movie.year, 2018)
+                    assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+                })
+
+                // make sure it exists
+                .then(db.movie.by.query.p({
+                    movie_id: movie.movie_id,
+                }))
+                .make(sd => {
+                    assert.ok(_.d.is.subset(movie, sd.movie))
+                })
+
+                // remove it
+                .then(db.movie.remove)
+
+                // it should be gone 
+                .then(db.movie.by.query.p({
+                    movie_id: movie.movie_id,
+                }))
+                .make(sd => {
+                    assert.deepEqual(null, sd.movie)
+                })
+
+                .end(done)
+        })
+        it("list_value", function(done) {
+            const movie = {
+                movie_id: _.id.uuid.v4(),
+                title: "Avengers : Infinity War",
+                year: 2018,
+            }
+                
+            _.promise(self)
+                // create
+                .then(db.movie.create.p(movie))
+                .make(sd => {
+                    assert.ok(sd.movie)
+                    assert.deepEqual(sd.movie.year, 2018)
+                    assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+                })
+
+                // make sure it exists
+                .then(db.movie.list.movie_id.p(movie.movie_id))
+                .make(sd => {
+                    assert.ok(_.d.is.subset(movie, sd.movies[0]))
+                })
+
+                // remove it
+                .then(db.movie.remove)
+
+                // it should be gone 
+                .then(db.movie.list.movie_id.p(movie.movie_id))
+                .make(sd => {
+                    assert.deepEqual(0, sd.movies.length)
+                })
+
+                .end(done)
+        })
+        it("list_query", function(done) {
+            const movie = {
+                movie_id: _.id.uuid.v4(),
+                title: "Avengers : Infinity War",
+                year: 2018,
+            }
+                
+            _.promise(self)
+                // create
+                .then(db.movie.create.p(movie))
+                .make(sd => {
+                    assert.ok(sd.movie)
+                    assert.deepEqual(sd.movie.year, 2018)
+                    assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+                })
+
+                // make sure it exists
+                .then(db.movie.list.query.p({
+                    movie_id: movie.movie_id,
+                }))
+                .make(sd => {
+                    assert.ok(_.d.is.subset(movie, sd.movies[0]))
+                })
+
+                // remove it
+                .then(db.movie.remove)
+
+                // it should be gone 
+                .then(db.movie.list.query.p({
+                    movie_id: movie.movie_id,
+                }))
+                .make(sd => {
+                    assert.deepEqual(0, sd.movies.length)
+                })
+
+                .end(done)
+        })
     })
 })

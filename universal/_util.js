@@ -58,30 +58,30 @@ setup.produces = {
 }
 
 /**
- *  This is really to do with an oddity of our 
- *  implementation over time
-const post_setup = _.promise(self => {
-    _.promise.validate(self, exports.post_setup)
+ */
+const fix_query = (_descriptor, _query) => _.promise(self => {
+    _.promise.validate(self, exports.fix_query)
 
-    self.table_name = self.table_schema.name
+    if (_descriptor.removed_key) {
+        self.query = _.d.clone(self.query)
+        self.query[_descriptor.removed_key] = null
+    }
 })
 
-post_setup.method = "universal._util/post_setup"
-post_setup.description = `Patch setup`
-post_setup.requires = {
-    table_schema: {
-        name: _.is.String,
-    },
+fix_query.method = "universal._util/fix_query"
+fix_query.description = `Patch setup`
+fix_query.requires = {
+    query: {},
 }
-post_setup.accepts = {
+fix_query.accepts = {
 }
-post_setup.produces = {
-    table_name: _.is.String,
+fix_query.produces = {
+    query: {},
 }
- */
 
 
 /**
  *  API
  */
 exports.setup = setup
+exports.fix_query = fix_query

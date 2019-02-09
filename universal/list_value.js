@@ -52,11 +52,13 @@ const list_value = (_descriptor, _key, _index) => {
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
+
             .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
                 }
             })
+            .then(_util.fix_query(_descriptor))
 
             .then(mongodb.db.all)
             .each({

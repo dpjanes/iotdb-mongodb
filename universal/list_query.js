@@ -48,6 +48,8 @@ const list_query = (_descriptor, _index) => {
             .then(_util.post_setup)
             
             .add("query", self.query)
+            .then(_util.fix_query(_descriptor))
+
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
@@ -85,7 +87,7 @@ const list_query = (_descriptor, _index) => {
         _.promise(self)
             .add("query", query)
             .then(f)
-            .end(done, self, _descriptor.one)
+            .end(done, self, _descriptor.many)
     })
 
     return f

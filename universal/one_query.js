@@ -48,6 +48,8 @@ const one_query = _descriptor => {
             .then(_util.post_setup)
 
             .add("query", self.query)
+            .then(_util.fix_query(_descriptor))
+
             .then(mongodb.db.get)
             .make(sd => {
                 sd[_descriptor.one] = sd.json

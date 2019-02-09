@@ -53,11 +53,8 @@ const one_value = (_descriptor, _key, _index) => {
                 sd.query = {
                     [ _key ]: sd[_key],
                 }
-
-                if (_descriptor.removed_key) {
-                    sd.query[_descriptor.removed_key] = null
-                }
             })
+            .then(_util.fix_query(_descriptor))
             .then(mongodb.db.get)
             .make(sd => {
                 sd[_descriptor.one] = sd.json
