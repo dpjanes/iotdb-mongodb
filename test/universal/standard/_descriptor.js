@@ -42,7 +42,7 @@ exports.many = "movies"
 /**
  *  The name of the primary key in a movie
  */
-exports.primary_id = "movie_id"
+exports.primary_id = null
 
 /**
  */
