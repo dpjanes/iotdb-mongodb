@@ -33,7 +33,6 @@ const create = _descriptor => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
-    assert(_.is.Function(_descriptor.create))
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
@@ -47,25 +46,24 @@ const create = _descriptor => {
             .make(sd => {
                 sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})
             })
-            .then(_descriptor.create)
+
+            .then(_descriptor.scrub)
             .make(sd => {
-                assert.ok(sd[_descriptor.one])
+                sd.json = sd[_descriptor.one]
+                assert.ok(sd.json)
 
                 sd.table_schema.keys.forEach(key => {
-                    assert.ok(!_.is.Undefined(sd[_descriptor.one][key]))
+                    assert.ok(!_.is.Undefined(sd.json[key]))
                 })
             })
-            .then(_descriptor.scrub)
-
-            .add("json", sd => sd[_descriptor.one])
             .then(mongodb.db.put)
+            .conditional(_descriptor.updated, _descriptor.updated)
 
             .make(sd => {
                 if (_descriptor.primary_key) {
                     sd[_descriptor.primary_key] = sd[_descriptor.one][_descriptor.primary_key]
                 }
             })
-            .then(_descriptor.updated)
 
             .end(done, self, _descriptor.many, _descriptor.one, _descriptor.primary_key)
     })

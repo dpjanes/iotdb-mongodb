@@ -53,7 +53,6 @@ const save = _descriptor => {
                 })
             })
 
-            .conditional(_descriptor.update, _descriptor.update)
             .then(mongodb.db.replace)
             .conditional(_descriptor.updated, _descriptor.updated)
 
