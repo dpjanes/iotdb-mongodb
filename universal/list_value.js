@@ -91,7 +91,7 @@ const list_value = (_descriptor, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, _descriptor.many, _descriptor.primary_key)
+            .end(done, self, _descriptor.many)
     })
 
     return f

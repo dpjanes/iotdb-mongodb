@@ -52,14 +52,8 @@ const one_query = _descriptor => {
             .make(sd => {
                 sd[_descriptor.one] = sd.json
             })
-            .then(_descriptor.scrub)
-            .make(sd => {
-                if (_descriptor.primary_key) {
-                    sd[_descriptor.primary_key] = (sd.json || {})[_descriptor.primary_key] || null
-                }
-            })
 
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     f.method = `${_descriptor.name}.one_query`
@@ -72,7 +66,6 @@ const one_query = _descriptor => {
     }
     f.produces = {
         [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
-        [ _descriptor.primary_key ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
@@ -82,7 +75,7 @@ const one_query = _descriptor => {
         _.promise(self)
             .add("query", query)
             .then(f)
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     return f

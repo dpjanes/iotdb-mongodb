@@ -60,7 +60,6 @@ setup.produces = {
 /**
  *  This is really to do with an oddity of our 
  *  implementation over time
- */
 const post_setup = _.promise(self => {
     _.promise.validate(self, exports.post_setup)
 
@@ -79,6 +78,7 @@ post_setup.accepts = {
 post_setup.produces = {
     table_name: _.is.String,
 }
+ */
 
 
 /**

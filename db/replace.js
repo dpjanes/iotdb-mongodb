@@ -69,6 +69,7 @@ const replace = _.promise((self, done) => {
                 upsert: false,
                 returnOriginal: true,
             }, (error, result) => {
+console.log("HERE:YYY", query, json)
                 if (!result) {
                     const nerror = new errors.NotFound()
                     nerror.error = error

@@ -44,7 +44,7 @@ exports.many = "ROWs"
 /**
  *  The name of the primary key in a record
  */
-exports.primary_id = "ROW_id"
+exports.removed_key = "ROW_id"
 
 /**
  *  You can do further setup here, e.g.
@@ -75,6 +75,9 @@ exports.scrub = _.promise(self => {
     }
 
     self.ROW = _.d.clone(self.ROW)
+
+    // if you want a removed_key
+    // self.ROW.removed = null
 })
 
 exports.scrub.method = "APPLICATION.db.ROW._descriptor.scrub"
@@ -135,9 +138,14 @@ exports.create = _.promise(self => {
     _.promise.validate(self, exports.create)
 
     self.ROW = _.d.clone(self.ROW)
-    self.ROW.ROW_id = _.id.uuid.v4()
     self.ROW.created = self.ROW.created || _.timestamp.make()
     self.ROW.updated = self.ROW.updated || self.ROW.created
+
+    // if you want a single primary key
+    // self.ROW.ROW_id = self.ROW.ROW_id || _.id.uuid.v4()
+
+    // if you want a removed_key
+    // self.ROW.removed = null
 })
 
 exports.create.method = "APPLICATION.db.ROW._descriptor.create"

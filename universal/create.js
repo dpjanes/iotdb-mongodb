@@ -51,6 +51,7 @@ const create = _descriptor => {
                 sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})
             })
 
+            .then(_descriptor.create)
             .then(_descriptor.scrub)
             .make(sd => {
                 sd.json = sd[_descriptor.one]
@@ -63,13 +64,7 @@ const create = _descriptor => {
             .then(mongodb.db.put)
             .conditional(_descriptor.updated, _descriptor.updated)
 
-            .make(sd => {
-                if (_descriptor.primary_key) {
-                    sd[_descriptor.primary_key] = sd[_descriptor.one][_descriptor.primary_key]
-                }
-            })
-
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     f.method = `${_descriptor.name}.create`
@@ -83,10 +78,6 @@ const create = _descriptor => {
         [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
     }
 
-    if (_descriptor.primary_key) {
-        f.produces[_descriptor.primary_key] = [ _descriptor.validate, _.is.Null ]
-    }
-
     /**
      *  Parameterized
      */
@@ -94,7 +85,7 @@ const create = _descriptor => {
         _.promise(self)
             .add(_descriptor.one, value)
             .then(f)
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     return f

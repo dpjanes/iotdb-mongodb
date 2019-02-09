@@ -70,7 +70,7 @@ const upsert = _descriptor => {
             })
             .conditional(sd => sd._save, mongodb.universal.save(_descriptor), mongodb.universal.create(_descriptor))
 
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     f.method = `${_descriptor.name}.upsert`
@@ -88,10 +88,6 @@ const upsert = _descriptor => {
         [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
     }
 
-    if (_descriptor.primary_key) {
-        f.produces[_descriptor.primary_key] = [ _descriptor.validate, _.is.Null ]
-    }
-
     /**
      *  Parameterized
      */
@@ -99,7 +95,7 @@ const upsert = _descriptor => {
         _.promise(self)
             .add(_descriptor.one, value)
             .then(f)
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     return f

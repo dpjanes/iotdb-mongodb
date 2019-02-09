@@ -1,9 +1,9 @@
 /*
- *  test/universal/standard/_util.js
+ *  test/universal/removed/_util.js
  *
  *  David Janes
  *  IOTDB
- *  2019-01-07
+ *  2019-01-09
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -40,10 +40,9 @@ exports.one = "movie"
 exports.many = "movies"
 
 /**
- *  The name of the primary key, e.g. 
- *  when there is only one
+ *  The field that indicates removed
  */
-exports.primary_id = null
+exports.removed_key = "removed"
 
 /**
  */
@@ -64,7 +63,7 @@ exports.setup = _.promise(self => {
             "-year-title-index": [ "-year", "title" ],
             "year--title-index": [ "year", "-title" ],
         },
-        "keys": [ "title", "year" ],
+        "keys": [ "movie_id" ],
     }
 })
 
@@ -145,6 +144,8 @@ exports.removed.produces = {
 
 /**
  *  This creates a new movie.
+ *  There will always be a stub movie,
+ *  but you must set an ID.
  *  You don't need to do anything that
  *  scrub does.
  */
@@ -152,6 +153,8 @@ exports.create = _.promise(self => {
     _.promise.validate(self, exports.create)
 
     self.movie = _.d.clone(self.movie)
+    self.movie.movie_id = self.movie.movie_id || _.id.uuid.v4()
+    self.movie.removed = self.movie.removed || null
 })
 
 exports.create.method = "APPLICATION.db.movie._util.create"

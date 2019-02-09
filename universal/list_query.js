@@ -85,7 +85,7 @@ const list_query = (_descriptor, _index) => {
         _.promise(self)
             .add("query", query)
             .then(f)
-            .end(done, self, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one)
     })
 
     return f
