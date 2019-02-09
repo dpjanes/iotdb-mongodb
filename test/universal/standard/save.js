@@ -1,5 +1,5 @@
 /**
- *  test/universal/save.js
+ *  test/universal/standard/save.js
  *
  *  David Janes
  *  IOTDB

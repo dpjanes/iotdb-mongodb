@@ -1,5 +1,5 @@
 /**
- *  test/universal/delete.js
+ *  test/universal/standard/delete.js
  *
  *  David Janes
  *  IOTDB

@@ -1,5 +1,5 @@
 /**
- *  test/universal/one_query.js
+ *  test/universal/standard/one_query.js
  *
  *  David Janes
  *  IOTDB

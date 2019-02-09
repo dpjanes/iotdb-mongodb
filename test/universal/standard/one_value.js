@@ -1,5 +1,5 @@
 /**
- *  test/universal/one_value.js
+ *  test/universal/standard/one_value.js
  *
  *  David Janes
  *  IOTDB

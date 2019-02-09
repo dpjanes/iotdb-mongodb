@@ -1,5 +1,5 @@
 /**
- *  test/universal/upsert.js
+ *  test/universal/standard/upsert.js
  *
  *  David Janes
  *  IOTDB

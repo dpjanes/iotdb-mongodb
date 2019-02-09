@@ -1,5 +1,5 @@
 /**
- *  test/universal/create.js
+ *  test/universal/standard/create.js
  *
  *  David Janes
  *  IOTDB
