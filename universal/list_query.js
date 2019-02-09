@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const list_query = (_descriptor, _index) => {
@@ -41,7 +43,10 @@ const list_query = (_descriptor, _index) => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+            
             .add("query", self.query)
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))

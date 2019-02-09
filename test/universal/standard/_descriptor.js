@@ -51,13 +51,13 @@ exports.validate.method = "APPLICATION.db.movie._util.validate"
 exports.validate.description = "Test if movie is valid"
 
 /**
- *  This sets up the database
+ *  You must define self.table_schema here
  */
 exports.setup = _.promise(self => {
     _.promise.validate(self, exports.setup)
 
     self.table_schema = {
-        "name": "movies", 
+        "name": "movies",
         "indexes": {
             "year-title-index": [ "year", "title" ],
             "-year-title-index": [ "-year", "title" ],
@@ -67,11 +67,6 @@ exports.setup = _.promise(self => {
     }
 
     self.table_name = self.table_schema.name
-
-    self.query = null
-    self.query_limit = null
-    self.index_name = null
-    self.projection = null
 })
 
 exports.setup.method = "APPLICATION.db.movie._util.setup"
@@ -79,10 +74,13 @@ exports.setup.description = `Setup database for movie`
 exports.setup.requires = {
 }
 exports.setup.accepts = {
-    movie: exports.validate,
 }
 exports.setup.produces = {
-    movie: exports.validate,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+        indexes: _.is.Dictionary,
+    },
 }
 
 /**

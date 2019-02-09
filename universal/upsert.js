@@ -26,6 +26,8 @@ const _ = require("iotdb-helpers")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const upsert = _descriptor => {
@@ -42,7 +44,10 @@ const upsert = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .make(sd => {
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {

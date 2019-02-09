@@ -47,36 +47,20 @@ exports.many = "ROWs"
 exports.primary_id = "ROW_id"
 
 /**
- *  This sets up the database
+ *  You can do further setup here, e.g.
+ *  change the table name
  */
 exports.setup = _.promise(self => {
     _.promise.validate(self, exports.setup)
-
-    self.table_schema = { 
-        "name": exports.one,
-        "indexes": {},
-        "keys": [
-            exports.primary_id,
-        ]
-    } 
-
-    self.table_name = self.table_schema.name
-
-    self.query = null
-    self.query_limit = null
-    self.index_name = null
-    self.projection = null
 })
 
 exports.setup.method = "APPLICATION.db.ROW._descriptor.setup"
-exports.setup.description = `Setup database for ROW`
+exports.setup.description = `Setup database`
 exports.setup.requires = {
 }
 exports.setup.accepts = {
-    ROW: exports.validate,
 }
 exports.setup.produces = {
-    ROW: exports.validate,
 }
 
 /**

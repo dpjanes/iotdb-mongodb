@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const save = _descriptor => {
@@ -41,7 +43,10 @@ const save = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .then(_descriptor.scrub)
             .make(sd => {
                 sd.json = sd[_descriptor.one]

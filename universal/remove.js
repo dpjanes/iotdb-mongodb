@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  *  Remove adds a "remove_key" to the record,
  *  so it's hidden from future searches
@@ -44,7 +46,10 @@ const remove = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .make(sd => {
                 sd.json = _.d.clone(_descriptor.one)
                 sd.json[_descriptor.remove_key] = _.timestamp.make()

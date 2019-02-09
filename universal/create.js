@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const create = _descriptor => {
@@ -41,7 +43,9 @@ const create = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
 
             .make(sd => {
                 sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})

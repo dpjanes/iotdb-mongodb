@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const delete_ = _descriptor => {
@@ -41,7 +43,10 @@ const delete_ = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .make(sd => {
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {

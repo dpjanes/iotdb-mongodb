@@ -83,4 +83,10 @@ describe("universal/create", function() {
             })
             .end(done)
     })
+    it("fails with missing keys", function(done) {
+        _.promise(self)
+            .then(db.movie.create.p({}))
+            .then(_util.auto_fail(done))
+            .catch(_util.ok_error(done))
+    })
 })

@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const list_all = (_descriptor, _index) => {
@@ -40,7 +42,10 @@ const list_all = (_descriptor, _index) => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))

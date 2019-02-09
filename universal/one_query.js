@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const one_query = _descriptor => {
@@ -41,7 +43,10 @@ const one_query = _descriptor => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+
             .add("query", self.query)
             .then(mongodb.db.get)
             .make(sd => {

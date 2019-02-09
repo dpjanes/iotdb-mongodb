@@ -27,6 +27,8 @@ const mongodb = require("..")
 
 const assert = require("assert")
 
+const _util = require("./_util")
+
 /**
  */
 const one_value = (_descriptor, _key, _index) => {
@@ -43,7 +45,10 @@ const one_value = (_descriptor, _key, _index) => {
         _.promise(self)
             .validate(f)
 
+            .then(_util.setup)
             .then(_descriptor.setup)
+            .then(_util.post_setup)
+            
             .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
