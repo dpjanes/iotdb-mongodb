@@ -65,7 +65,7 @@ const create = _descriptor => {
                 }
             })
 
-            .end(done, self, _descriptor.many, _descriptor.one, _descriptor.primary_key)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
     f.method = `${_descriptor.name}.create`
@@ -77,7 +77,10 @@ const create = _descriptor => {
     }
     f.produces = {
         [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
-        [ _descriptor.primary_key ]: [ _descriptor.validate, _.is.Null ],
+    }
+
+    if (_descriptor.primary_key) {
+        f.produces[_descriptor.primary_key] = [ _descriptor.validate, _.is.Null ]
     }
 
     /**

@@ -23,13 +23,14 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("..")
 
 const assert = require("assert")
 
 /**
  */
-const upsert = (_descriptor, _key, _index) => {
+const upsert = _descriptor => {
+    const mongodb = require("..")
+
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -42,13 +43,15 @@ const upsert = (_descriptor, _key, _index) => {
             .validate(f)
 
             .then(_descriptor.setup)
-            .then(sd => {
-                sd.query = {
-                    [ _key ]: sd[_key],
-                }
+            .make(sd => {
+                sd.query = {}
+                sd.table_schema.keys.forEach(key => {
+                    sd.query[key] = sd[_descriptor.one][key]
+                    assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
+                })
             })
             .then(mongodb.db.get)
-            .then(sd => {
+            .make(sd => {
                 if (sd.json) {
                     sd._save = true
                     sd[_descriptor.one] = Object.assign(
@@ -57,17 +60,17 @@ const upsert = (_descriptor, _key, _index) => {
                         sd[_descriptor.one],
                     )
                 } else {
-                    sd._save = falae
+                    sd._save = false
                 }
             })
             .conditional(sd => sd._save, mongodb.universal.save(_descriptor), mongodb.universal.create(_descriptor))
 
-            .end(done, self)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
     f.method = `${_descriptor.name}.upsert`
     f.description = `
-        Upsert ${_descriptor.one} by ${key}.
+        Upsert ${_descriptor.one} record.
         If it exists, merge the record.
         If it doesn't exist, create a new record
         `
@@ -77,7 +80,22 @@ const upsert = (_descriptor, _key, _index) => {
     f.accepts = {
     }
     f.produces = {
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
     }
+
+    if (_descriptor.primary_key) {
+        f.produces[_descriptor.primary_key] = [ _descriptor.validate, _.is.Null ]
+    }
+
+    /**
+     *  Parameterized
+     */
+    f.p = value => _.promise((self, done) => {
+        _.promise(self)
+            .add(_descriptor.one, value)
+            .then(f)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
+    })
 
     return f
 }

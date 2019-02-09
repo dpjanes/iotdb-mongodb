@@ -34,6 +34,7 @@ const movie = {
     create: mongodb.universal.create(_descriptor),
     save: mongodb.universal.save(_descriptor),
     delete: mongodb.universal.delete(_descriptor),
+    upsert: mongodb.universal.upsert(_descriptor),
     // remove: mongodb.universal.remove(_descriptor),
     by: {
         query: mongodb.universal.one_query(_descriptor),
