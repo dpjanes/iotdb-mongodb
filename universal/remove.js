@@ -33,6 +33,7 @@ const remove = _util => {
     assert(_.is.String(_util.name))
     assert(_.is.String(_util.one))
     assert(_.is.String(_util.many))
+    assert(_.is.String(_util.remove_key))
     assert(_.is.Function(_util.scrub))
     assert(_.is.Function(_util.setup))
     assert(_.is.Function(_util.validate))
@@ -42,13 +43,20 @@ const remove = _util => {
             .validate(f)
 
             .then(_util.setup)
-            .then(sd => {
-                sd.query = {
-                    [ _util.primary_key ]: sd[_util.one][_util.primary_key],
-                }
+            .make(sd => {
+                sd.json = _.d.clone(_util.one)
+                sd.json[_util.remove_key] = _.timestamp.make()
+
+                sd.query = {}
+                sd.table_schema.keys.forEach(key => {
+                    sd.query[key] = sd[_util.one][key]
+                    assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
+                })
             })
-            .then(mongodb.db.delete)
-            .then(_util.removed)
+
+            .conditional(_util.remove, _util.remove)
+            .then(mongodb.db.replace)
+            .conditional(_util.removed, _util.removed)
 
             .end(done, self)
     })

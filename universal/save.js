@@ -45,6 +45,7 @@ const save = _util => {
             .then(_util.scrub)
             .make(sd => {
                 sd.json = sd[_util.one]
+
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {
                     sd.query[key] = sd[_util.one][key]
