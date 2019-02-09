@@ -1,5 +1,5 @@
 /**
- *  test/universal/save.js
+ *  test/universal/create.js
  *
  *  David Janes
  *  IOTDB
@@ -26,18 +26,17 @@ const _ = require("iotdb-helpers")
 
 const assert = require("assert")
 
-const mongodb = require("../..")
-const _util = require("./../_util")
+const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/save", function() {
+describe("universal/create", function() {
     let self = {}
 
     before(function(done) {
         _.promise(self)
             .then(_util.initialize)
-            // .then(_util.load)
+            .then(_util.load)
             .make(sd => {
                 self = sd;
             })
@@ -53,20 +52,35 @@ describe("universal/save", function() {
             .then(db.movie.create)
             .make(sd => {
                 assert.ok(sd.movie)
-                assert.ok(!sd.movie.rating)
+                assert.deepEqual(sd.movie.year, 2018)
+                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
             })
-
-            .make(sd => {
-                sd.movie.rating = "It's great"
-            })
-            .then(db.movie.save)
 
             .then(db.movie.list.year.p(2018))
             .make(sd => {
                 assert.deepEqual(sd.movies.length, 1)
-                assert.deepEqual(sd.movies[0].rating, "It's great")
+            })
+            .end(done)
+    })
+    it("parameterized", function(done) {
+        _.promise(self)
+            .then(db.movie.create.p({
+                "title": "Avengers : Endgame",
+                "year": 2019,
+            }))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2019)
+                assert.deepEqual(sd.movie.title, "Avengers : Endgame")
             })
 
+            .add("movie", null)
+            .then(db.movie.by.title.p("Avengers : Endgame"))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2019)
+                assert.deepEqual(sd.movie.title, "Avengers : Endgame")
+            })
             .end(done)
     })
 })

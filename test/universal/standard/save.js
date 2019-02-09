@@ -1,5 +1,5 @@
 /**
- *  test/universal/delete.js
+ *  test/universal/save.js
  *
  *  David Janes
  *  IOTDB
@@ -26,18 +26,17 @@ const _ = require("iotdb-helpers")
 
 const assert = require("assert")
 
-const mongodb = require("../..")
-const _util = require("./../_util")
+const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/delete", function() {
+describe("universal/save", function() {
     let self = {}
 
     before(function(done) {
         _.promise(self)
             .then(_util.initialize)
-            .then(_util.load)
+            // .then(_util.load)
             .make(sd => {
                 self = sd;
             })
@@ -56,26 +55,15 @@ describe("universal/delete", function() {
                 assert.ok(!sd.movie.rating)
             })
 
+            .make(sd => {
+                sd.movie.rating = "It's great"
+            })
+            .then(db.movie.save)
+
             .then(db.movie.list.year.p(2018))
             .make(sd => {
                 assert.deepEqual(sd.movies.length, 1)
-            })
-
-            .then(db.movie.list.all)
-            .make(sd => {
-                assert.deepEqual(sd.movies.length, 89)
-            })
-
-            .then(db.movie.delete)
-
-            .then(db.movie.list.year.p(2018))
-            .make(sd => {
-                assert.deepEqual(sd.movies.length, 0)
-            })
-
-            .then(db.movie.list.all)
-            .make(sd => {
-                assert.deepEqual(sd.movies.length, 88)
+                assert.deepEqual(sd.movies[0].rating, "It's great")
             })
 
             .end(done)

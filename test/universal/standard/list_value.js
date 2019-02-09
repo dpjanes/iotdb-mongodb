@@ -26,8 +26,7 @@ const _ = require("iotdb-helpers")
 
 const assert = require("assert")
 
-const mongodb = require("../..")
-const _util = require("./../_util")
+const _util = require("../../_util")
 
 const db = require("./_db")
 

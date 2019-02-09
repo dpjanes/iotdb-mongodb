@@ -1,5 +1,5 @@
 /**
- *  test/universal/create.js
+ *  test/universal/delete.js
  *
  *  David Janes
  *  IOTDB
@@ -26,12 +26,11 @@ const _ = require("iotdb-helpers")
 
 const assert = require("assert")
 
-const mongodb = require("../..")
-const _util = require("./../_util")
+const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/create", function() {
+describe("universal/delete", function() {
     let self = {}
 
     before(function(done) {
@@ -53,35 +52,31 @@ describe("universal/create", function() {
             .then(db.movie.create)
             .make(sd => {
                 assert.ok(sd.movie)
-                assert.deepEqual(sd.movie.year, 2018)
-                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+                assert.ok(!sd.movie.rating)
             })
 
             .then(db.movie.list.year.p(2018))
             .make(sd => {
                 assert.deepEqual(sd.movies.length, 1)
             })
-            .end(done)
-    })
-    it("parameterized", function(done) {
-        _.promise(self)
-            .then(db.movie.create.p({
-                "title": "Avengers : Endgame",
-                "year": 2019,
-            }))
+
+            .then(db.movie.list.all)
             .make(sd => {
-                assert.ok(sd.movie)
-                assert.deepEqual(sd.movie.year, 2019)
-                assert.deepEqual(sd.movie.title, "Avengers : Endgame")
+                assert.deepEqual(sd.movies.length, 89)
             })
 
-            .add("movie", null)
-            .then(db.movie.by.title.p("Avengers : Endgame"))
+            .then(db.movie.delete)
+
+            .then(db.movie.list.year.p(2018))
             .make(sd => {
-                assert.ok(sd.movie)
-                assert.deepEqual(sd.movie.year, 2019)
-                assert.deepEqual(sd.movie.title, "Avengers : Endgame")
+                assert.deepEqual(sd.movies.length, 0)
             })
+
+            .then(db.movie.list.all)
+            .make(sd => {
+                assert.deepEqual(sd.movies.length, 88)
+            })
+
             .end(done)
     })
 })

@@ -23,7 +23,7 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("../..")
+const mongodb = require("../../..")
 
 const _descriptor = require("./_descriptor")
 
