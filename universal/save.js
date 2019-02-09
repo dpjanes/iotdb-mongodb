@@ -29,46 +29,46 @@ const assert = require("assert")
 
 /**
  */
-const save = _util => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const save = _descriptor => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
-            .then(_util.scrub)
+            .then(_descriptor.setup)
+            .then(_descriptor.scrub)
             .make(sd => {
-                sd.json = sd[_util.one]
+                sd.json = sd[_descriptor.one]
 
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {
-                    sd.query[key] = sd[_util.one][key]
+                    sd.query[key] = sd[_descriptor.one][key]
                     assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
                 })
             })
 
-            .conditional(_util.update, _util.update)
+            .conditional(_descriptor.update, _descriptor.update)
             .then(mongodb.db.replace)
-            .conditional(_util.updated, _util.updated)
+            .conditional(_descriptor.updated, _descriptor.updated)
 
-            .end(done, self, _util.one)
+            .end(done, self, _descriptor.one)
     })
 
-    f.method = `${_util.name}.save`
-    f.description = `Save a ${_util.one}`
+    f.method = `${_descriptor.name}.save`
+    f.description = `Save a ${_descriptor.one}`
     f.requires = {
-        [ _util.one ]: _util.validate,
+        [ _descriptor.one ]: _descriptor.validate,
     }
     f.accepts = {
     }
     f.produces = {
-        [ _util.one ]: _util.validate,
+        [ _descriptor.one ]: _descriptor.validate,
     }
 
     return f

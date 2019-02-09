@@ -29,19 +29,19 @@ const assert = require("assert")
 
 /**
  */
-const upsert = (_util, _key, _index) => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const upsert = (_descriptor, _key, _index) => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .then(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
@@ -51,28 +51,28 @@ const upsert = (_util, _key, _index) => {
             .then(sd => {
                 if (sd.json) {
                     sd._save = true
-                    sd[_util.one] = Object.assign(
+                    sd[_descriptor.one] = Object.assign(
                         {},
                         sd.json,
-                        sd[_util.one],
+                        sd[_descriptor.one],
                     )
                 } else {
                     sd._save = falae
                 }
             })
-            .conditional(sd => sd._save, mongodb.universal.save(_util), mongodb.universal.create(_util))
+            .conditional(sd => sd._save, mongodb.universal.save(_descriptor), mongodb.universal.create(_descriptor))
 
             .end(done, self)
     })
 
-    f.method = `${_util.name}.upsert`
+    f.method = `${_descriptor.name}.upsert`
     f.description = `
-        Upsert ${_util.one} by ${key}.
+        Upsert ${_descriptor.one} by ${key}.
         If it exists, merge the record.
         If it doesn't exist, create a new record
         `
     f.requires = {
-        [ _util.one ]: _util.validate,
+        [ _descriptor.one ]: _descriptor.validate,
     }
     f.accepts = {
     }

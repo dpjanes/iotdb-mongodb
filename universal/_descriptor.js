@@ -1,5 +1,5 @@
 /*
- *  universal/_util.js
+ *  universal/_descriptor.js
  *
  *  David Janes
  *  IOTDB
@@ -68,7 +68,7 @@ exports.setup = _.promise(self => {
     self.projection = null
 })
 
-exports.setup.method = "APPLICATION.db.ROW._util.setup"
+exports.setup.method = "APPLICATION.db.ROW._descriptor.setup"
 exports.setup.description = `Setup database for ROW`
 exports.setup.requires = {
 }
@@ -93,7 +93,7 @@ exports.scrub = _.promise(self => {
     self.ROW = _.d.clone(self.ROW)
 })
 
-exports.scrub.method = "APPLICATION.db.ROW._util.scrub"
+exports.scrub.method = "APPLICATION.db.ROW._descriptor.scrub"
 exports.scrub.description = `Clean up one ROW`
 exports.scrub.requires = {
 }
@@ -111,7 +111,7 @@ exports.updated = _.promise(self => {
     _.promise.validate(self, exports.updated)
 })
 
-exports.updated.method = "APPLICATION.db.ROW._util.updated"
+exports.updated.method = "APPLICATION.db.ROW._descriptor.updated"
 exports.updated.description = ``
 exports.updated.requires = {
 }
@@ -129,7 +129,7 @@ exports.removed = _.promise(self => {
     _.promise.validate(self, exports.removed)
 })
 
-exports.removed.method = "APPLICATION.db.ROW._util.removed"
+exports.removed.method = "APPLICATION.db.ROW._descriptor.removed"
 exports.removed.description = ``
 exports.removed.requires = {
 }
@@ -156,7 +156,7 @@ exports.create = _.promise(self => {
     self.ROW.updated = self.ROW.updated || self.ROW.created
 })
 
-exports.create.method = "APPLICATION.db.ROW._util.create"
+exports.create.method = "APPLICATION.db.ROW._descriptor.create"
 exports.create.description = `Finish creating one ROW`
 exports.create.requires = {
 }
@@ -170,5 +170,5 @@ exports.create.produces = {
 /**
  */
 exports.validate = ROW => _.is.Dictionary;
-exports.validate.method = "APPLICATION.db.ROW._util.validate"
+exports.validate.method = "APPLICATION.db.ROW._descriptor.validate"
 exports.validate.description = "Test if ROW is valid"

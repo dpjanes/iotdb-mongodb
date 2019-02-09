@@ -29,43 +29,43 @@ const assert = require("assert")
 
 /**
  */
-const list_all = (_util, _index) => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
+const list_all = (_descriptor, _index) => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
 
             .then(mongodb.db.all)
             .each({
-                method: _util.scrub,
-                inputs: `jsons:${_util.one}`,
-                outputs: _util.many,
-                output_selector: sd => sd[_util.one],
+                method: _descriptor.scrub,
+                inputs: `jsons:${_descriptor.one}`,
+                outputs: _descriptor.many,
+                output_selector: sd => sd[_descriptor.one],
                 output_filter: x => x,
             })
 
-            .end(done, self, _util.many, "cursor")
+            .end(done, self, _descriptor.many, "cursor")
     })
 
-    f.method = `${_util.name}.list_all`
-    f.description = `Return list_all ${_util.many}`
+    f.method = `${_descriptor.name}.list_all`
+    f.description = `Return list_all ${_descriptor.many}`
     f.requires = {
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _util.many ]: _.is.Array,
+        [ _descriptor.many ]: _.is.Array,
         cursor: _.is.Dictionary,
     }
 

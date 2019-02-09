@@ -29,38 +29,38 @@ const assert = require("assert")
 
 /**
  */
-const delete_ = _util => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const delete_ = _descriptor => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .make(sd => {
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {
-                    sd.query[key] = sd[_util.one][key]
+                    sd.query[key] = sd[_descriptor.one][key]
                     assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
                 })
             })
 
-            .conditional(_util.delete, _util.delete)
+            .conditional(_descriptor.delete, _descriptor.delete)
             .then(mongodb.db.delete)
-            .conditional(_util.deleted, _util.deleted)
+            .conditional(_descriptor.deleted, _descriptor.deleted)
 
             .end(done, self)
     })
 
-    f.method = `${_util.name}.delete`
-    f.description = `Remove one ${_util.one}`
+    f.method = `${_descriptor.name}.delete`
+    f.description = `Remove one ${_descriptor.one}`
     f.requires = {
-        [ _util.one ]: _util.validate,
+        [ _descriptor.one ]: _descriptor.validate,
     }
     f.accepts = {
     }

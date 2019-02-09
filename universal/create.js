@@ -29,57 +29,57 @@ const assert = require("assert")
 
 /**
  */
-const create = _util => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.create))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const create = _descriptor => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.create))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
 
             .make(sd => {
-                sd[_util.one] = _.d.clone(sd[_util.one] || {})
+                sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})
             })
-            .then(_util.create)
+            .then(_descriptor.create)
             .make(sd => {
-                assert.ok(sd[_util.one])
+                assert.ok(sd[_descriptor.one])
 
                 sd.table_schema.keys.forEach(key => {
-                    assert.ok(!_.is.Undefined(sd[_util.one][key]))
+                    assert.ok(!_.is.Undefined(sd[_descriptor.one][key]))
                 })
             })
-            .then(_util.scrub)
+            .then(_descriptor.scrub)
 
-            .add("json", sd => sd[_util.one])
+            .add("json", sd => sd[_descriptor.one])
             .then(mongodb.db.put)
 
             .make(sd => {
-                if (_util.primary_key) {
-                    sd[_util.primary_key] = sd[_util.one][_util.primary_key]
+                if (_descriptor.primary_key) {
+                    sd[_descriptor.primary_key] = sd[_descriptor.one][_descriptor.primary_key]
                 }
             })
-            .then(_util.updated)
+            .then(_descriptor.updated)
 
-            .end(done, self, _util.many, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.many, _descriptor.one, _descriptor.primary_key)
     })
 
-    f.method = `${_util.name}.create`
-    f.description = `Create one record ${_util.one}`
+    f.method = `${_descriptor.name}.create`
+    f.description = `Create one record ${_descriptor.one}`
     f.requires = {
     }
     f.accepts = {
-        [ _util.one ]: _.is.Object,
+        [ _descriptor.one ]: _.is.Object,
     }
     f.produces = {
-        [ _util.one ]: [ _util.validate, _.is.Null ],
-        [ _util.primary_key ]: [ _util.validate, _.is.Null ],
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
+        [ _descriptor.primary_key ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
@@ -87,9 +87,9 @@ const create = _util => {
      */
     f.p = value => _.promise((self, done) => {
         _.promise(self)
-            .add(_util.one, value)
+            .add(_descriptor.one, value)
             .then(f)
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
     return f

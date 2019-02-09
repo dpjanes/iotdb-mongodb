@@ -29,13 +29,13 @@ const assert = require("assert")
 
 /**
  */
-const list_value = (_util, _key, _index) => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const list_value = (_descriptor, _key, _index) => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
     assert(_.is.String(_key))
     assert(_.is.String(_index) || !_index)
 
@@ -43,7 +43,7 @@ const list_value = (_util, _key, _index) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
             .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
@@ -55,18 +55,18 @@ const list_value = (_util, _key, _index) => {
 
             .then(mongodb.db.all)
             .each({
-                method: _util.scrub,
-                inputs: `jsons:${_util.one}`,
-                outputs: _util.many,
-                output_selector: sd => sd[_util.one],
+                method: _descriptor.scrub,
+                inputs: `jsons:${_descriptor.one}`,
+                outputs: _descriptor.many,
+                output_selector: sd => sd[_descriptor.one],
                 output_filter: x => x,
             })
 
-            .end(done, self, _util.many, "cursor")
+            .end(done, self, _descriptor.many, "cursor")
     })
 
-    f.method = `${_util.name}.list_value`
-    f.description = `Return records ${_util.one} matching ${_key}`
+    f.method = `${_descriptor.name}.list_value`
+    f.description = `Return records ${_descriptor.one} matching ${_key}`
     f.requires = {
         [ _key ]: _.is.Atomic,
     }
@@ -75,7 +75,7 @@ const list_value = (_util, _key, _index) => {
         limit: _.is.Integer, 
     }
     f.produces = {
-        [ _util.many ]: _.is.Array,
+        [ _descriptor.many ]: _.is.Array,
         cursor: _.is.Dictionary,
     }
 
@@ -86,7 +86,7 @@ const list_value = (_util, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, _util.many, _util.primary_key)
+            .end(done, self, _descriptor.many, _descriptor.primary_key)
     })
 
     return f

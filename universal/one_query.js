@@ -29,36 +29,36 @@ const assert = require("assert")
 
 /**
  */
-const one_query = _util => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const one_query = _descriptor => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .add("query", self.query)
             .then(mongodb.db.get)
             .make(sd => {
-                sd[_util.one] = sd.json
+                sd[_descriptor.one] = sd.json
             })
-            .then(_util.scrub)
+            .then(_descriptor.scrub)
             .make(sd => {
-                if (_util.primary_key) {
-                    sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
+                if (_descriptor.primary_key) {
+                    sd[_descriptor.primary_key] = (sd.json || {})[_descriptor.primary_key] || null
                 }
             })
 
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
-    f.method = `${_util.name}.one_query`
-    f.description = `Return one record ${_util.one} matching query`
+    f.method = `${_descriptor.name}.one_query`
+    f.description = `Return one record ${_descriptor.one} matching query`
     f.requires = {
         query: _.is.Dictionary,
     }
@@ -66,8 +66,8 @@ const one_query = _util => {
         pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _util.one ]: [ _util.validate, _.is.Null ],
-        [ _util.primary_key ]: [ _util.validate, _.is.Null ],
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
+        [ _descriptor.primary_key ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
@@ -77,7 +77,7 @@ const one_query = _util => {
         _.promise(self)
             .add("query", query)
             .then(f)
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
     return f

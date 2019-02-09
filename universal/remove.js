@@ -28,43 +28,45 @@ const mongodb = require("..")
 const assert = require("assert")
 
 /**
+ *  Remove adds a "remove_key" to the record,
+ *  so it's hidden from future searches
  */
-const remove = _util => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.String(_util.remove_key))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const remove = _descriptor => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.String(_descriptor.remove_key))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .make(sd => {
-                sd.json = _.d.clone(_util.one)
-                sd.json[_util.remove_key] = _.timestamp.make()
+                sd.json = _.d.clone(_descriptor.one)
+                sd.json[_descriptor.remove_key] = _.timestamp.make()
 
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {
-                    sd.query[key] = sd[_util.one][key]
+                    sd.query[key] = sd[_descriptor.one][key]
                     assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
                 })
             })
 
-            .conditional(_util.remove, _util.remove)
+            .conditional(_descriptor.remove, _descriptor.remove)
             .then(mongodb.db.replace)
-            .conditional(_util.removed, _util.removed)
+            .conditional(_descriptor.removed, _descriptor.removed)
 
             .end(done, self)
     })
 
-    f.method = `${_util.name}.remove`
-    f.description = `Remove one ${_util.one}`
+    f.method = `${_descriptor.name}.remove`
+    f.description = `Remove one ${_descriptor.one}`
     f.requires = {
-        [ _util.one ]: _util.validate,
+        [ _descriptor.one ]: _descriptor.validate,
     }
     f.accepts = {
     }

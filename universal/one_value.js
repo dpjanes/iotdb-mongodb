@@ -29,13 +29,13 @@ const assert = require("assert")
 
 /**
  */
-const one_value = (_util, _key, _index) => {
-    assert(_.is.String(_util.name))
-    assert(_.is.String(_util.one))
-    assert(_.is.String(_util.many))
-    assert(_.is.Function(_util.scrub))
-    assert(_.is.Function(_util.setup))
-    assert(_.is.Function(_util.validate))
+const one_value = (_descriptor, _key, _index) => {
+    assert(_.is.String(_descriptor.name))
+    assert(_.is.String(_descriptor.one))
+    assert(_.is.String(_descriptor.many))
+    assert(_.is.Function(_descriptor.scrub))
+    assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
     assert(_.is.String(_key))
     assert(_.is.String(_index) || !_index)
 
@@ -43,7 +43,7 @@ const one_value = (_util, _key, _index) => {
         _.promise(self)
             .validate(f)
 
-            .then(_util.setup)
+            .then(_descriptor.setup)
             .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
@@ -51,28 +51,28 @@ const one_value = (_util, _key, _index) => {
             })
             .then(mongodb.db.get)
             .make(sd => {
-                sd[_util.one] = sd.json
+                sd[_descriptor.one] = sd.json
             })
-            .then(_util.scrub)
+            .then(_descriptor.scrub)
             .make(sd => {
-                if (_util.primary_key) {
-                    sd[_util.primary_key] = (sd.json || {})[_util.primary_key] || null
+                if (_descriptor.primary_key) {
+                    sd[_descriptor.primary_key] = (sd.json || {})[_descriptor.primary_key] || null
                 }
             })
 
-            .end(done, self, _util.many, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.many, _descriptor.one, _descriptor.primary_key)
     })
 
-    f.method = `${_util.name}.one_value`
-    f.description = `Return one record ${_util.one} matching ${_key}`
+    f.method = `${_descriptor.name}.one_value`
+    f.description = `Return one record ${_descriptor.one} matching ${_key}`
     f.requires = {
     }
     f.accepts = {
         pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _util.one ]: [ _util.validate, _.is.Null ],
-        [ _util.primary_key ]: [ _util.validate, _.is.Null ],
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
+        [ _descriptor.primary_key ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
@@ -82,7 +82,7 @@ const one_value = (_util, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, _util.one, _util.primary_key)
+            .end(done, self, _descriptor.one, _descriptor.primary_key)
     })
 
     return f
