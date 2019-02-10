@@ -45,7 +45,6 @@ const delete_ = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
 
             .make(sd => {
                 sd.query = {}

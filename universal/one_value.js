@@ -47,7 +47,6 @@ const one_value = (_descriptor, _key, _index) => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
             
             .make(sd => {
                 sd.query = {

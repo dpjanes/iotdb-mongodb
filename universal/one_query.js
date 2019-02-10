@@ -45,7 +45,6 @@ const one_query = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
 
             .add("query", self.query)
             .then(_util.fix_query(_descriptor))

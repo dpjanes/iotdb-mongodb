@@ -44,7 +44,6 @@ const any_all = (_descriptor, _index) => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
 
             .conditional(_index, _.promise.add("index_name", _index))
             .add("pager", 1)

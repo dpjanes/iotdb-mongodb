@@ -45,7 +45,6 @@ const save = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
 
             .then(_descriptor.scrub)
             .make(sd => {

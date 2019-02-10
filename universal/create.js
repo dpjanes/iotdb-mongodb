@@ -45,7 +45,6 @@ const create = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
 
             .make(sd => {
                 sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})

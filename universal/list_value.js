@@ -47,7 +47,6 @@ const list_value = (_descriptor, _key, _index) => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            .then(_util.post_setup)
             
             .conditional(_index, _.promise.add("index_name", _index))
             .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
