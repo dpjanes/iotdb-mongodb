@@ -36,6 +36,7 @@ describe("universal/remove-list_query", function() {
     before(function(done) {
         _.promise(self)
             .then(_util.initialize)
+            .then(_util.load)
             .make(sd => {
                 self = sd;
             })
@@ -75,6 +76,129 @@ describe("universal/remove-list_query", function() {
             }))
             .make(sd => {
                 assert.deepEqual(0, sd.movies.length)
+            })
+
+            .end(done)
+    })
+    it("query removed items (true)", function(done) {
+        const movie = {
+            movie_id: _.id.uuid.v4(),
+            title: "Avengers : Infinity War",
+            year: 2018,
+        }
+            
+        _.promise(self)
+            // create
+            .then(db.movie.create.p(movie))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2018)
+                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+            })
+
+            // remove it
+            .then(db.movie.remove)
+
+            // only removed movies
+            .then(db.movie.list.query.p({
+                removed: true,
+            }))
+            .make(sd => {
+                assert.ok(sd.movies.map(m => m.movie_id).indexOf(movie.movie_id) > -1)
+                assert.ok(!sd.movies.find(m => !m.removed))
+            })
+
+            .end(done)
+    })
+    it("query all items", function(done) {
+        const movie = {
+            movie_id: _.id.uuid.v4(),
+            title: "Avengers : Infinity War",
+            year: 2018,
+        }
+            
+        _.promise(self)
+            // create
+            .then(db.movie.create.p(movie))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2018)
+                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+            })
+
+            // remove it
+            .then(db.movie.remove)
+
+            // all movies, removed or not
+            .then(db.movie.list.query.p({
+                removed: null,
+            }))
+            .make(sd => {
+                assert.ok(sd.movies.map(m => m.movie_id).indexOf(movie.movie_id) > -1)
+                assert.ok(sd.movies.find(m => !m.removed))
+                assert.ok(sd.movies.find(m => m.removed))
+            })
+
+            .end(done)
+    })
+    it("query unremoved items", function(done) {
+        const movie = {
+            movie_id: _.id.uuid.v4(),
+            title: "Avengers : Infinity War",
+            year: 2018,
+        }
+            
+        _.promise(self)
+            // create
+            .then(db.movie.create.p(movie))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2018)
+                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+            })
+
+            // remove it
+            .then(db.movie.remove)
+
+            // unremoved only
+            .then(db.movie.list.query.p({
+                removed: false,
+            }))
+            .make(sd => {
+                assert.ok(sd.movies.map(m => m.movie_id).indexOf(movie.movie_id) === -1)
+                assert.ok(!sd.movies.find(m => m.removed))
+                assert.ok(sd.movies.length)
+            })
+
+            .end(done)
+    })
+    it("removed before now", function(done) {
+        const movie = {
+            movie_id: _.id.uuid.v4(),
+            title: "Avengers : Infinity War",
+            year: 2018,
+        }
+            
+        _.promise(self)
+            // create
+            .then(db.movie.create.p(movie))
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2018)
+                assert.deepEqual(sd.movie.title, "Avengers : Infinity War")
+            })
+
+            // remove it
+            .then(db.movie.remove)
+
+            // removed only
+            .then(db.movie.list.query.p({
+                removed: [ ">", _.timestamp.epoch() ],
+            }))
+            .make(sd => {
+                assert.ok(sd.movies.map(m => m.movie_id).indexOf(movie.movie_id) !== -1)
+                assert.ok(!sd.movies.find(m => !m.removed))
+                assert.ok(sd.movies.length)
             })
 
             .end(done)

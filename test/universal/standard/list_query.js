@@ -73,15 +73,12 @@ describe("universal/list_query", function() {
             _.promise(self)
                 .then(db.movie.list.query.p({
                     year: [ ">", 1900 ],
-                    title: [ "<=", "ZZZ" ],
                 }))
                 .make(sd => {
                     // console.log(sd.movies.map(m => [ m.year, m.title, ]))
 
                     assert.deepEqual(sd.movies.length, 88);
-                    // likely TingoDB breaking sort
-                    // assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
-                    // assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
+                    assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
                 .end(done)
         })

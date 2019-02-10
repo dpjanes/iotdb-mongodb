@@ -30,7 +30,7 @@ const _util = require("./_util")
 
 /**
  */
-const upsert = _descriptor => {
+const upsert = (_descriptor, _key) => {
     const mongodb = require("..")
 
     assert(_.is.String(_descriptor.name))
@@ -50,10 +50,16 @@ const upsert = _descriptor => {
 
             .make(sd => {
                 sd.query = {}
-                sd.table_schema.keys.forEach(key => {
-                    sd.query[key] = sd[_descriptor.one][key]
-                    assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
-                })
+
+                if (_key) {
+                    sd.query[_key] = sd[_descriptor.one][_key]
+                    assert.ok(!_.is.Undefined(sd.query[_key]), `${f.method}: expected to find key ${_key}`)
+                } else {
+                    sd.table_schema.keys.forEach(key => {
+                        sd.query[key] = sd[_descriptor.one][key]
+                        assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
+                    })
+                }
             })
             .then(mongodb.db.get)
             .make(sd => {

@@ -1,9 +1,9 @@
 /*
- *  universal/list_all.js
+ *  universal/count_query.js
  *
  *  David Janes
  *  IOTDB
- *  2019-01-07
+ *  2019-01-10
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -31,12 +31,13 @@ const _util = require("./_util")
 
 /**
  */
-const list_all = (_descriptor, _index) => {
+const count_query = (_descriptor, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
+    assert(_.is.Function(_descriptor.validate))
 
     const f = _.promise((self, done) => {
         _.promise(self)
@@ -45,43 +46,41 @@ const list_all = (_descriptor, _index) => {
             .then(_util.setup)
             .then(_descriptor.setup)
             .then(_util.post_setup)
-
-            .conditional(_index, _.promise.add("index_name", _index))
-            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
-            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
-
-            .add("query", {})
+            
+            .add("query", self.query)
             .then(_util.fix_query(_descriptor))
 
-            .then(mongodb.db.all)
-            .each({
-                method: _descriptor.scrub,
-                inputs: `jsons:${_descriptor.one}`,
-                outputs: _descriptor.many,
-                output_selector: sd => sd[_descriptor.one],
-                output_filter: x => x,
-            })
+            .conditional(_index, _.promise.add("index_name", _index))
+            .then(mongodb.db.count)
 
-            .end(done, self, _descriptor.many, "cursor")
+            .end(done, self, "count")
     })
 
-    f.method = `${_descriptor.name}.list_all`
-    f.description = `Return list_all ${_descriptor.many}`
+    f.method = `${_descriptor.name}.count_query`
+    f.description = `How many ${_descriptor.one} records match query`
     f.requires = {
+        query: _.is.Dictionary,
     }
     f.accepts = {
-        pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _descriptor.many ]: _.is.Array,
-        cursor: _.is.Dictionary,
+        count: _.is.Integer,
     }
+
+    /**
+     *  Parameterized
+     */
+    f.p = query => _.promise((self, done) => {
+        _.promise(self)
+            .add("query", query)
+            .then(f)
+            .end(done, self, "count")
+    })
 
     return f
 }
 
-
 /**
  *  API
  */
-exports.list_all = list_all
+exports.count_query = count_query

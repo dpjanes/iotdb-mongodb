@@ -75,6 +75,7 @@ const load = _.promise.make((self, done) => {
                 movie.release_date = movie.info.release_date || null;
                 movie.rating = movie.info.rating || null;
                 movie.rank = movie.info.rank || null;
+                movie.removed = movie.removed || null;
                 return movie;
             }),
             table_schema: movies_schema,

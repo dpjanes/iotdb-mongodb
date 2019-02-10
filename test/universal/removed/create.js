@@ -62,6 +62,19 @@ describe("universal/create", function() {
             })
             .end(done)
     })
+    it("works (empty)", function(done) {
+        _.promise(self)
+            .then(db.movie.create.p())
+            .make(sd => {
+                assert.ok(sd.movie)
+            })
+
+            .then(db.movie.list.all)
+            .make(sd => {
+                assert.deepEqual(sd.movies.length, 90)
+            })
+            .end(done)
+    })
     it("parameterized", function(done) {
         _.promise(self)
             .then(db.movie.create.p({

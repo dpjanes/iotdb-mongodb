@@ -47,20 +47,30 @@ exports.many = "ROWs"
 exports.removed_key = "ROW_id"
 
 /**
- *  You can do further setup here, e.g.
- *  change the table name
  */
 exports.setup = _.promise(self => {
     _.promise.validate(self, exports.setup)
+
+    self.table_schema = {
+        "name": "ROW",
+        "indexes": {},
+        "keys": [ "row_id" ],
+    }
+
 })
 
 exports.setup.method = "APPLICATION.db.ROW._descriptor.setup"
-exports.setup.description = `Setup database`
+exports.setup.description = `Setup table schema`
 exports.setup.requires = {
 }
 exports.setup.accepts = {
 }
 exports.setup.produces = {
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+        indexes: _.is.Dictionary,
+    },
 }
 
 /**

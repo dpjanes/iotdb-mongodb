@@ -1,5 +1,5 @@
 /*
- *  universal/list_all.js
+ *  universal/count_all.js
  *
  *  David Janes
  *  IOTDB
@@ -31,7 +31,7 @@ const _util = require("./_util")
 
 /**
  */
-const list_all = (_descriptor, _index) => {
+const count_all = (_descriptor, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -53,28 +53,19 @@ const list_all = (_descriptor, _index) => {
             .add("query", {})
             .then(_util.fix_query(_descriptor))
 
-            .then(mongodb.db.all)
-            .each({
-                method: _descriptor.scrub,
-                inputs: `jsons:${_descriptor.one}`,
-                outputs: _descriptor.many,
-                output_selector: sd => sd[_descriptor.one],
-                output_filter: x => x,
-            })
+            .then(mongodb.db.count)
 
-            .end(done, self, _descriptor.many, "cursor")
+            .end(done, self, "count")
     })
 
-    f.method = `${_descriptor.name}.list_all`
-    f.description = `Return list_all ${_descriptor.many}`
+    f.method = `${_descriptor.name}.count_all`
+    f.description = `How many ${_descriptor.one} records`
     f.requires = {
     }
     f.accepts = {
-        pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _descriptor.many ]: _.is.Array,
-        cursor: _.is.Dictionary,
+        count: _.is.Integer,
     }
 
     return f
@@ -84,4 +75,4 @@ const list_all = (_descriptor, _index) => {
 /**
  *  API
  */
-exports.list_all = list_all
+exports.count_all = count_all

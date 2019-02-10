@@ -58,13 +58,28 @@ setup.produces = {
 }
 
 /**
+ *  remove === undefined: no removes
+ *  remove === null: all items, including removes
+ *  remove === true: only removed items
+ *  remove === false: no removes
+ *  otherwise: pass through to query
  */
 const fix_query = (_descriptor, _query) => _.promise(self => {
     _.promise.validate(self, exports.fix_query)
 
     if (_descriptor.removed_key) {
         self.query = _.d.clone(self.query)
-        self.query[_descriptor.removed_key] = null
+
+        const removed_value = self.query[_descriptor.removed_key]
+        if (_.is.Null(removed_value)) {
+            delete self.query[_descriptor.removed_key]
+        } else if (_.is.Undefined(removed_value)) {
+            self.query[_descriptor.removed_key] = null
+        } else if (removed_value === true) {
+            self.query[_descriptor.removed_key] = [ "!=", null ]
+        } else if (removed_value === false) {
+            self.query[_descriptor.removed_key] = null
+        }
     }
 })
 
