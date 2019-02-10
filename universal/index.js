@@ -25,6 +25,9 @@
 module.exports = Object.assign(
     {},
     require("./create"),
+    require("./any_all"),
+    require("./any_query"),
+    require("./any_value"),
     require("./count_all"),
     require("./count_query"),
     require("./count_value"),

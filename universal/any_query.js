@@ -1,5 +1,5 @@
 /*
- *  universal/count_value.js
+ *  universal/any_query.js
  *
  *  David Janes
  *  IOTDB
@@ -31,15 +31,13 @@ const _util = require("./_util")
 
 /**
  */
-const count_value = (_descriptor, _key, _index) => {
+const any_query = (_descriptor, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
-    assert(_.is.String(_key))
-    assert(_.is.String(_index) || !_index)
 
     const f = _.promise((self, done) => {
         _.promise(self)
@@ -50,37 +48,38 @@ const count_value = (_descriptor, _key, _index) => {
             .then(_util.post_setup)
             
             .conditional(_index, _.promise.add("index_name", _index))
-            .make(sd => {
-                sd.query = {
-                    [ _key ]: sd[_key],
-                }
-            })
+            .add("pager", 1)
+            .add("query", self.query)
             .then(_util.fix_query(_descriptor))
 
+            .conditional(_index, _.promise.add("index_name", _index))
             .then(mongodb.db.count)
+            .make(sd => {
+                sd.exists = sd.count ? true : false
+            })
 
-            .end(done, self, "count")
+            .end(done, self, "exists")
     })
 
-    f.method = `${_descriptor.name}.count_value`
-    f.description = `How many ${_descriptor.one} records match ${_key}`
+    f.method = `${_descriptor.name}.any_query`
+    f.description = `Do any ${_descriptor.one} records match query`
     f.requires = {
-        [ _key ]: _.is.Atomic,
+        query: _.is.Dictionary,
     }
     f.accepts = {
     }
     f.produces = {
-        count: _.is.Integer,
+        exists: _.is.Boolean,
     }
 
     /**
      *  Parameterized
      */
-    f.p = value => _.promise((self, done) => {
+    f.p = query => _.promise((self, done) => {
         _.promise(self)
-            .add(_key, value)
+            .add("query", query)
             .then(f)
-            .end(done, self, "count")
+            .end(done, self, "exists")
     })
 
     return f
@@ -89,5 +88,4 @@ const count_value = (_descriptor, _key, _index) => {
 /**
  *  API
  */
-exports.count_value = count_value
-
+exports.any_query = any_query

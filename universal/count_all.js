@@ -3,7 +3,7 @@
  *
  *  David Janes
  *  IOTDB
- *  2019-01-07
+ *  2019-01-10
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -47,8 +47,6 @@ const count_all = (_descriptor, _index) => {
             .then(_util.post_setup)
 
             .conditional(_index, _.promise.add("index_name", _index))
-            .conditional(self.mongodb$limit, _.promise.add("query_limit", self.mongodb$limit))
-            .conditional(self.mongodb$start, _.promise.add("pager", self.mongodb$start))
 
             .add("query", {})
             .then(_util.fix_query(_descriptor))
@@ -59,7 +57,7 @@ const count_all = (_descriptor, _index) => {
     })
 
     f.method = `${_descriptor.name}.count_all`
-    f.description = `How many ${_descriptor.one} records`
+    f.description = `How many ${_descriptor.one} records are there`
     f.requires = {
     }
     f.accepts = {
