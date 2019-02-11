@@ -48,6 +48,20 @@ const movie = {
         movie_id: mongodb.universal.list_value(_descriptor, "movie_id"),
         title: mongodb.universal.list_value(_descriptor, "title"),
     },
+    count: {
+        all: mongodb.universal.count_all(_descriptor),
+        query: mongodb.universal.count_query(_descriptor, "year-title-index"),
+        year: mongodb.universal.count_value(_descriptor, "year"),
+        movie_id: mongodb.universal.count_value(_descriptor, "movie_id"),
+        title: mongodb.universal.count_value(_descriptor, "title"),
+    },
+    any: {
+        all: mongodb.universal.any_all(_descriptor),
+        query: mongodb.universal.any_query(_descriptor),
+        year: mongodb.universal.any_value(_descriptor, "year"),
+        movie_id: mongodb.universal.any_value(_descriptor, "movie_id"),
+        title: mongodb.universal.any_value(_descriptor, "title"),
+    },
 }
 
 movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")

@@ -50,7 +50,6 @@ const count_query = (_descriptor, _index) => {
             .add("query", self.query)
             .then(_util.fix_query(_descriptor))
 
-            .conditional(_index, _.promise.add("index_name", _index))
             .then(mongodb.db.count)
 
             .end(done, self, "count")
