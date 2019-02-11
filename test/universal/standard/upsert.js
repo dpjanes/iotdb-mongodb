@@ -113,4 +113,21 @@ describe("universal/upsert", function() {
             })
             .end(done)
     })
+    it("keyed version", function(done) {
+        _.promise(self)
+            .add("movie", {
+                "title": "Avengers : Endgame",
+                "year": 2019,
+                "review": "Looks great",
+            })
+            .then(db.movie.upsert.title)
+            .make(sd => {
+                assert.ok(sd.movie)
+                assert.deepEqual(sd.movie.year, 2019)
+                assert.deepEqual(sd.movie.title, "Avengers : Endgame")
+                assert.deepEqual(sd.movie.review, "Looks great")
+                assert.deepEqual(sd.movie.series, "MCU")
+            })
+            .end(done)
+    })
 })

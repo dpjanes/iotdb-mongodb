@@ -48,6 +48,8 @@ const movie = {
     },
 }
 
+movie.upsert.title = mongodb.universal.upsert(_descriptor, "title")
+
 movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
 movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
 
