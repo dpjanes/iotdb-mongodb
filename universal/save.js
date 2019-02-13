@@ -38,8 +38,11 @@ const save = _descriptor => {
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
+    assert(_.is.Dictionary(_descriptor.keys))
 
     const f = _.promise((self, done) => {
+        const now = _.timestamp.make()
+
         _.promise(self)
             .validate(f)
 
@@ -47,6 +50,8 @@ const save = _descriptor => {
             .then(_descriptor.setup)
 
             .then(_descriptor.scrub)
+            .then(_util.key(_descriptor, "updated", now))
+
             .make(sd => {
                 sd.json = sd[_descriptor.one]
 

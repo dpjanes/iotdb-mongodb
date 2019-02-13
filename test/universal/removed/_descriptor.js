@@ -40,9 +40,13 @@ exports.one = "movie"
 exports.many = "movies"
 
 /**
- *  The field that indicates removed
+ *  Special keys
  */
-exports.removed_key = "removed"
+exports.keys = {
+    removed: "removed", // hides record rather than delete
+    created: "created", // timestamp of creation
+    updated: "updated", // timestamp of last modification
+}
 
 /**
  */
@@ -154,7 +158,6 @@ exports.create = _.promise(self => {
 
     self.movie = _.d.clone(self.movie)
     self.movie.movie_id = self.movie.movie_id || _.id.uuid.v4()
-    self.movie.removed = self.movie.removed || null
 })
 
 exports.create.method = "APPLICATION.db.movie._util.create"

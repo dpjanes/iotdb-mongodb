@@ -30,28 +30,34 @@ const assert = require("assert")
 const _util = require("./_util")
 
 /**
- *  Remove adds a "removed_key" to the record,
+ *  Remove adds a "keys.removed" to the record,
  *  so it's hidden from future searches
  */
 const remove = _descriptor => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
-    assert(_.is.String(_descriptor.removed_key))
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
+    assert(_.is.Dictionary(_descriptor.keys))
+    assert(_.is.String(_descriptor.keys.removed))
 
     const f = _.promise((self, done) => {
+        const now = _.timestamp.make()
+
         _.promise(self)
             .validate(f)
 
             .then(_util.setup)
             .then(_descriptor.setup)
 
+            .then(_descriptor.scrub)
+            .then(_util.key(_descriptor, "removed", now))
+            .then(_util.key(_descriptor, "updated", now))
+
             .make(sd => {
                 sd.json = _.d.clone(sd[_descriptor.one])
-                sd.json[_descriptor.removed_key] = _.timestamp.make()
 
                 sd.query = {}
                 sd.table_schema.keys.forEach(key => {

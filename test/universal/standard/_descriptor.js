@@ -40,10 +40,13 @@ exports.one = "movie"
 exports.many = "movies"
 
 /**
- *  The name of the primary key, e.g. 
- *  when there is only one
+ *  Special keys
  */
-exports.primary_id = null
+exports.keys = {
+    removed: null, // "removed", // hides record rather than delete
+    created: null, // "created", // timestamp of creation
+    updated: null, // "updated", // timestamp of last modification
+}
 
 /**
  */

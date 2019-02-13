@@ -42,9 +42,13 @@ exports.one = "ROW"
 exports.many = "ROWs"
 
 /**
- *  The name of the primary key in a record
+ *  Special keys
  */
-exports.removed_key = "ROW_id"
+exports.keys = {
+    removed: null, // "removed", // hides record rather than delete
+    created: null, // "created", // timestamp of creation
+    updated: null, // "updated", // timestamp of last modification
+}
 
 /**
  */
@@ -54,9 +58,8 @@ exports.setup = _.promise(self => {
     self.table_schema = {
         "name": "ROW",
         "indexes": {},
-        "keys": [ "row_id" ],
+        "keys": [ "ROW_id" ],
     }
-
 })
 
 exports.setup.method = "APPLICATION.db.ROW._descriptor.setup"
@@ -85,9 +88,6 @@ exports.scrub = _.promise(self => {
     }
 
     self.ROW = _.d.clone(self.ROW)
-
-    // if you want a removed_key
-    // self.ROW.removed = null
 })
 
 exports.scrub.method = "APPLICATION.db.ROW._descriptor.scrub"
@@ -148,14 +148,9 @@ exports.create = _.promise(self => {
     _.promise.validate(self, exports.create)
 
     self.ROW = _.d.clone(self.ROW)
-    self.ROW.created = self.ROW.created || _.timestamp.make()
-    self.ROW.updated = self.ROW.updated || self.ROW.created
 
-    // if you want a single primary key
+    // if you want a single random primary key, do something like
     // self.ROW.ROW_id = self.ROW.ROW_id || _.id.uuid.v4()
-
-    // if you want a removed_key
-    // self.ROW.removed = null
 })
 
 exports.create.method = "APPLICATION.db.ROW._descriptor.create"

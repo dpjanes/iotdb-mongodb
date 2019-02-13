@@ -32,16 +32,6 @@ const _ = require("iotdb-helpers")
 const setup = _.promise(self => {
     _.promise.validate(self, exports.setup)
 
-    self.table_schema = { 
-        "name": exports.one,
-        "indexes": {},
-        "keys": [
-            exports.primary_id,
-        ]
-    } 
-
-    self.table_name = self.table_schema.name
-
     self.query = null
     self.query_limit = null
     self.index_name = null
@@ -67,18 +57,18 @@ setup.produces = {
 const fix_query = (_descriptor, _query) => _.promise(self => {
     _.promise.validate(self, exports.fix_query)
 
-    if (_descriptor.removed_key) {
+    if (_descriptor.keys.removed) {
         self.query = _.d.clone(self.query)
 
-        const removed_value = self.query[_descriptor.removed_key]
+        const removed_value = self.query[_descriptor.keys.removed]
         if (_.is.Null(removed_value)) {
-            delete self.query[_descriptor.removed_key]
+            delete self.query[_descriptor.keys.removed]
         } else if (_.is.Undefined(removed_value)) {
-            self.query[_descriptor.removed_key] = null
+            self.query[_descriptor.keys.removed] = null
         } else if (removed_value === true) {
-            self.query[_descriptor.removed_key] = [ "!=", null ]
+            self.query[_descriptor.keys.removed] = [ "!=", null ]
         } else if (removed_value === false) {
-            self.query[_descriptor.removed_key] = null
+            self.query[_descriptor.keys.removed] = null
         }
     }
 })
@@ -94,9 +84,31 @@ fix_query.produces = {
     query: {},
 }
 
+/**
+ */
+const key = (_descriptor, _key, _value) => _.promise(self => {
+    _.promise.validate(self, exports.key)
+
+    if (!_descriptor.keys[_key]) {
+        return
+    }
+
+    self[_descriptor.one][_key] = _value
+})
+
+key.method = "universal._util/key"
+key.description = `Set a special key/value`
+key.requires = {
+}
+key.accepts = {
+}
+key.produces = {
+}
+
 
 /**
  *  API
  */
 exports.setup = setup
 exports.fix_query = fix_query
+exports.key = key

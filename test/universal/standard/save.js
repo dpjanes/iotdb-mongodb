@@ -52,7 +52,7 @@ describe("universal/save", function() {
             .then(db.movie.create)
             .make(sd => {
                 assert.ok(sd.movie)
-                assert.ok(!sd.movie.rating)
+                assert.ok(_.is.Undefined(sd.movie.rating))
             })
 
             .make(sd => {

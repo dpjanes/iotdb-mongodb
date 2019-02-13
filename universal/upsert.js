@@ -39,6 +39,7 @@ const upsert = (_descriptor, _key) => {
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
+    assert(_.is.Dictionary(_descriptor.keys))
 
     const f = _.promise((self, done) => {
         _.promise(self)
