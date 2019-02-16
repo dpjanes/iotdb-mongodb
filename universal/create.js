@@ -67,6 +67,7 @@ const create = _descriptor => {
                     assert.ok(!_.is.Undefined(sd.json[key]))
                 })
             })
+            .conditional(_descriptor.scrub_json, _descriptor.scrub_json)
             .then(mongodb.db.put)
             .conditional(_descriptor.updated, _descriptor.updated)
 

@@ -77,7 +77,8 @@ exports.setup.produces = {
 }
 
 /**
- *  This cleans up one record
+ *  This cleans up one record, usually
+ *  used for upping versions
  */
 exports.scrub = _.promise(self => {
     _.promise.validate(self, exports.scrub)
@@ -99,6 +100,29 @@ exports.scrub.accepts = {
 }
 exports.scrub.produces = {
     ROW: exports.validate,
+}
+
+/**
+ *  This is used to scrub a JSON record 
+ *  immediately before writing to the database,
+ *  e.g. to remove fields that should never
+ *  be saved.
+ *
+ *  Optional.
+ */
+exports.scrub_json = _.promise(self => {
+    _.promise.validate(self, exports.scrub_json)
+})
+
+exports.scrub_json.method = "APPLICATION.db.ROW._descriptor.scrub_json"
+exports.scrub_json.description = `Clean up JSON before writing to disk`
+exports.scrub_json.requires = {
+}
+exports.scrub_json.accepts = {
+    json: _.is.Dictionary,
+}
+exports.scrub_json.produces = {
+    json: _.is.JSON,
 }
 
 /**
