@@ -53,11 +53,11 @@ const create = _descriptor => {
                 sd[_descriptor.one] = _.d.clone(sd[_descriptor.one] || {})
             })
 
-            .then(_descriptor.create)
-            .then(_descriptor.scrub)
             .then(_util.key(_descriptor, "created", now))
             .then(_util.key(_descriptor, "updated", now))
             .then(_util.key(_descriptor, "removed", null))
+            .then(_descriptor.create)
+            .then(_descriptor.scrub)
 
             .make(sd => {
                 sd.json = sd[_descriptor.one]
