@@ -45,6 +45,10 @@ setup.requires = {
 setup.accepts = {
 }
 setup.produces = {
+    query: _.is.Null,
+    query_limit: _.is.Null,
+    index_name: _.is.Null,
+    projection: _.is.Null,
 }
 
 /**

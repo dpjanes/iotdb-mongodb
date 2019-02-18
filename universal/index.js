@@ -24,6 +24,7 @@
 
 module.exports = Object.assign(
     {},
+    require("./configure"),
     require("./create"),
     require("./any_all"),
     require("./any_query"),
@@ -34,6 +35,7 @@ module.exports = Object.assign(
     require("./list_all"),
     require("./list_query"),
     require("./list_value"),
+    require("./one_keys"),
     require("./one_value"),
     require("./one_query"),
     require("./delete"),
