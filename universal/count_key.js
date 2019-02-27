@@ -1,9 +1,9 @@
 /*
- *  universal/one_query.js
+ *  universal/count_key.js
  *
  *  David Janes
  *  IOTDB
- *  2019-02-08
+ *  2019-02-10
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -31,13 +31,15 @@ const _util = require("./_util")
 
 /**
  */
-const one_query = _descriptor => {
+const count_key = (_descriptor, _key, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
     assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
+    assert(_.is.String(_key))
+    assert(_.is.String(_index) || !_index)
 
     const f = _.promise((self, done) => {
         _.promise(self)
@@ -45,38 +47,39 @@ const one_query = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
-
-            .add("query", self.query)
+            
+            .conditional(_index, _.promise.add("index_name", _index))
+            .make(sd => {
+                sd.query = {
+                    [ _key ]: sd[_key],
+                }
+            })
             .then(_util.fix_query(_descriptor))
 
-            .then(mongodb.db.get)
-            .make(sd => {
-                sd[_descriptor.one] = sd.json
-            })
+            .then(mongodb.db.count)
 
-            .end(done, self, _descriptor.one)
+            .end(done, self, "count")
     })
 
-    f.method = `${_descriptor.name}.one_query`
-    f.description = `Return one record ${_descriptor.one} matching query`
+    f.method = `${_descriptor.name}.count_key`
+    f.description = `How many ${_descriptor.one} records match ${_key}`
     f.requires = {
-        query: _.is.Dictionary,
+        [ _key ]: _.is.Atomic,
     }
     f.accepts = {
-        pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
+        count: _.is.Integer,
     }
 
     /**
      *  Parameterized
      */
-    f.p = query => _.promise((self, done) => {
+    f.p = value => _.promise((self, done) => {
         _.promise(self)
-            .add("query", query)
+            .add(_key, value)
             .then(f)
-            .end(done, self, _descriptor.one)
+            .end(done, self, "count")
     })
 
     return f
@@ -85,4 +88,5 @@ const one_query = _descriptor => {
 /**
  *  API
  */
-exports.one_query = one_query
+exports.count_key = count_key
+

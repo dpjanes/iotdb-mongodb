@@ -1,5 +1,5 @@
 /*
- *  universal/count_value.js
+ *  universal/any_key.js
  *
  *  David Janes
  *  IOTDB
@@ -31,7 +31,7 @@ const _util = require("./_util")
 
 /**
  */
-const count_value = (_descriptor, _key, _index) => {
+const any_key = (_descriptor, _key, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -57,19 +57,22 @@ const count_value = (_descriptor, _key, _index) => {
             .then(_util.fix_query(_descriptor))
 
             .then(mongodb.db.count)
+            .make(sd => {
+                sd.exists = sd.count ? true : false
+            })
 
-            .end(done, self, "count")
+            .end(done, self, "exists")
     })
 
-    f.method = `${_descriptor.name}.count_value`
-    f.description = `How many ${_descriptor.one} records match ${_key}`
+    f.method = `${_descriptor.name}.any_key`
+    f.description = `Do any ${_descriptor.one} records match ${_key}`
     f.requires = {
         [ _key ]: _.is.Atomic,
     }
     f.accepts = {
     }
     f.produces = {
-        count: _.is.Integer,
+        exists: _.is.Boolean,
     }
 
     /**
@@ -79,7 +82,7 @@ const count_value = (_descriptor, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, "count")
+            .end(done, self, "exists")
     })
 
     return f
@@ -88,5 +91,5 @@ const count_value = (_descriptor, _key, _index) => {
 /**
  *  API
  */
-exports.count_value = count_value
+exports.any_key = any_key
 

@@ -1,9 +1,9 @@
 /*
- *  universal/any_value.js
+ *  universal/by_key.js
  *
  *  David Janes
  *  IOTDB
- *  2019-02-10
+ *  2019-02-07
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -31,7 +31,7 @@ const _util = require("./_util")
 
 /**
  */
-const any_value = (_descriptor, _key, _index) => {
+const by_key = (_descriptor, _key, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -48,31 +48,31 @@ const any_value = (_descriptor, _key, _index) => {
             .then(_util.setup)
             .then(_descriptor.setup)
             
-            .conditional(_index, _.promise.add("index_name", _index))
             .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
                 }
             })
             .then(_util.fix_query(_descriptor))
-
-            .then(mongodb.db.count)
+            .then(mongodb.db.get)
             .make(sd => {
-                sd.exists = sd.count ? true : false
+                sd[_descriptor.one] = sd.json
             })
+            .then(_descriptor.scrub)
 
-            .end(done, self, "exists")
+            .end(done, self, _descriptor.one)
     })
 
-    f.method = `${_descriptor.name}.any_value`
-    f.description = `Do any ${_descriptor.one} records match ${_key}`
+    f.method = `${_descriptor.name}.by_key`
+    f.description = `Return one record ${_descriptor.one} matching ${_key}`
     f.requires = {
         [ _key ]: _.is.Atomic,
     }
     f.accepts = {
+        pager: [ _.is.Integer, _.is.String ],
     }
     f.produces = {
-        exists: _.is.Boolean,
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
@@ -82,7 +82,7 @@ const any_value = (_descriptor, _key, _index) => {
         _.promise(self)
             .add(_key, value)
             .then(f)
-            .end(done, self, "exists")
+            .end(done, self, _descriptor.one)
     })
 
     return f
@@ -91,5 +91,5 @@ const any_value = (_descriptor, _key, _index) => {
 /**
  *  API
  */
-exports.any_value = any_value
+exports.by_key = by_key
 
