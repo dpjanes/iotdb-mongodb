@@ -30,7 +30,7 @@ const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/remove-any_query", function() {
+describe("universal/removed/any_query", function() {
     let self = {}
 
     before(function(done) {

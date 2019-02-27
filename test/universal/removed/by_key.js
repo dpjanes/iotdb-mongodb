@@ -1,5 +1,5 @@
 /**
- *  test/universal/removed/one_remove.js
+ *  test/universal/removed/by_remove.js
  *
  *  David Janes
  *  IOTDB
@@ -30,7 +30,7 @@ const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/remove-one_value", function() {
+describe("universal/removed/by_key", function() {
     let self = {}
 
     before(function(done) {
@@ -42,7 +42,7 @@ describe("universal/remove-one_value", function() {
             .end(done)
     })
 
-    it("one_value", function(done) {
+    it("by_key", function(done) {
         const movie = {
             movie_id: _.id.uuid.v4(),
             title: "Avengers : Infinity War",

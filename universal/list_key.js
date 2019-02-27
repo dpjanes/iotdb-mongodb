@@ -1,5 +1,5 @@
 /*
- *  universal/list_value.js
+ *  universal/list_key.js
  *
  *  David Janes
  *  IOTDB
@@ -31,7 +31,7 @@ const _util = require("./_util")
 
 /**
  */
-const list_value = (_descriptor, _key, _index) => {
+const list_key = (_descriptor, _key, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -71,7 +71,7 @@ const list_value = (_descriptor, _key, _index) => {
             .end(done, self, _descriptor.many, "cursor")
     })
 
-    f.method = `${_descriptor.name}.list_value`
+    f.method = `${_descriptor.name}.list_key`
     f.description = `Return records ${_descriptor.one} matching ${_key}`
     f.requires = {
         [ _key ]: _.is.Atomic,
@@ -101,5 +101,5 @@ const list_value = (_descriptor, _key, _index) => {
 /**
  *  API
  */
-exports.list_value = list_value
+exports.list_key = list_key
 

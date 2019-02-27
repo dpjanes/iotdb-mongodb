@@ -37,38 +37,38 @@ const movie = {
     upsert: mongodb.universal.upsert(_descriptor),
     remove: mongodb.universal.remove(_descriptor),
     by: {
-        query: mongodb.universal.one_query(_descriptor),
-        title: mongodb.universal.one_value(_descriptor, "title"),
-        movie_id: mongodb.universal.one_value(_descriptor, "movie_id"),
+        query: mongodb.universal.by_query(_descriptor),
+        title: mongodb.universal.by_key(_descriptor, "title"),
+        movie_id: mongodb.universal.by_key(_descriptor, "movie_id"),
     },
     list: {
         all: mongodb.universal.list_all(_descriptor),
         query: mongodb.universal.list_query(_descriptor, "year-title-index"),
-        year: mongodb.universal.list_value(_descriptor, "year"),
-        movie_id: mongodb.universal.list_value(_descriptor, "movie_id"),
-        title: mongodb.universal.list_value(_descriptor, "title"),
+        year: mongodb.universal.list_key(_descriptor, "year"),
+        movie_id: mongodb.universal.list_key(_descriptor, "movie_id"),
+        title: mongodb.universal.list_key(_descriptor, "title"),
     },
     count: {
         all: mongodb.universal.count_all(_descriptor),
         query: mongodb.universal.count_query(_descriptor, "year-title-index"),
-        year: mongodb.universal.count_value(_descriptor, "year"),
-        movie_id: mongodb.universal.count_value(_descriptor, "movie_id"),
-        title: mongodb.universal.count_value(_descriptor, "title"),
+        year: mongodb.universal.count_key(_descriptor, "year"),
+        movie_id: mongodb.universal.count_key(_descriptor, "movie_id"),
+        title: mongodb.universal.count_key(_descriptor, "title"),
     },
     any: {
         all: mongodb.universal.any_all(_descriptor),
         query: mongodb.universal.any_query(_descriptor),
-        year: mongodb.universal.any_value(_descriptor, "year"),
-        movie_id: mongodb.universal.any_value(_descriptor, "movie_id"),
-        title: mongodb.universal.any_value(_descriptor, "title"),
+        year: mongodb.universal.any_key(_descriptor, "year"),
+        movie_id: mongodb.universal.any_key(_descriptor, "movie_id"),
+        title: mongodb.universal.any_key(_descriptor, "title"),
     },
 }
 
 movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
 movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
 
-movie.list.year.title_up = mongodb.universal.list_value(_descriptor, "year", "year-title-index")
-movie.list.year.title_down = mongodb.universal.list_value(_descriptor, "year", "year--title-index")
+movie.list.year.title_up = mongodb.universal.list_key(_descriptor, "year", "year-title-index")
+movie.list.year.title_down = mongodb.universal.list_key(_descriptor, "year", "year--title-index")
 
 module.exports = {
     movie: movie,

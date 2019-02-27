@@ -1,5 +1,5 @@
 /**
- *  test/universal/removed/one_query.js
+ *  test/universal/removed/list_key.js
  *
  *  David Janes
  *  IOTDB
@@ -30,7 +30,7 @@ const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/remove-one_query", function() {
+describe("universal/removed/list_key", function() {
     let self = {}
 
     before(function(done) {
@@ -42,7 +42,7 @@ describe("universal/remove-one_query", function() {
             .end(done)
     })
 
-    it("one_query", function(done) {
+    it("list_key", function(done) {
         const movie = {
             movie_id: _.id.uuid.v4(),
             title: "Avengers : Infinity War",
@@ -59,22 +59,18 @@ describe("universal/remove-one_query", function() {
             })
 
             // make sure it exists
-            .then(db.movie.by.query.p({
-                movie_id: movie.movie_id,
-            }))
+            .then(db.movie.list.movie_id.p(movie.movie_id))
             .make(sd => {
-                assert.ok(_.d.is.subset(movie, sd.movie))
+                assert.ok(_.d.is.subset(movie, sd.movies[0]))
             })
 
             // remove it
             .then(db.movie.remove)
 
             // it should be gone 
-            .then(db.movie.by.query.p({
-                movie_id: movie.movie_id,
-            }))
+            .then(db.movie.list.movie_id.p(movie.movie_id))
             .make(sd => {
-                assert.deepEqual(null, sd.movie)
+                assert.deepEqual(0, sd.movies.length)
             })
 
             .end(done)

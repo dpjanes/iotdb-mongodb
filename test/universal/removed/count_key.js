@@ -1,5 +1,5 @@
 /**
- *  test/universal/removed/count_value.js
+ *  test/universal/removed/count_key.js
  *
  *  David Janes
  *  IOTDB
@@ -30,7 +30,7 @@ const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/remove-count_value", function() {
+describe("universal/removed/count_key", function() {
     let self = {}
 
     before(function(done) {
@@ -42,7 +42,7 @@ describe("universal/remove-count_value", function() {
             .end(done)
     })
 
-    it("count_value", function(done) {
+    it("count_key", function(done) {
         const movie = {
             movie_id: _.id.uuid.v4(),
             title: "Avengers : Infinity War",

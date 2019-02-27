@@ -37,14 +37,14 @@ const movie = {
     upsert: mongodb.universal.upsert(_descriptor),
     // remove: mongodb.universal.remove(_descriptor),
     by: {
-        query: mongodb.universal.one_query(_descriptor),
-        title: mongodb.universal.one_value(_descriptor, "title"),
+        query: mongodb.universal.by_query(_descriptor),
+        title: mongodb.universal.by_key(_descriptor, "title"),
     },
     list: {
         all: mongodb.universal.list_all(_descriptor),
         query: mongodb.universal.list_query(_descriptor, "year-title-index"),
-        year: mongodb.universal.list_value(_descriptor, "year"),
-        title: mongodb.universal.list_value(_descriptor, "title"),
+        year: mongodb.universal.list_key(_descriptor, "year"),
+        title: mongodb.universal.list_key(_descriptor, "title"),
     },
 }
 
@@ -53,8 +53,8 @@ movie.upsert.title = mongodb.universal.upsert(_descriptor, "title")
 movie.list.all.year_up = mongodb.universal.list_all(_descriptor, "year-title-index")
 movie.list.all.year_down = mongodb.universal.list_all(_descriptor, "-year-title-index")
 
-movie.list.year.title_up = mongodb.universal.list_value(_descriptor, "year", "year-title-index")
-movie.list.year.title_down = mongodb.universal.list_value(_descriptor, "year", "year--title-index")
+movie.list.year.title_up = mongodb.universal.list_key(_descriptor, "year", "year-title-index")
+movie.list.year.title_down = mongodb.universal.list_key(_descriptor, "year", "year--title-index")
 
 module.exports = {
     movie: movie,

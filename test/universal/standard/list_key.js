@@ -1,5 +1,5 @@
 /**
- *  test/universal/standard/list_value.js
+ *  test/universal/standard/list_key.js
  *
  *  David Janes
  *  IOTDB

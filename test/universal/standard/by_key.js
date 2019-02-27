@@ -1,5 +1,5 @@
 /**
- *  test/universal/standard/one_query.js
+ *  test/universal/standard/by_key.js
  *
  *  David Janes
  *  IOTDB
@@ -30,7 +30,7 @@ const _util = require("../../_util")
 
 const db = require("./_db")
 
-describe("universal/one_query", function() {
+describe("universal/by_key", function() {
     let self = {}
 
     before(function(done) {
@@ -46,11 +46,8 @@ describe("universal/one_query", function() {
     describe("good", function() {
         it("exists", function(done) {
             _.promise(self)
-                .add("query", {
-                    "year": 2014,
-                    "title": "Rush",
-                })
-                .then(db.movie.by.query)
+                .add("title", "Rush")
+                .then(db.movie.by.title)
                 .make(sd => {
                     assert.ok(sd.movie)
                     assert.deepEqual(sd.movie.year, 2014)
@@ -60,10 +57,7 @@ describe("universal/one_query", function() {
         })
         it("parameterized", function(done) {
             _.promise(self)
-                .then(db.movie.by.query.p({
-                    "year": 2014,
-                    "title": "Rush",
-                }))
+                .then(db.movie.by.title.p("Rush"))
                 .make(sd => {
                     assert.ok(sd.movie)
                     assert.deepEqual(sd.movie.year, 2014)
@@ -73,11 +67,7 @@ describe("universal/one_query", function() {
         })
         it("does not exists", function(done) {
             _.promise(self)
-                .add("query", {
-                    "year": 2014,
-                    "title": "Rush XXX",
-                })
-                .then(db.movie.load)
+                .then(db.movie.by.title.p("Rush XXX"))
                 .make(sd => {
                     assert.deepEqual(sd.movie, null)
                 })
