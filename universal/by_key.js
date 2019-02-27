@@ -41,23 +41,44 @@ const by_key = (_descriptor, _key, _index) => {
     assert(_.is.String(_key))
     assert(_.is.String(_index) || !_index)
 
+    const _with_index = _.promise((self, done) => {
+        throw new Error("not implemented")
+        _.promise(self)
+            .add({
+                index_name: _index,
+                query_limit: 1,
+            })
+            .then(_util.fix_query(_descriptor))
+
+            .then(mongodb.db.all)
+            .add(_descriptor.one, sd => sd.jsons[0] || null)
+
+            .end(done, self, _descriptor.one)
+    })
+
+    const _without_index = _.promise((self, done) => {
+        _.promise(self)
+            .then(mongodb.db.get)
+            .add(_descriptor.one, sd => sd.json)
+
+            .end(done, self, _descriptor.one)
+    })
+
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
 
             .then(_util.setup)
             .then(_descriptor.setup)
-            
+
             .make(sd => {
                 sd.query = {
                     [ _key ]: sd[_key],
                 }
             })
             .then(_util.fix_query(_descriptor))
-            .then(mongodb.db.get)
-            .make(sd => {
-                sd[_descriptor.one] = sd.json
-            })
+            
+            .conditional(_index, _with_index, _without_index)
             .then(_descriptor.scrub)
 
             .end(done, self, _descriptor.one)
