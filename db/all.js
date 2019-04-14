@@ -31,6 +31,11 @@ const logger = require("../logger")(__filename)
 const mongo = require("../lib")
 const util = require("../lib/util")
 
+// https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+function _escape_re(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+
 /**
  *  Make a mongo looking query from a DynamoDB one
  */
@@ -110,6 +115,23 @@ const _make_query = _query => {
                 case "∈":
                     q = {
                         "$in": parts[position + 1]
+                    }
+
+                    position += 2;
+                    break;
+
+                case "find":
+                    q = {
+                        "$regex": _escape_re(parts[position + 1]),
+                        "$options": "i",
+                    }
+
+                    position += 2;
+                    break;
+
+                case "regex":
+                    q = {
+                        "$regex": parts[position + 1]
                     }
 
                     position += 2;
