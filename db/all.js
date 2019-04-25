@@ -172,8 +172,8 @@ const all = _.promise.make((self, done) => {
     const query = _make_query(self.query)
 
     let sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
-    if (self.query$sort) {
-        sort = _.d.list(self, "query$sort", []).map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
+    if (self.query_sort) {
+        sort = _.d.list(self, "query_sort", []).map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     }
 
     /*
