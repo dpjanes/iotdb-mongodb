@@ -35,7 +35,7 @@ _.promise({
     .then(mongodb.collection)
     .then(mongodb.count)
     .then(mongodb.close)
-    .then(sd => {
+    .make(sd => {
         console.log("+", "count", sd.count)
     })
     .catch(error => {
