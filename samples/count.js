@@ -20,26 +20,23 @@
  *  limitations under the License.
  */
 
-"use strict";
-const mongo = require("..")
-const _ = require("iotdb-helpers");
+"use strict"
 
-const assert = require("assert");
+const mongodb = require("..")
+const _ = require("iotdb-helpers")
 
-const mongodb = require('mongodb');
+const assert = require("assert")
 
-_.promise.make({
+_.promise({
     mongodbd: require("./mongodbd.json"),
     table_name: "test1",
 })
-    .then(mongo.initialize)
-    .then(mongo.collection)
-
-    .then(mongo.count)
+    .then(mongodb.initialize)
+    .then(mongodb.collection)
+    .then(mongodb.count)
+    .then(mongodb.close)
     .then(sd => {
         console.log("+", "count", sd.count)
-
-        process.exit()
     })
     .catch(error => {
         console.log("#", error)
