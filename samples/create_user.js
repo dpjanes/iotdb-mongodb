@@ -1,9 +1,10 @@
 /*
- *  lib/close.js
+ *  samples/create_user.js
  *
  *  David Janes
  *  IOTDB.org
- *  2018-03-04
+ *  2019-05-01 
+ *  🌧→💐
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -22,36 +23,23 @@
 
 "use strict"
 
+const mongodb = require("..")
 const _ = require("iotdb-helpers")
 
-/**
- */
-const close = _.promise((self, done) => {
-    _.promise.validate(self, close)
+const assert = require("assert")
 
-    if (!self.mongodb.__client) {
-        return done(null, self)
-    }
-
-    self.mongodb.__client.close(() => {
-        done(null, self)
-    })
+_.promise({
+    mongodbd: require("./mongodbd.json"),
+    user: {
+        username: "test1",
+        password: "test1-000"
+    },
 })
-
-close.method = "close"
-close.description = `
-    Close database.
-
-    Can be called multiple times, etc..
-    It will never report an error`
-close.requires = {
-}
-close.accepts = {
-}
-close.produces = {
-}
-
-/**
- *  API
- */
-exports.close = close
+    .then(mongodb.initialize)
+    .then(mongodb.create_user.readwrite)
+    .then(mongodb.close)
+    .catch(error => {
+        delete error.self
+        console.log("#", error)
+        process.exit()
+    })
