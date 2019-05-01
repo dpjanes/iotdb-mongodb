@@ -167,6 +167,7 @@ const all = _.promise.make((self, done) => {
     let keys = self.table_schema.keys;
     if (self.index_name) {
         keys = self.table_schema.indexes[self.index_name]
+        assert.ok(keys, `${method}: no index named ${self.index_name}`)
     }
 
     const query = _make_query(self.query)
