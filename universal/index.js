@@ -36,6 +36,7 @@ module.exports = Object.assign(
     require("./count_key"),
     require("./create"),
     require("./delete"),
+    require("./ensure_schema"),
     require("./list_all"),
     require("./list_query"),
     require("./list_key"),

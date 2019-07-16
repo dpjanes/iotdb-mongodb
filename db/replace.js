@@ -39,16 +39,10 @@ const util = require("../lib/util")
  *  a NotFound error is thrown.
  */
 const replace = _.promise((self, done) => {
-    const method = "db.replace";
-
-    // console.log("HERE:XXX", require("util").inspect(self.json, {showHidden: false, depth: null}))
-
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
+    _.promise.validate(self, replace)
 
     logger.trace({
-        method: method,
+        method: replace.method,
     }, "called")
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
@@ -82,28 +76,19 @@ const replace = _.promise((self, done) => {
                 done(null, self);
             })
         })
-        /*
-        .then(_.promise(sd => {
-            sd.mongo_collection.findAndModify(
-              query, sort, json, { w: 1, upsert: false, }, 
-              (error, result) => {
-                if (!result) {
-                    const nerror = new errors.NotFound()
-                    nerror.error = error
-                    
-                    return done(nerror)
-                } else if (result._id) {
-                } else if (!result.value) {
-                    return done(new errors.NotFound())
-                }
-
-                done(null, self);
-            })
-            return null;
-        }))
-        */
         .catch(done)
 })
+
+replace.method = "db.replace"
+replace.requires = {
+    mongodb: _.is.Dictionary,
+    json: _.is.JSON,
+    table_schema: _.is.Dictionary,
+}
+replace.accepts = {
+}
+replace.produces = {
+}
 
 /**
  *  API
