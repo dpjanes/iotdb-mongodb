@@ -26,14 +26,9 @@ const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
+const mongodb = require("../lib")
 
 /**
- *  Requires: self.json, self.table_schema
- *  Produces: N/A
- *
- *  Replace an existing entry. If it does not exist,
- *  a NotFound error is thrown.
  */
 const patch = _.promise((self, done) => {
     _.promise.validate(self, patch)
@@ -49,10 +44,12 @@ const patch = _.promise((self, done) => {
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)
 
-    const json = _.d.clone.deep(self.json)
+    const json = {
+        "$set": _.d.clone.deep(self.json),
+    }
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection)
         .make(sd => {
             sd.mongo_collection.update(query, json, {
                 upsert: false,

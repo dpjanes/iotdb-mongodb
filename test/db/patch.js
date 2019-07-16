@@ -1,9 +1,9 @@
 /**
- *  test/db/replace.js
+ *  test/db/patch.js
  *
  *  David Janes
  *  IOTDB
- *  2017-12-30
+ *  2019-07-16
  *
  *  Copyright [2013-2019] David P. Janes
  *
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("db/replace", function() {
+describe("db.patch", function() {
     let self = {}
 
     before(function(done) {
@@ -49,7 +49,7 @@ describe("db/replace", function() {
                     "year": 2014,
                     "title": "Rush XXX",
                 })
-                .then(mongodb.db.replace)
+                .then(mongodb.db.patch)
                 .then(_util.auto_fail(done))
                 .catch(_util.ok_error(done, 404))
         })
@@ -58,7 +58,7 @@ describe("db/replace", function() {
                 .add("json", {
                     "year": 2014,
                 })
-                .then(mongodb.db.replace)
+                .then(mongodb.db.patch)
                 .then(_util.auto_fail(done))
                 .catch(_util.ok_error(done, 403))
         })
@@ -80,7 +80,7 @@ describe("db/replace", function() {
                     "title": "Rush",
                     "description": "Never going to give you up",
                 })
-                .then(mongodb.db.replace)
+                .then(mongodb.db.patch)
                 .make(sd => {
                     assert.ok(sd.json)
                 })
@@ -92,8 +92,9 @@ describe("db/replace", function() {
                 .then(mongodb.db.get)
                 .make(sd => {
                     assert.deepEqual(sd.json.description, "Never going to give you up")
-                    assert.ok(_.is.Undefined(sd.json.release_date))
-                    assert.ok(_.is.Undefined(sd.json.rating))
+                    assert.deepEqual(sd.json.release_date, "2014-09-02T00:00:00Z")
+                    assert.deepEqual(sd.json.rating, 8.3)
+
                 })
 
                 .end(done)
