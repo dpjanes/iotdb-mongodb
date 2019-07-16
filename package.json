@@ -8,10 +8,10 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.1.8", 
-        "iotdb-fs": "~1.0.37", 
-        "iotdb-helpers": "~3.3.9", 
+        "iotdb-fs": "~1.0.38", 
+        "iotdb-helpers": "~3.3.10", 
         "minimist": "~1.2.0", 
-        "mongodb": "~3.2.6"
+        "mongodb": "~3.2.7"
     }, 
     "description": "POP wrapper for MongoDB", 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
@@ -30,5 +30,5 @@
         "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "1.3.5"
+    "version": "1.3.6"
 }
