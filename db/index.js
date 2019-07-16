@@ -1,5 +1,5 @@
 /*
- *  index.js
+ *  db/index.js
  *
  *  David Janes
  *  IOTDB.org
@@ -29,6 +29,7 @@ module.exports = Object.assign(
     require("./ensure_schema"),
     require("./get"),
     require("./initialize"),
+    require("./patch"),
     require("./pop"),
     require("./put"),
     require("./replace"),
