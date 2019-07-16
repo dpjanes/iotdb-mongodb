@@ -81,7 +81,7 @@ const replace = _.promise((self, done) => {
 
 replace.method = "db.replace"
 replace.requires = {
-    mongodb: _.is.Dictionary,
+    mongodb: _.is.Object,
     json: _.is.JSON,
     table_schema: _.is.Dictionary,
 }
