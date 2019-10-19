@@ -152,22 +152,13 @@ const _make_query = _query => {
  *  Query the database. Note that this implements
  *  `all`, `query_simple` and `scan_simple`
  */
-const all = _.promise.make((self, done) => {
-    const method = "db.all";
+const all = _.promise((self, done) => {
+    _.promise.validate(self, all)
 
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-    assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
-        `${method}: expected self.query to be a JSON or Null`);
-
-    logger.trace({
-        method: method,
-    }, "called")
-
-    let keys = self.table_schema.keys;
+    let keys = self.table_schema.keys
     if (self.index_name) {
         keys = self.table_schema.indexes[self.index_name]
-        assert.ok(keys, `${method}: no index named ${self.index_name}`)
+        assert.ok(keys, `${all.method}: no index named ${self.index_name}`)
     }
 
     const query = _make_query(self.query)
@@ -212,7 +203,7 @@ const all = _.promise.make((self, done) => {
     console.log("===")
     */
 
-    _.promise.make(self)
+    _.promise(self)
         .then(mongo.collection)
         .then(sd => {
             sd.mongo_collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
@@ -285,23 +276,37 @@ const all = _.promise.make((self, done) => {
         .catch(done)
 })
 
+all.method = "db.all"
+all.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        keys: _.is.Array,
+        indexes: _.is.Dictionary,
+    },
+}
+all.accepts = {
+    index_name: _.is.String,
+    query: _.is.JSON,
+    pager: [ _.is.String, _.is.Integer ],
+    query_limit: _.is.Intger,
+    projection: [ _.is.Array, _.is.Dictionary ],
+}
+all.produces = {
+    jsons: _.is.Array,
+    json: _.is.Dictionary,
+
+    cursor: _.is.Dictionary,
+    mongo_result: _.is.Object,
+}
+
 /**
  */
-const count = _.promise.make((self, done) => {
-    const method = "db.count";
+const count = _.promise((self, done) => {
+    _.promise(self)
+        .validate(count)
 
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-    assert.ok(_.is.Nullish(self.query) || _.is.JSON(self.query), 
-        `${method}: expected self.query to be a JSON or Null`);
-
-    logger.trace({
-        method: method,
-    }, "called")
-
-    _.promise.make(self)
         .then(mongo.collection)
-        .then(_.promise.make(sd => {
+        .make(sd => {
             sd.mongo_collection.count(_make_query(self.query), (error, count) => {
                 if (error) {
                     return done(util.intercept(self)(error))
@@ -311,9 +316,21 @@ const count = _.promise.make((self, done) => {
 
                 done(null, self)
             })
-        }))
+        })
         .catch(done)
 })
+
+count.method = "db.count"
+count.requires = {
+    mongodb: _.is.Object,
+    table_schema: _.is.Dictionary,
+}
+count.accepts = {
+    query: _.is.JSON,
+}
+count.produces = {
+    count: _.is.Integer,
+}
 
 /**
  *  API
