@@ -18,9 +18,6 @@
     "license": "Apache-2.0", 
     "main": "index.js", 
     "name": "iotdb-mongodb", 
-    "optionalDependencies": {
-        "tingodb": "~0.6.1"
-    }, 
     "private": false, 
     "repository": {
         "type": "git", 

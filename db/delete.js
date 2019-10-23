@@ -24,32 +24,21 @@
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
 const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
  */
-const _delete = _.promise.make((self, done) => {
-    const method = "db.delete";
-
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-
-    logger.trace({
-        method: method,
-    }, "called")
+const delete_ = _.promise((self, done) => {
+    _.promise.validate(self, delete_)
 
     const values = self.table_schema.keys.map(key => self.query[key] || null)
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
-    _.promise.make(self)
+    _.promise(self)
         .then(mongo.collection)
-        .then(_.promise.make(sd => {
+        .make(sd => {
             sd.mongo_collection.findAndRemove(query, sort, { w: 1, }, error => {
                 if (error) {
                     return done(util.intercept(self)(error))
@@ -57,11 +46,24 @@ const _delete = _.promise.make((self, done) => {
 
                 done(null, self);
             })
-        }))
+        })
         .catch(done)
 })
+
+delete_.method = "db.delete"
+delete_.requires = {
+    mongodb: _.is.Object,
+    query: _.is.JSON,
+    table_schema: {
+        keys: _.is.Array,
+    },
+}
+delete_.accepts = {
+}
+delete_.produces = {
+}
 
 /**
  *  API
  */
-exports.delete = _delete
+exports.delete = delete_
