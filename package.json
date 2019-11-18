@@ -8,10 +8,10 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.1.8", 
-        "iotdb-fs": "~1.0.39", 
-        "iotdb-helpers": "~3.3.14", 
+        "iotdb-fs": "~1.1.2", 
+        "iotdb-helpers": "~3.4.2", 
         "minimist": "~1.2.0", 
-        "mongodb": "~3.3.3"
+        "mongodb": "~3.3.4"
     }, 
     "description": "POP wrapper for MongoDB", 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
