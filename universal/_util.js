@@ -5,7 +5,7 @@
  *  IOTDB
  *  2019-02-09
  *
- *  Copyright [2013-2019] David P. Janes
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -109,6 +109,15 @@ key.accepts = {
 key.produces = {
 }
 
+/**
+ */
+const scrub = _key => _.promise(self => {
+    if (!self[_key]) {
+        self[_key] = null
+    } else {
+        self[_key] = _.d.clone(self[_key])
+    }
+})
 
 /**
  *  API
@@ -116,3 +125,4 @@ key.produces = {
 exports.setup = setup
 exports.fix_query = fix_query
 exports.key = key
+exports.scrub = scrub

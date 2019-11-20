@@ -5,7 +5,7 @@
  *  IOTDB
  *  2019-02-07
  *
- *  Copyright [2013-2019] David P. Janes
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ const create = _descriptor => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
-    assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
     assert(_.is.Dictionary(_descriptor.keys))
@@ -57,7 +56,7 @@ const create = _descriptor => {
             .then(_util.key(_descriptor, "updated", now))
             .then(_util.key(_descriptor, "removed", null))
             .then(_descriptor.create)
-            .then(_descriptor.scrub)
+            .then(_descriptor.scrub || _util.scrub(_descriptor.one))
 
             .make(sd => {
                 sd.json = sd[_descriptor.one]

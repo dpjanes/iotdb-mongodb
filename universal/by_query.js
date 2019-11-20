@@ -5,7 +5,7 @@
  *  IOTDB
  *  2019-02-08
  *
- *  Copyright [2013-2019] David P. Janes
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ const by_query = (_descriptor, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
-    assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
     assert(_.is.Function(_descriptor.validate))
 
@@ -72,7 +71,7 @@ const by_query = (_descriptor, _index) => {
             .then(_util.fix_query(_descriptor))
 
             .conditional(_index, _with_index, _without_index)
-            .then(_descriptor.scrub)
+            .then(_descriptor.scrub || _util.scrub(_descriptor.one))
 
             .end(done, self, _descriptor.one)
     })

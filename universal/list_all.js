@@ -5,7 +5,7 @@
  *  IOTDB
  *  2019-02-07
  *
- *  Copyright [2013-2019] David P. Janes
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,7 +35,6 @@ const list_all = (_descriptor, _index) => {
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
-    assert(_.is.Function(_descriptor.scrub))
     assert(_.is.Function(_descriptor.setup))
 
     const f = _.promise((self, done) => {
@@ -54,7 +53,7 @@ const list_all = (_descriptor, _index) => {
 
             .then(mongodb.db.all)
             .each({
-                method: _descriptor.scrub,
+                method: _descriptor.scrub || _util.scrub(_descriptor.one),
                 inputs: `jsons:${_descriptor.one}`,
                 outputs: _descriptor.many,
                 output_selector: sd => sd[_descriptor.one],
