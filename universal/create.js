@@ -64,7 +64,7 @@ const create = _descriptor => {
                 assert.ok(sd.json)
 
                 sd.table_schema.keys.forEach(key => {
-                    assert.ok(!_.is.Undefined(sd.json[key]))
+                    assert.ok(!_.is.Undefined(sd.json[key]), `expected to see "${key}" in the record: ${JSON.stringify(sd.json, null, 2)}`)
                 })
             })
             .conditional(_descriptor.scrub_json, _descriptor.scrub_json)
@@ -77,9 +77,9 @@ const create = _descriptor => {
     f.method = `${_descriptor.name}.create`
     f.description = `Create one record ${_descriptor.one}`
     f.requires = {
+        [ _descriptor.one ]: _.is.Object,
     }
     f.accepts = {
-        [ _descriptor.one ]: _.is.Object,
     }
     f.produces = {
         [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
