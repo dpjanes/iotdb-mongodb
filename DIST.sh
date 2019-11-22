@@ -38,7 +38,6 @@ echo "=================="
         index.js \
         logger.js \
         lib/*.js \
-        fs/*.js \
         universal/*.js \
         db/*.js \
         bin/*.js \

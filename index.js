@@ -25,5 +25,5 @@
 module.exports = require("./lib")
 module.exports.dynamodb = require("./db")
 module.exports.db = require("./db")
-module.exports.fs = require("./fs")
+// module.exports.fs = require("./fs")
 module.exports.universal = require("./universal")
