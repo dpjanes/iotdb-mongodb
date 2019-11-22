@@ -83,7 +83,7 @@ const load = _.promise((self, done) => {
             method: mongodb.db.put,
             inputs: "movies:json",
         })
-        .end(done, self)
+        .end(done, self, "table_schema")
 })
 
 /*

@@ -152,6 +152,8 @@ const _make_query = _query => {
  *  `all`, `query_simple` and `scan_simple`
  */
 const all = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise.validate(self, all)
 
     let keys = self.table_schema.keys

@@ -41,7 +41,7 @@ const _put = document => _.promise((self, done) => {
     assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
     assert.ok(self.table_schema, `${method}: expected self.table_schema`)
 
-    logger.trace({
+    if (0) logger.trace({
         method: method,
     }, "called")
 
