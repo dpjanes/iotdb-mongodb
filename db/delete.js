@@ -45,7 +45,7 @@ const delete_ = _.promise((self, done) => {
                     return done(util.intercept(self)(error))
                 }
 
-                done(null, self);
+                done(null, self)
             })
         })
         .catch(done)

@@ -7,7 +7,7 @@
  *
  *  Copyright (2013-2020) David P. Janes
  *
- *  Licensed under the Apache License, Version 2.0 (the "License")
+ *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
@@ -20,7 +20,7 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
 const _ = require("iotdb-helpers")
 
@@ -47,14 +47,14 @@ const pop = _.promise((self, done) => {
                 }
 
                 if (result) {
-                    self.json = util.scrub_ids(result);
+                    self.json = util.scrub_ids(result)
                 } else {
-                    self.json = null;
+                    self.json = null
                 }
 
-                done(null, self);
+                done(null, self)
             })
-            return null;
+            return null
         })
         .catch(done)
 })

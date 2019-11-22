@@ -7,7 +7,7 @@
  *
  *  Copyright (2013-2020) David P. Janes
  *
- *  Licensed under the Apache License, Version 2.0 (the "License")
+ *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
@@ -20,7 +20,7 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
@@ -67,7 +67,7 @@ const replace = _.promise((self, done) => {
                     return done(new errors.NotFound())
                 }
 
-                done(null, self);
+                done(null, self)
             })
         })
         .catch(done)

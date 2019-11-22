@@ -7,7 +7,7 @@
  *
  *  Copyright (2013-2020) David P. Janes
  *
- *  Licensed under the Apache License, Version 2.0 (the "License")
+ *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
@@ -41,12 +41,12 @@ const _make_query = _query => {
     _.keys(query)
         .filter(query_key => _.is.Array(query[query_key]))
         .forEach(query_key => {
-            const parts = query[query_key];
+            const parts = query[query_key]
 
-            let position = 0;
+            let position = 0
             while (position < parts.length) {
-                let comparitor;
-                let q;
+                let comparitor
+                let q
 
                 switch (parts[position].toLowerCase()) {
                 case "=":
@@ -55,48 +55,48 @@ const _make_query = _query => {
                         "$eq": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
                     
                 case "<": case "lt":
                     q = {
                         "$lt": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
                     
                 case "<=": case "le":
                     q = {
                         "$lte": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
                     
                 case ">": case "gt":
                     q = {
                         "$gt": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
                     
                 case ">=": case "ge":
                     q = {
                         "$gte": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
                     
                 case "!=": case "ne":
                     q = {
                         "$ne": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
 
                 case "between":
                     q = {
@@ -104,8 +104,8 @@ const _make_query = _query => {
                         "$lte": parts[position + 2],
                     }
 
-                    position += 3;
-                    break;
+                    position += 3
+                    break
 
                 case "in":
                 case "∈":
@@ -113,8 +113,8 @@ const _make_query = _query => {
                         "$in": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
 
                 case "find":
                     q = {
@@ -122,26 +122,26 @@ const _make_query = _query => {
                         "$options": "i",
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
 
                 case "regex":
                     q = {
                         "$regex": parts[position + 1]
                     }
 
-                    position += 2;
-                    break;
+                    position += 2
+                    break
 
                 default:
                     throw new errors.Invalid("unknown operator: " + parts[position])
                 }
 
-                query[query_key] = q;
+                query[query_key] = q
             }
         })
 
-    return query;
+    return query
 }
 
 /**
@@ -177,7 +177,7 @@ const all = _.promise((self, done) => {
     }
 
     if (self.query_limit) {
-        options.limit = self.query_limit;
+        options.limit = self.query_limit
     }
 
     if (self.projection) {
@@ -207,10 +207,10 @@ const all = _.promise((self, done) => {
                     return done(util.intercept(self)(error))
                 }
 
-                self.jsons = util.scrub_ids(mongo_result);
-                self.json = self.jsons.length ? self.jsons[0] : null;
+                self.jsons = util.scrub_ids(mongo_result)
+                self.json = self.jsons.length ? self.jsons[0] : null
 
-                self.cursor = null;
+                self.cursor = null
 
                 if (options.limit) {
                     self.cursor = {
@@ -232,42 +232,42 @@ const all = _.promise((self, done) => {
                     }
 
                     if (self.jsons.length === 0) {
-                        self.cursor.is_first = true;
-                        self.cursor.is_last = true;
+                        self.cursor.is_first = true
+                        self.cursor.is_last = true
                     } else {
-                        self.cursor.next = `${Math.min(options.limit, self.jsons.length) + options.skip}`;
+                        self.cursor.next = `${Math.min(options.limit, self.jsons.length) + options.skip}`
 
                         if (self.jsons.length < options.limit) {
-                            self.cursor.next = null;
-                            self.cursor.is_last = true;
-                            self.cursor.has_next = false;
+                            self.cursor.next = null
+                            self.cursor.is_last = true
+                            self.cursor.has_next = false
                         } else {
-                            self.cursor.has_next = true;
+                            self.cursor.has_next = true
                         }
 
                         if (options.skip === 0) {
-                            self.cursor.is_first = true;
+                            self.cursor.is_first = true
                         }
 
-                        const previous = options.skip - options.limit;
+                        const previous = options.skip - options.limit
                         self.cursor.previous = `${Math.max(0, previous)}`
                         if (previous === 0) {
-                            self.cursor.has_previous = true;
-                            self.cursor.is_previous_first = true;
+                            self.cursor.has_previous = true
+                            self.cursor.is_previous_first = true
                         } else if (previous < 0) {
-                            self.cursor.has_previous = false;
+                            self.cursor.has_previous = false
                         } else {
-                            self.cursor.has_previous = true;
+                            self.cursor.has_previous = true
                         }
 
                     }
                 }
 
-                self.mongo_result = mongo_result;
+                self.mongo_result = mongo_result
 
                 done(null, self)
             })
-            return null;
+            return null
         })
         .catch(done)
 })
@@ -310,7 +310,7 @@ const count = _.promise((self, done) => {
                     return done(util.intercept(self)(error))
                 }
 
-                self.count = count;
+                self.count = count
 
                 done(null, self)
             })
@@ -336,7 +336,7 @@ count.produces = {
 /**
  *  API
  */
-exports.count = count;
-exports.all = all;
-exports.query_simple = all;
-exports.scan_simple = all;
+exports.count = count
+exports.all = all
+exports.query_simple = all
+exports.scan_simple = all
