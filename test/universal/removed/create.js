@@ -62,11 +62,13 @@ describe("universal/create", function() {
             })
             .end(done)
     })
-    it("fails (empty)", function(done) {
+    it("works (empty)", function(done) {
         _.promise(self)
             .then(db.movie.create.p())
-            .then(_util.auto_fail(done))
-            .catch(_util.ok_error(done))
+            .make(sd => {
+                assert.ok(sd.movie)
+            })
+            .end(done)
     })
     it("parameterized", function(done) {
         _.promise(self)
