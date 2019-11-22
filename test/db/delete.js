@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/delete.js
+ *  test/db/delete.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/delete", function() {
+describe("db/delete", function() {
     let self = {}
 
     before(function(done) {
@@ -49,7 +49,7 @@ describe("dynamodb/delete", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.ok(sd.json)
                 })
@@ -58,13 +58,13 @@ describe("dynamodb/delete", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.delete)
+                .then(mongodb.db.delete)
 
                 .add("query", {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.ok(!sd.json)
                 })
@@ -77,7 +77,7 @@ describe("dynamodb/delete", function() {
                     "year": 2014,
                     "title": "Rush XXX",
                 })
-                .then(mongodb.dynamodb.delete)
+                .then(mongodb.db.delete)
                 .make(sd => {
                     assert.deepEqual(sd.json, null)
                 })

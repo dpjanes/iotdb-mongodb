@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/all.js
+ *  test/db/all.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/query", function() {
+describe("db/query", function() {
     let self = {}
 
     before(function(done) {
@@ -50,7 +50,7 @@ describe("dynamodb/query", function() {
             .add("query", {
                 "nullfield": [ "=", null ],
             })
-            .then(mongodb.dynamodb.all)
+            .then(mongodb.db.all)
             .make(sd => {
                 assert.deepEqual(sd.jsons.length, 1);
             })
@@ -61,7 +61,7 @@ describe("dynamodb/query", function() {
             .add("query", {
                 "nullfield": [ "!=", null ],
             })
-            .then(mongodb.dynamodb.all)
+            .then(mongodb.db.all)
             .make(sd => {
                 assert.deepEqual(sd.jsons.length, 0);
             })

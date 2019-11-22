@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/swapout.js
+ *  test/db/swapout.js
  *
  *  David Janes
  *  IOTDB
@@ -29,16 +29,16 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/swapout", function() {
+describe("db/swapout", function() {
     let self = {}
 
     describe("good", function() {
         it("exists", function(done) {
             _.promise(self)
-                .then(mongodb.dynamodb.swapout)
+                .then(mongodb.db.swapout)
                 .make(sd => {
                     const aws = require("iotdb-awslib")
-                    assert.strictEqual(aws.dynamodb, mongodb.dynamodb)
+                    assert.strictEqual(aws.db, mongodb.db)
                 })
                 .end(done)
         })

@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/get.js
+ *  test/db/get.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/get", function() {
+describe("db/get", function() {
     let self = {}
 
     before(function(done) {
@@ -49,7 +49,7 @@ describe("dynamodb/get", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.ok(sd.json)
                     assert.deepEqual(sd.json.year, 2014)
@@ -63,7 +63,7 @@ describe("dynamodb/get", function() {
                     "year": 2014,
                     "title": "Rush XXX",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.deepEqual(sd.json, null)
                 })

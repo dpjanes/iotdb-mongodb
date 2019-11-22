@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/all.js
+ *  test/db/all.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/all", function() {
+describe("db/all", function() {
     let self = {}
 
     before(function(done) {
@@ -46,7 +46,7 @@ describe("dynamodb/all", function() {
     describe("good", function() {
         it("default index (+title, +year)", function(done) {
             _.promise(self)
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), true)
@@ -58,7 +58,7 @@ describe("dynamodb/all", function() {
         it("index (+year, +title)", function(done) {
             _.promise(self)
                 .then(_.promise.add("index_name", "year-title-index"))
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), false)
@@ -70,7 +70,7 @@ describe("dynamodb/all", function() {
         it("index (-year, +title)", function(done) {
             _.promise(self)
                 .then(_.promise.add("index_name", "-year-title-index"))
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "year"), false)
@@ -81,7 +81,7 @@ describe("dynamodb/all", function() {
         it("default index, query limit", function(done) {
             _.promise(self)
                 .then(_.promise.add("query_limit", 10))
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 10);
                     assert.deepEqual(_util.ordered_forward(sd.jsons, "title"), true)
@@ -93,7 +93,7 @@ describe("dynamodb/all", function() {
             _.promise(self)
                 .then(_.promise.add("pager", 100))
                 .then(_.promise.add("query_limit", 10))
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 0);
                 }))
@@ -104,7 +104,7 @@ describe("dynamodb/all", function() {
             _.promise(self)
                 .then(_.promise.add("pager", 80))
                 .then(_.promise.add("query_limit", 10))
-                .then(mongodb.dynamodb.all)
+                .then(mongodb.db.all)
                 .then(_.promise(sd => {
                     assert.deepEqual(sd.jsons.length, 8);
                 }))

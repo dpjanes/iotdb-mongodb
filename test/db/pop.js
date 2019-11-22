@@ -1,5 +1,5 @@
 /**
- *  test/dynamodb/pop.js
+ *  test/db/pop.js
  *
  *  David Janes
  *  IOTDB
@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require("../..")
 const _util = require("./../_util")
 
-describe("dynamodb/pop", function() {
+describe("db/pop", function() {
     let self = {}
 
     before(function(done) {
@@ -49,7 +49,7 @@ describe("dynamodb/pop", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.ok(sd.json)
                 })
@@ -58,7 +58,7 @@ describe("dynamodb/pop", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.pop)
+                .then(mongodb.db.pop)
                 .make(sd => {
                     assert.ok(sd.json)
                 })
@@ -67,7 +67,7 @@ describe("dynamodb/pop", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.get)
+                .then(mongodb.db.get)
                 .make(sd => {
                     assert.ok(!sd.json)
                 })
@@ -76,7 +76,7 @@ describe("dynamodb/pop", function() {
                     "year": 2014,
                     "title": "Rush",
                 })
-                .then(mongodb.dynamodb.pop)
+                .then(mongodb.db.pop)
                 .make(sd => {
                     assert.ok(!sd.json)
                 })
@@ -89,7 +89,7 @@ describe("dynamodb/pop", function() {
                     "year": 2014,
                     "title": "Rush XXX",
                 })
-                .then(mongodb.dynamodb.pop)
+                .then(mongodb.db.pop)
                 .make(sd => {
                     assert.deepEqual(sd.json, null)
                 })
