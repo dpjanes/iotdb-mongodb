@@ -49,7 +49,7 @@ const patch = _.promise((self, done) => {
     }
 
     _.promise(self)
-        .then(mongodb.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.update(query, json, {
                 upsert: false,

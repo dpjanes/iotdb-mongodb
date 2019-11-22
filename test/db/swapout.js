@@ -38,7 +38,7 @@ describe("db/swapout", function() {
                 .then(mongodb.db.swapout)
                 .make(sd => {
                     const aws = require("iotdb-awslib")
-                    assert.strictEqual(aws.db, mongodb.db)
+                    assert.strictEqual(aws.dynamodb, mongodb.db)
                 })
                 .end(done)
         })
