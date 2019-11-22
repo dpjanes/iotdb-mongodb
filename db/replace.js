@@ -28,7 +28,6 @@ const errors = require("iotdb-errors")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
@@ -39,6 +38,8 @@ const util = require("../lib/util")
  *  a NotFound error is thrown.
  */
 const replace = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise.validate(self, replace)
 
     logger.trace({
@@ -56,7 +57,7 @@ const replace = _.promise((self, done) => {
     const json = _.d.clone.deep(self.json)
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.findOneAndReplace(query, json, {
                 sort: sort,
@@ -83,7 +84,10 @@ replace.method = "db.replace"
 replace.requires = {
     mongodb: _.is.Object,
     json: _.is.JSON,
-    table_schema: _.is.Dictionary,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
 }
 replace.accepts = {
 }

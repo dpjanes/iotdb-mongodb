@@ -31,61 +31,83 @@ const util = require("../lib/util")
 
 /**
  */
-const _ensure_one = _.promise.make((self, done) => {
-    const method = "db.ensure_schema/_ensure_one";
-    const mongo = require("../lib");
+const _ensure_one = _.promise((self, done) => {
+    const mongodb = require("..")
 
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(self.pair, `${method}: expected self.pair`)
+    _.promise(self)
+        .validate(self)
 
-    const indexes = {}
+        .make(sd => {
+            sd.index = {
+                name: self.pair[0],
+                indexes: {},
+            }
 
-    self.pair[1]
-        .filter(name => !name.startsWith("-"))
-        .forEach(name => indexes[name] = +1)
-    self.pair[1]
-        .filter(name => name.startsWith("-"))
-        .map(name => name.substring(1))
-        .forEach(name => indexes[name] = -1)
+            sd.pair[1]
+                .filter(name => !name.startsWith("-"))
+                .forEach(name => sd.index.indexes[name] = +1)
+            sd.pair[1]
+                .filter(name => name.startsWith("-"))
+                .map(name => name.substring(1))
+                .forEach(name => sd.index.indexes[name] = -1)
+        })
+        .then(mongodb.ensure_index)
 
-    _.promise.make(self)
-        .then(_.promise.add({
-            index_name: self.pair[0],
-            indexes: indexes,
-        }))
-        .then(mongo.ensure_index)
-        .then(_.promise.done(done, self))
-        .catch(done)
+        .end(done, self)
 })
+
+_ensure_one.method = "db.ensure_schema/_ensure_one"
+_ensure_one.requires = {
+    mongodb: _.is.Object,
+    pair: _.is.Array,
+}
+_ensure_one.produces = {
+}
 
 /**
- *  This makes sure all the indicies exist
  */
-const ensure_schema = _.promise.make((self, done) => {
-    const method = "db.ensure_schema";
-    const mongo = require("../lib");
+const ensure_schema = _.promise((self, done) => {
+    const mongodb = require("..")
 
-    logger.trace({
-        method: method,
-    }, "called")
+    _.promise(self)
+        .validate(ensure_schema)
 
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-
-    if (!self.table_schema.indexes) {
-        return done(null, self)
-    }
-
-    _.promise.make(self)
-        .then(mongo.collection)
-        .then(_.promise.add("pairs", _.pairs(self.table_schema.indexes)))
-        .then(_.promise.series({
+        .then(mongodb.collection.p(self.table_schema.name))
+        .add("pairs", _.pairs(self.table_schema.indexes || {}))
+        .each({
             method: _ensure_one,
             inputs: "pairs:pair",
-        }))
-        .then(_.promise.done(done, self))
-        .catch(done)
+        })
+
+        .end(done, self)
 })
+
+ensure_schema.method = "db.ensure_schema"
+ensure_schema.description = `
+    This makes sure all the indicies exist.
+
+    Indicies are found in table_schema which looks like
+
+    table_schema = {
+        indexes: {
+            "index-name": [ "id", "-date" ],
+        },
+    }
+    `
+ensure_schema.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
+}
+ensure_schema.accepts = {
+    table_schema: {
+        indexes: _.is.Dictionary,
+    },
+}
+ensure_schema.produces = {
+}
 
 /**
  *  API

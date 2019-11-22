@@ -27,7 +27,6 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**

@@ -28,12 +28,13 @@ const errors = require("iotdb-errors")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
  */
 const _put = document => _.promise((self, done) => {
+    const mongodb = require("..")
+
     const method = "db.put";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -58,7 +59,7 @@ const _put = document => _.promise((self, done) => {
     }
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.findOneAndReplace(query, json, {
                 sort: sort,

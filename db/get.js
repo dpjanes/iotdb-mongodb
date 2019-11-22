@@ -27,12 +27,13 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
  */
 const get = _.promise.make((self, done) => {
+    const mongodb = require("..")
+
     const method = "db.get";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -44,7 +45,7 @@ const get = _.promise.make((self, done) => {
     }, "called")
 
     _.promise.make(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .then(_.promise.make(sd => {
             sd.mongodb$collection.findOne(self.query, (error, result) => {
                 if (error) {

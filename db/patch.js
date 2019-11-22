@@ -71,7 +71,10 @@ patch.method = "db.patch"
 patch.requires = {
     mongodb: _.is.Object,
     json: _.is.JSON,
-    table_schema: _.is.Dictionary,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
 }
 patch.accepts = {
 }

@@ -27,7 +27,6 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
@@ -35,6 +34,8 @@ const util = require("../lib/util")
  *  DynamoDB function but we have it in our AWS code
  */
 const pop = _.promise((self, done) => {
+    const mongodb = require("..")
+
     const method = "db.pop";
 
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
@@ -49,7 +50,7 @@ const pop = _.promise((self, done) => {
     const query = _.object(self.table_schema.keys, values)
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.findOneAndDelete(query, {}, (error, result) => {
                 if (error) {

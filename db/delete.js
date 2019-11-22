@@ -24,12 +24,13 @@
 
 const _ = require("iotdb-helpers")
 
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 /**
  */
 const delete_ = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise.validate(self, delete_)
 
     const values = self.table_schema.keys.map(key => self.query[key] || null)
@@ -37,7 +38,7 @@ const delete_ = _.promise((self, done) => {
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.findAndRemove(query, sort, { w: 1, }, error => {
                 if (error) {
@@ -55,6 +56,7 @@ delete_.requires = {
     mongodb: _.is.Object,
     query: _.is.JSON,
     table_schema: {
+        name: _.is.String,
         keys: _.is.Array,
     },
 }

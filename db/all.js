@@ -28,7 +28,6 @@ const errors = require("iotdb-errors")
 const assert = require("assert")
 
 const logger = require("../logger")(__filename)
-const mongo = require("../lib")
 const util = require("../lib/util")
 
 // https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
@@ -37,7 +36,7 @@ function _escape_re(string) {
 }
 
 /**
- *  Make a mongo looking query from a DynamoDB one
+ *  Make a mongodb looking query from a DynamoDB one
  */
 const _make_query = _query => {
     const query = _.d.clone.shallow(_query || {})
@@ -204,7 +203,7 @@ const all = _.promise((self, done) => {
     */
 
     _.promise(self)
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .then(sd => {
             sd.mongodb$collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
@@ -302,10 +301,12 @@ all.produces = {
 /**
  */
 const count = _.promise((self, done) => {
+    const mongodb = require("..")
+
     _.promise(self)
         .validate(count)
 
-        .then(mongo.collection)
+        .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
             sd.mongodb$collection.count(_make_query(self.query), (error, count) => {
                 if (error) {
@@ -323,7 +324,10 @@ const count = _.promise((self, done) => {
 count.method = "db.count"
 count.requires = {
     mongodb: _.is.Object,
-    table_schema: _.is.Dictionary,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
 }
 count.accepts = {
     query: _.is.JSON,

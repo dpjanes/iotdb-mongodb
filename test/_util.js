@@ -32,7 +32,7 @@ const mongodb = require("..")
 const mongodb$cfg = require("./data/mongodb$cfg.json");
 const movies_schema = require("./data/movies.schema.json");
 
-const auto_fail = done => _.promise.make(self => done(new Error("didn't expect to get here")));
+const auto_fail = done => _.promise(self => done(new Error("didn't expect to get here")));
 const ok_error = (done, code) => error => {
     if (code && (_.error.code(error) !== code)) {
         return done(error)
@@ -44,32 +44,31 @@ const ok_error = (done, code) => error => {
 /**
  *  Sets up MongoDB and initializes
  */
-const initialize = _.promise.make((self, done) => {
+const initialize = _.promise((self, done) => {
     if (mongodb$cfg.engine === "tingodb") {
         mongodb$cfg.path = path.join(__dirname, "data", ".tingodb")
     }
 
-    _.promise.make(self)
+    _.promise(self)
         // remove old data
-        .then(_.promise.add("path", mongodb$cfg.path))
+        .add("path", mongodb$cfg.path)
         .then(fs.remove.recursive)
 
         // initialize
-        .then(_.promise.add("mongodb$cfg", mongodb$cfg))
+        .add("mongodb$cfg", mongodb$cfg)
         .then(mongodb.initialize)
         .then(mongodb.db.initialize)
 
         // finished
-        .then(_.promise.done(done))
-        .catch(done)
+        .end(done, null)
 })
 
 /**
  *  Loads sample data
  */
-const load = _.promise.make((self, done) => {
-    _.promise.make(self)
-        .then(_.promise.add({
+const load = _.promise((self, done) => {
+    _.promise(self)
+        .add({
             movies: require("./data/movies.json").map(movie => {
                 movie.movie_id = `urn:movie:${movie.year}:${_.id.slugify(movie.title)}`
                 movie.release_date = movie.info.release_date || null;
@@ -79,13 +78,12 @@ const load = _.promise.make((self, done) => {
                 return movie;
             }),
             table_schema: movies_schema,
-        }))
-        .then(_.promise.series({
+        })
+        .each({
             method: mongodb.db.put,
             inputs: "movies:json",
-        }))
-        .then(_.promise.done(done))
-        .catch(done)
+        })
+        .end(done, self)
 })
 
 /*
