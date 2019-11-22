@@ -29,7 +29,7 @@ const assert = require("assert");
 const mongodb = require('mongodb');
 
 _.promise.make({
-    mongodbd: require("./mongodbd.json"),
+    mongodb$cfg: require("./mongodb$cfg.json"),
     table_name: "test1",
 })
     .then(mongo.initialize)

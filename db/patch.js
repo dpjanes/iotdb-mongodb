@@ -51,7 +51,7 @@ const patch = _.promise((self, done) => {
     _.promise(self)
         .then(mongodb.collection)
         .make(sd => {
-            sd.mongo_collection.update(query, json, {
+            sd.mongodb$collection.update(query, json, {
                 upsert: false,
             }, (error, result) => {
                 if (!result) {

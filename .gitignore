@@ -3,4 +3,5 @@ yy*
 tingo.d
 .*
 mongodbd.json
+mongodb$cfg.json
 coverage

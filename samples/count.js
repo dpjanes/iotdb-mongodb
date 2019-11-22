@@ -28,7 +28,7 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 _.promise({
-    mongodbd: require("./mongodbd.json"),
+    mongodb$cfg: require("./mongodb$cfg.json"),
     table_name: "test1",
 })
     .then(mongodb.initialize)

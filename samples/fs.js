@@ -30,7 +30,7 @@ const fs = require("fs")
 const minimist = require("minimist")
 
 const mongo = require("..")
-const mongodbd = require("./mongodbd.json")
+const mongodb$cfg = require("./mongodb$cfg.json")
 
 const ad = minimist(process.argv.slice(2))
 
@@ -49,7 +49,7 @@ const _on_error = error => {
 
 if (action("initialize")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
     })
         .then(mongo.initialize)
         .then(mongo.db.initialize)
@@ -61,7 +61,7 @@ if (action("initialize")) {
 
 if (action("put")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         document: fs.readFileSync("data/movies.json"),
         document_media_type: "text/plain",
@@ -78,7 +78,7 @@ if (action("put")) {
 
 if (action("put.json")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         json: JSON.parse(fs.readFileSync("data/movies.json")),
         bucket: bucket,
@@ -94,7 +94,7 @@ if (action("put.json")) {
 
 if (action("get")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -115,7 +115,7 @@ if (action("get")) {
 
 if (action("get.utf8")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -136,7 +136,7 @@ if (action("get.utf8")) {
 
 if (action("get.json")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -158,7 +158,7 @@ if (action("get.json")) {
 
 if (action("get.buffer")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -180,7 +180,7 @@ if (action("get.buffer")) {
 
 if (action("exists")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -198,7 +198,7 @@ if (action("exists")) {
 
 if (action("remove")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
@@ -215,7 +215,7 @@ if (action("remove")) {
 
 if (action("list")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
     })
         .then(mongo.initialize)

@@ -29,7 +29,7 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 _.promise({
-    mongodbd: require("./mongodbd.json"),
+    mongodb$cfg: require("./mongodb$cfg.json"),
     user: {
         username: "test1",
         password: "test1-000"

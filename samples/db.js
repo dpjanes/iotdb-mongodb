@@ -17,7 +17,7 @@ const assert = require("assert");
 const minimist = require('minimist');
 
 const mongodb = require("..")
-const mongodbd = require("./mongodbd.json");
+const mongodb$cfg = require("./mongodb$cfg.json");
 
 const movies_schema = {
     name: "movies",
@@ -52,7 +52,7 @@ const _error = error => {
 
 if (action("initialize")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
     })
         .then(mongodb.initialize)
         .then(mongodb.db.initialize)
@@ -61,7 +61,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("load-movies")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         movies: require("./data/movies.json"),
     })
@@ -83,7 +83,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("put")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         json: {
             year: 1999,
@@ -100,7 +100,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("get")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -116,7 +116,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("get-not-found")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -132,7 +132,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("query-simple")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -148,7 +148,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("scan-simple")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -164,7 +164,7 @@ if (action("initialize")) {
 } else if (action("page-all")) {
     const _run = pager => {
         _.promise({
-            mongodbd: mongodbd,
+            mongodb$cfg: mongodb$cfg,
             table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
@@ -194,7 +194,7 @@ if (action("initialize")) {
 } else if (action("page-scan")) {// scan and query are aliases in this
     const _run = pager => {
         _.promise({
-            mongodbd: mongodbd,
+            mongodb$cfg: mongodb$cfg,
             table_schema: movies_schema,
             query_limit: 5,
             pager: pager,
@@ -225,7 +225,7 @@ if (action("initialize")) {
     _run()
 } else if (action("query-index")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         index_name: "year-title-index",
         query: {
@@ -239,7 +239,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("query-range")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         index_name: "year-title-index",
         query: {
@@ -256,7 +256,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("replace-fail")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -276,7 +276,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("replace-ok")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         query: {
             year: 1999,
@@ -297,7 +297,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("delete")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         json: {
             year: 2014,
@@ -320,7 +320,7 @@ if (action("initialize")) {
         .then(mongodb.close)
 } else if (action("pop")) {
     _.promise({
-        mongodbd: mongodbd,
+        mongodb$cfg: mongodb$cfg,
         table_schema: movies_schema,
         json: {
             year: 2014,

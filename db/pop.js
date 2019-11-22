@@ -51,7 +51,7 @@ const pop = _.promise((self, done) => {
     _.promise(self)
         .then(mongo.collection)
         .make(sd => {
-            sd.mongo_collection.findOneAndDelete(query, {}, (error, result) => {
+            sd.mongodb$collection.findOneAndDelete(query, {}, (error, result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }

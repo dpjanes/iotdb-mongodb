@@ -39,7 +39,7 @@ const delete_ = _.promise((self, done) => {
     _.promise(self)
         .then(mongo.collection)
         .make(sd => {
-            sd.mongo_collection.findAndRemove(query, sort, { w: 1, }, error => {
+            sd.mongodb$collection.findAndRemove(query, sort, { w: 1, }, error => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }

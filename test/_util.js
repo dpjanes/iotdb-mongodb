@@ -29,7 +29,7 @@ const assert = require("assert");
 const path = require("path");
 
 const mongodb = require("..")
-const mongodbd = require("./data/mongodbd.json");
+const mongodb$cfg = require("./data/mongodb$cfg.json");
 const movies_schema = require("./data/movies.schema.json");
 
 const auto_fail = done => _.promise.make(self => done(new Error("didn't expect to get here")));
@@ -45,17 +45,17 @@ const ok_error = (done, code) => error => {
  *  Sets up MongoDB and initializes
  */
 const initialize = _.promise.make((self, done) => {
-    if (mongodbd.engine === "tingodb") {
-        mongodbd.path = path.join(__dirname, "data", ".tingodb")
+    if (mongodb$cfg.engine === "tingodb") {
+        mongodb$cfg.path = path.join(__dirname, "data", ".tingodb")
     }
 
     _.promise.make(self)
         // remove old data
-        .then(_.promise.add("path", mongodbd.path))
+        .then(_.promise.add("path", mongodb$cfg.path))
         .then(fs.remove.recursive)
 
         // initialize
-        .then(_.promise.add("mongodbd", mongodbd))
+        .then(_.promise.add("mongodb$cfg", mongodb$cfg))
         .then(mongodb.initialize)
         .then(mongodb.db.initialize)
 

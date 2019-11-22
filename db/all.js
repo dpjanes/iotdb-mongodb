@@ -206,7 +206,7 @@ const all = _.promise((self, done) => {
     _.promise(self)
         .then(mongo.collection)
         .then(sd => {
-            sd.mongo_collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
+            sd.mongodb$collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
@@ -307,7 +307,7 @@ const count = _.promise((self, done) => {
 
         .then(mongo.collection)
         .make(sd => {
-            sd.mongo_collection.count(_make_query(self.query), (error, count) => {
+            sd.mongodb$collection.count(_make_query(self.query), (error, count) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }

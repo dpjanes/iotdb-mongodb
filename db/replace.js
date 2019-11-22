@@ -58,7 +58,7 @@ const replace = _.promise((self, done) => {
     _.promise(self)
         .then(mongo.collection)
         .make(sd => {
-            sd.mongo_collection.findOneAndReplace(query, json, {
+            sd.mongodb$collection.findOneAndReplace(query, json, {
                 sort: sort,
                 upsert: false,
                 returnOriginal: true,

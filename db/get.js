@@ -46,7 +46,7 @@ const get = _.promise.make((self, done) => {
     _.promise.make(self)
         .then(mongo.collection)
         .then(_.promise.make(sd => {
-            sd.mongo_collection.findOne(self.query, (error, result) => {
+            sd.mongodb$collection.findOne(self.query, (error, result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }

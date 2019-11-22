@@ -33,21 +33,21 @@ if (ad._.length < 1) {
 /*
  *  Load settings
  */
-let mongodbd = {};
+let mongodb$cfg = {};
 [ path.join(os.homedir(), ".iotdb-mongodb.json"), ".iotdb-mongodb.json", ]
     .forEach(p => {
         try {
-            Object.assign(mongodbd, require(p))
+            Object.assign(mongodb$cfg, require(p))
         } catch (x) {
         }
     })
 
 if (ad.url) {
-    mongodbd.url = ad.url
+    mongodb$cfg.url = ad.url
 }
 
 _.promise.make({
-    mongodbd: mongodbd,
+    mongodb$cfg: mongodb$cfg,
 })
     .then(mongo.initialize)
 

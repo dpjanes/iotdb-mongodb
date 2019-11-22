@@ -34,7 +34,7 @@ if (ad._.length < 1) {
  *  Load settings
  */
 _.promise.make({
-    mongodbd: {
+    mongodb$cfg: {
         url: ad._[0]
     }
 })

@@ -35,7 +35,7 @@ const util = require("../lib/util")
 const initialize = _.promise.make(self => {
     const method = "db.initialize";
 
-    assert.ok(self.mongodbd, `${method}: expected self.mongodbd`)
+    assert.ok(self.mongodb$cfg, `${method}: expected self.mongodb$cfg`)
     assert.ok(self.mongodb, `${method}: expected self.mongodb`)
 })
 
