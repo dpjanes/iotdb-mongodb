@@ -24,14 +24,10 @@
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
-
 /**
  *  Monkey patch outselves into iotdb-awslib
  */
-const swapout = _.promise.make(self => {
-    const method = "db.swapout";
-
+const swapout = _.promise(self => {
     const aws = require("iotdb-awslib")
     aws.dynamodb = require("../db")
 })

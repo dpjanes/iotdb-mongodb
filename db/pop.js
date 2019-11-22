@@ -24,9 +24,6 @@
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
 const util = require("../lib/util")
 
 /**
@@ -36,15 +33,7 @@ const util = require("../lib/util")
 const pop = _.promise((self, done) => {
     const mongodb = require("..")
 
-    const method = "db.pop";
-
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-
-    logger.trace({
-        method: method,
-    }, "called")
+    _.promise.validate(self, pop)
 
     const values = self.table_schema.keys.map(key => self.query[key] || null)
     const query = _.object(self.table_schema.keys, values)
@@ -69,6 +58,21 @@ const pop = _.promise((self, done) => {
         })
         .catch(done)
 })
+
+pop.method = "db.pop"
+pop.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
+}
+pop.accepts = {
+    query: _.is.JSON,
+}
+pop.produces = {
+    json: _.is.JSON,
+}
 
 /**
  *  API

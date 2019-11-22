@@ -20,33 +20,22 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
 const util = require("../lib/util")
 
 /**
  */
-const get = _.promise.make((self, done) => {
+const get = _.promise((self, done) => {
     const mongodb = require("..")
 
-    const method = "db.get";
+    _.promise(self)
+        .validate(get)
 
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(_.is.JSON(self.query), `${method}: expected self.query to be a JSON-like object`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-
-    logger.trace({
-        method: method,
-    }, "called")
-
-    _.promise.make(self)
         .then(mongodb.collection.p(self.table_schema.name))
-        .then(_.promise.make(sd => {
+        .make(sd => {
             sd.mongodb$collection.findOne(self.query, (error, result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
@@ -56,9 +45,24 @@ const get = _.promise.make((self, done) => {
 
                 done(null, self);
             })
-        }))
+        })
         .catch(done)
 })
+
+get.method = "db.get"
+get.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
+}
+get.accepts = {
+    query: _.is.JSON,
+}
+get.produces = {
+    json: _.is.JSON,
+}
 
 /**
  */

@@ -25,9 +25,6 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
 const util = require("../lib/util")
 
 // https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
@@ -159,7 +156,9 @@ const all = _.promise((self, done) => {
     let keys = self.table_schema.keys
     if (self.index_name) {
         keys = self.table_schema.indexes[self.index_name]
-        assert.ok(keys, `${all.method}: no index named ${self.index_name}`)
+        if (!keys) {
+            return done(new errors.Invalid(`${all.method}: no index named ${self.index_name}`))
+        }
     }
 
     const query = _make_query(self.query)
@@ -169,12 +168,6 @@ const all = _.promise((self, done) => {
         sort = _.d.list(self, "query_sort", []).map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     }
 
-    /*
-    const sort = {}
-    keys.forEach(key => {
-        sort[key.replace(/^[-+]/, "")] = key.startsWith("-") ? -1 : 1
-    })
-    */
     const options = {
         skip: 0
     }
@@ -182,9 +175,11 @@ const all = _.promise((self, done) => {
     if (self.pager) {
         options.skip = _.coerce.to.Integer(self.pager, 0)
     }
+
     if (self.query_limit) {
         options.limit = self.query_limit;
     }
+
     if (self.projection) {
         if (_.is.Array(self.projection)) {
             options.projection = {}

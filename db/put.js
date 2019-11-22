@@ -25,25 +25,13 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
 const util = require("../lib/util")
+const Binary = require("mongodb").Binary
 
 /**
  */
 const _put = document => _.promise((self, done) => {
     const mongodb = require("..")
-
-    const method = "db.put";
-
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
-    assert.ok(_.is.JSON(self.json), `${method}: expected self.json to be a JSON-like object`)
-    assert.ok(self.table_schema, `${method}: expected self.table_schema`)
-
-    if (0) logger.trace({
-        method: method,
-    }, "called")
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
         return done(new errors.Invalid(`missing keys: ${self.table_schema.keys}`))
@@ -76,20 +64,42 @@ const _put = document => _.promise((self, done) => {
         .catch(done)
 })
 
+_put.method = "db.put"
+_put.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
+    json: _.is.JSON,
+}
+_put.accepts = {
+    query: _.is.JSON,
+}
+_put.produces = {
+}
+
 /**
  *  BLOB handling
  */
 const put_document = _.promise((self, done) => {
-    const Binary = require("mongodb").Binary
-
-    assert.ok(_.is.Buffer(self.document), `${method}: expected self.document to be Buffer`)
-
-    const document = Binary(self.document)
-
     _.promise(self)
-        .then(_put(document))
+        .then(_put(Binary(self.document)))
         .end(done, self)
 })
+
+put_document.method = "db.put.document"
+put_document.requires = {
+    mongodb: _.is.Object,
+    table_schema: {
+        name: _.is.String,
+        keys: _.is.Array,
+    },
+    json: _.is.JSON,
+    document: _.is.Buffer,
+}
+put_document.produces = {
+}
 
 /**
  *  API

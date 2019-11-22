@@ -25,17 +25,13 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const logger = require("../logger")(__filename)
-const mongodb = require("../lib")
 
 /**
  */
 const patch = _.promise((self, done) => {
-    _.promise.validate(self, patch)
+    const mongodb = require("..")
 
-    logger.trace({
-        method: patch.method,
-    }, "called")
+    _.promise.validate(self, patch)
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
         return done(new errors.Invalid())

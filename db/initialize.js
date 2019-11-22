@@ -24,18 +24,9 @@
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
-
-const logger = require("../logger")(__filename)
-const util = require("../lib/util")
-
 /**
  */
-const initialize = _.promise.make(self => {
-    const method = "db.initialize";
-
-    assert.ok(self.mongodb$cfg, `${method}: expected self.mongodb$cfg`)
-    assert.ok(self.mongodb, `${method}: expected self.mongodb`)
+const initialize = _.promise(self => {
 })
 
 /**
