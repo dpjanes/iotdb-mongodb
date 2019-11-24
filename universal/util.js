@@ -76,6 +76,9 @@ const build = _paramd => {
     if (!paramd.many) {
         paramd.many = `${paramd.one}s`
     }
+    if (!paramd.create) {
+        paramd.create = {}
+    }
 
     /*
      *  Make descriptor
@@ -104,6 +107,12 @@ const build = _paramd => {
         })
     })
 
+    _descriptor.create = _.promise(self => {
+        _.promise.validate(self, _descriptor.create)
+
+        self[_descriptor.one] = Object.assign({}, paramd.create, self[_descriptor.one] || {})
+    })
+
     /**
      */
     const db = {
@@ -122,8 +131,12 @@ const build = _paramd => {
         },
     }
 
+    paramd.keys.forEach(key => {
+        db.by[key] = mongodb.universal.by_key(_descriptor, key)
+    })
+
     paramd.specials.forEach(special => {
-        db.list[special] = mongodb.universal.list_key(_descriptor, "special")
+        db.list[special] = mongodb.universal.list_key(_descriptor, special)
     })
 
     return db
