@@ -42,8 +42,8 @@ _.promise.make({
     .then(mongo.insert)
     .then(sd => {
         console.log("+", "mongo_id", sd.mongo_id)
-        console.log("+", "mongo_result", sd.mongo_result)
-        console.log("+", "mongo_result", _.is.JSON(sd.mongo_result))
+        console.log("+", "mongodb$result", sd.mongodb$result)
+        console.log("+", "mongodb$result", _.is.JSON(sd.mongodb$result))
         process.exit()
     })
     .catch(error => {

@@ -50,7 +50,7 @@ _.promise.make({
     .then(mongo.remove)
 
     .then(sd => {
-        console.log("+", "mongo_result", sd.mongo_result)
+        console.log("+", "mongodb$result", sd.mongodb$result)
         process.exit()
     })
     .catch(error => {

@@ -40,10 +40,12 @@ const delete_ = _.promise((self, done) => {
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
-            sd.mongodb$collection.findAndRemove(query, sort, { w: 1, }, error => {
+            sd.mongodb$collection.findAndRemove(query, sort, { w: 1, }, (error, result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
+
+                self.mongodb$result = result
 
                 done(null, self)
             })
@@ -63,6 +65,7 @@ delete_.requires = {
 delete_.accepts = {
 }
 delete_.produces = {
+    mongodb$result: _.is.Object
 }
 
 /**

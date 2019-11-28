@@ -202,12 +202,12 @@ const all = _.promise((self, done) => {
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
         .then(sd => {
-            sd.mongodb$collection.find(query, options).sort(sort).toArray((error, mongo_result) => {
+            sd.mongodb$collection.find(query, options).sort(sort).toArray((error, mongodb$result) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
 
-                self.jsons = util.scrub_ids(mongo_result)
+                self.jsons = util.scrub_ids(mongodb$result)
                 self.json = self.jsons.length ? self.jsons[0] : null
 
                 self.cursor = null
@@ -263,7 +263,7 @@ const all = _.promise((self, done) => {
                     }
                 }
 
-                self.mongo_result = mongo_result
+                self.mongodb$result = mongodb$result
 
                 done(null, self)
             })
@@ -292,7 +292,7 @@ all.produces = {
     json: _.is.Dictionary,
 
     cursor: _.is.Dictionary,
-    mongo_result: _.is.Object,
+    mongodb$result: _.is.Object,
 }
 
 /**
