@@ -45,10 +45,17 @@ exports.many = "ROWs"
  *  Special keys
  */
 exports.keys = {
+    version: null, // "version", // versioning
     removed: null, // "removed", // hides record rather than delete
     created: null, // "created", // timestamp of creation
     updated: null, // "updated", // timestamp of last modification
 }
+
+/**
+ *  Coming in a future release
+ *  https://www.mongodb.com/blog/post/building-with-patterns-the-schema-versioning-pattern
+ */
+exports.VERSION = 1
 
 /**
  */
