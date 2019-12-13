@@ -20,25 +20,25 @@
  *  limitations under the License.
  */
 
-"use strict";
+"use strict"
 
-const _ = require("iotdb-helpers");
-const fs = require("iotdb-fs");
+const _ = require("iotdb-helpers")
+const fs = require("iotdb-fs")
 
-const assert = require("assert");
-const path = require("path");
+const assert = require("assert")
+const path = require("path")
 
 const mongodb = require("..")
-const mongodb$cfg = require("./data/mongodb$cfg.json");
-const movies_schema = require("./data/movies.schema.json");
+const mongodb$cfg = require("./data/mongodb$cfg.json")
+const movies_schema = require("./data/movies.schema.json")
 
-const auto_fail = done => _.promise(self => done(new Error("didn't expect to get here")));
+const auto_fail = done => _.promise(self => done(new Error("didn't expect to get here")))
 const ok_error = (done, code) => error => {
     if (code && (_.error.code(error) !== code)) {
         return done(error)
     }
 
-    done(null);
+    done(null)
 }
 
 /**
@@ -71,11 +71,11 @@ const load = _.promise((self, done) => {
         .add({
             movies: require("./data/movies.json").map(movie => {
                 movie.movie_id = `urn:movie:${movie.year}:${_.id.slugify(movie.title)}`
-                movie.release_date = movie.info.release_date || null;
-                movie.rating = movie.info.rating || null;
-                movie.rank = movie.info.rank || null;
-                movie.removed = movie.removed || null;
-                return movie;
+                movie.release_date = movie.info.release_date || null
+                movie.rating = movie.info.rating || null
+                movie.rank = movie.info.rank || null
+                movie.removed = movie.removed || null
+                return movie
             }),
             table_schema: movies_schema,
         })
@@ -92,26 +92,26 @@ const load = _.promise((self, done) => {
 const ordered_forward = (jsons, key) => {
     const values = jsons.map(json => json[key]).filter(value => value !== null)
 
-    let value_last = null;
+    let value_last = null
 
     for (let vi = 0; vi < values.length; vi++) {
-        const value = values[vi];
+        const value = values[vi]
         if ((value_last !== null) && (value_last > value)) {
-            return false;
+            return false
         }
 
-        value_last = value;
+        value_last = value
     }
 
-    return true;
+    return true
 }
 
 /**
  *  API
  */
-exports.auto_fail = auto_fail;
-exports.ok_error = ok_error;
+exports.auto_fail = auto_fail
+exports.ok_error = ok_error
 
-exports.initialize = initialize;
-exports.load = load;
-exports.ordered_forward = ordered_forward;
+exports.initialize = initialize
+exports.load = load
+exports.ordered_forward = ordered_forward
