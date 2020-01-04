@@ -1,5 +1,5 @@
 /*
- *  samples/update.js
+ *  samples/watch.js
  *
  *  David Janes
  *  IOTDB.org

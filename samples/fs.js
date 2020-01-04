@@ -5,7 +5,7 @@
  *  IOTDB
  *  2018-11-05
  *
- *  Copyright [2013-2018] [David P. Janes]
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License")
  *  you may not use this file except in compliance with the License.
@@ -24,12 +24,11 @@
 
 const _ = require("iotdb-helpers")
 
-const assert = require("assert")
 const fs = require("fs")
 
 const minimist = require("minimist")
 
-const mongo = require("..")
+const mongodb = require("..")
 const mongodb$cfg = require("./mongodb$cfg.json")
 
 const ad = minimist(process.argv.slice(2))
@@ -51,10 +50,10 @@ if (action("initialize")) {
     _.promise({
         mongodb$cfg: mongodb$cfg,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
 }
@@ -67,11 +66,11 @@ if (action("put")) {
         document_media_type: "text/plain",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.put)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.put)
+        .then(mongodb.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
 }
@@ -83,11 +82,11 @@ if (action("put.json")) {
         json: JSON.parse(fs.readFileSync("data/movies.json")),
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.put.json)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.put.json)
+        .then(mongodb.close)
         .make(sd => console.log("+", "ok"))
         .catch(_on_error)
 }
@@ -98,11 +97,11 @@ if (action("get")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.get)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.get)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
             console.log("+", "document_encoding", sd.document_encoding)
@@ -119,11 +118,11 @@ if (action("get.utf8")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.get.utf8)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.get.utf8)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
             console.log("+", "document_encoding", sd.document_encoding)
@@ -140,11 +139,11 @@ if (action("get.json")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.get.json)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.get.json)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "json", _.is.JSON(sd.json) ? true : false)
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
@@ -162,11 +161,11 @@ if (action("get.buffer")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.get.buffer)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.get.buffer)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "json", _.is.JSON(sd.json) ? true : false)
             console.log("+", "document", _.is.String(sd.document) ? "string" : _.is.Buffer(sd.document) ? "buffer" : "unknown")
@@ -184,11 +183,11 @@ if (action("exists")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.exists)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.exists)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "exists", sd.exists)
             console.log("+", "ok")
@@ -202,11 +201,11 @@ if (action("remove")) {
         path: filename || "gridfs:/movies.json",
         bucket: bucket,
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.remove)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.remove)
+        .then(mongodb.close)
         .make(sd => {
             console.log("+", "ok")
         })
@@ -218,11 +217,11 @@ if (action("list")) {
         mongodb$cfg: mongodb$cfg,
         path: filename || "gridfs:/movies.json",
     })
-        .then(mongo.initialize)
-        .then(mongo.db.initialize)
-        .then(mongo.fs.initialize)
-        .then(mongo.fs.list)
-        .then(mongo.close)
+        .then(mongodb.initialize)
+        .then(mongodb.db.initialize)
+        .then(mongodb.fs.initialize)
+        .then(mongodb.fs.list)
+        .then(mongodb.close)
         .make(sd => {
             sd.paths.forEach(path => {
                 console.log("+", path)

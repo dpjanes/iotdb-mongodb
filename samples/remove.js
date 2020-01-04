@@ -1,11 +1,11 @@
 /*
- *  index.js
+ *  samples/remove.js
  *
  *  David Janes
  *  IOTDB.org
  *  2017-08-05
  *
- *  Copyright [2013-2018] [David P. Janes]
+ *  Copyright (2013-2020) David P. Janes
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,39 +20,34 @@
  *  limitations under the License.
  */
 
-"use strict";
-const mongo = require("..")
-const _ = require("iotdb-helpers");
+"use strict"
 
-const assert = require("assert");
+const _ = require("iotdb-helpers")
+const mongodb = require("..")
 
-const mongodb = require('mongodb');
-
-_.promise.make({
+_.promise({
     mongodb$cfg: require("./mongodb$cfg.json"),
-    table_name: "test1",
+    mongodb$collection_name: "test1",
 })
-    .then(mongo.initialize)
-    .then(mongo.collection)
+    .then(mongodb.initialize)
+    .then(mongodb.collection)
 
     .then(sd => _.d.update(sd, {
         json: {
             "hello": "world",
         },
     }))
-    .then(mongo.insert)
+    .then(mongodb.insert)
 
-    .then(sd => _.d.update(sd, {
+    .add({
         query: {
             id: sd.mongo_id,
         },
-    }))
-    .then(mongo.remove)
+    })
+    .then(mongodb.remove)
 
     .then(sd => {
         console.log("+", "mongodb$result", sd.mongodb$result)
-        process.exit()
     })
-    .catch(error => {
-        console.log("#", error)
-    })
+    .then(mongodb.close)
+    .catch(_.error.log)
