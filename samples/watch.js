@@ -31,7 +31,7 @@ const on_collection = _.promise((self, done) => {
     _.promise(self)
         .validate(on_collection)
         .make(sd => {
-            console.log("+", on_collection.method)
+            console.log("+", on_collection.method, "changed", sd.event)
         })
         .end(done, self, on_collection)
 })
@@ -39,6 +39,7 @@ const on_collection = _.promise((self, done) => {
 on_collection.method = "on_collection"
 on_collection.description = `Callback for collection updates`
 on_collection.requires = {
+    event: _.is.Object,
 }
 on_collection.accepts = {
 }
@@ -80,14 +81,30 @@ updater.produces = {
 }
 
 /**
+ *  Demonstrate watching collection updates
  */
 _.promise({
     mongodb$cfg: require("./mongodb$cfg.json"),
     mongodb$collection_name: "test1",
+    mongodb$on_collection: on_collection,
+    /*
+    mongodb$pipeline: [
+        {
+            "$match": { "updateDescription.updatedFields.timestamp": { "$exists": true } },
+        },
+    ],
+    */
 })
     .then(mongodb.initialize)
     .then(mongodb.collection)
 
+    /*
+    .then(mongodb.pipline.initialize)
+    .then(mongodb.pipline.query.p({
+        "timestamp": [ "!=", null ],
+    })
+    */
+    .then(mongodb.watch.collection)
     .then(updater)
 
     .then(mongodb.close)

@@ -49,6 +49,30 @@ const replace = _.promise((self, done) => {
 
     const json = _.d.clone.deep(self.json)
 
+    if (self.table_schema.partials) {
+        const set = {}
+
+        _.keys(json)
+            .filter(key => !key.startsWith("$"))
+            .forEach(key => {
+                const n = json[key]
+
+                if (!json.$_original) {
+                    set[key] = n
+                    return
+                }
+
+                const o = json.$_original[key]
+                if (_.is.Equal(o, n)) {
+                    return
+                }
+
+                set[key] = n
+            });
+
+        console.log("SET", set, query)
+    }
+
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
@@ -83,6 +107,9 @@ replace.requires = {
     },
 }
 replace.accepts = {
+    table_schema: {
+        partials: _.is.Boolean
+    },
 }
 replace.produces = {
 }

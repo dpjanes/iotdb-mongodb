@@ -43,6 +43,10 @@ const get = _.promise((self, done) => {
 
                 self.json = util.scrub_ids(result) || null
 
+                if (sd.table_schema.partials) {
+                    self.json.$_original = _.d.clone.deep(self.json)
+                }
+
                 done(null, self)
             })
         })
@@ -59,6 +63,9 @@ get.requires = {
 }
 get.accepts = {
     query: _.is.JSON,
+    table_schema: {
+        partials: _.is.Boolean
+    },
 }
 get.produces = {
     json: _.is.JSON,
