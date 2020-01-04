@@ -47,8 +47,9 @@ const replace = _.promise((self, done) => {
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
-    const json = _.d.clone.deep(self.json)
+    const json = mongodb.util.updated(_.d.clone.deep(self.json), self.json.$_original)
 
+    /*
     if (self.table_schema.partials) {
         const set = {}
 
@@ -72,6 +73,9 @@ const replace = _.promise((self, done) => {
 
         console.log("SET", set, query)
     }
+    */
+
+    console.log("HERE:XXX", json)
 
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
