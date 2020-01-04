@@ -20,22 +20,19 @@
  *  limitations under the License.
  */
 
-"use strict";
-const mongo = require("..")
-const _ = require("iotdb-helpers");
+"use strict"
 
-const assert = require("assert");
+const mongodb = require("..")
+const _ = require("iotdb-helpers")
 
-const mongodb = require('mongodb');
-
-_.promise.make({
+_.promise({
     mongodb$cfg: require("./mongodb$cfg.json"),
-    table_name: "test1",
+    mongodb$collection_name: "test1",
 })
-    .then(mongo.initialize)
-    .then(mongo.collection)
+    .then(mongodb.initialize)
+    .then(mongodb.collection)
 
-    .then(sd => _.d.update(sd, {
+    .add({
         query: {
             "a": "b",
         },
@@ -44,14 +41,12 @@ _.promise.make({
                 "a": "c",
             },
         },
-        options: mongo.update.MULTI,
-    }))
-    .then(mongo.update)
+        options: mongodb.update.MULTI,
+    })
+    .then(mongodb.update)
 
-    .then(sd => {
+    .make(sd => {
         console.log("+", "mongodb$result", sd.mongodb$result)
-        process.exit()
     })
-    .catch(error => {
-        console.log("#", error)
-    })
+    .then(mongodb.close)
+    .catch(_.error.log)
