@@ -25,6 +25,62 @@
 const mongodb = require("..")
 const _ = require("iotdb-helpers")
 
+/**
+ */
+const on_collection = _.promise((self, done) => {
+    _.promise(self)
+        .validate(on_collection)
+        .make(sd => {
+            console.log("+", on_collection.method)
+        })
+        .end(done, self, on_collection)
+})
+
+on_collection.method = "on_collection"
+on_collection.description = `Callback for collection updates`
+on_collection.requires = {
+}
+on_collection.accepts = {
+}
+on_collection.produces = {
+}
+
+/**
+ */
+const updater = _.promise((self, done) => {
+    setInterval(() => {
+        const timestamp =_.timestamp.make()
+
+        _.promise(self)
+            .validate(updater)
+            .add({
+                query: {
+                    "a": "b",
+                },
+                json: {
+                    "a": "b",
+                    "timestamp": timestamp,
+                },
+            })
+            .then(mongodb.update.upsert)
+            .make(sd => {
+                console.log("+", updater.method, timestamp, "mongodb$result", sd.mongodb$result)
+            })
+            .catch(_.promise.log)
+    }, 2500)
+})
+
+updater.method = "updater"
+updater.description = ``
+updater.requires = {
+}
+updater.accepts = {
+}
+updater.produces = {
+}
+
+/**
+ */
 _.promise({
     mongodb$cfg: require("./mongodb$cfg.json"),
     mongodb$collection_name: "test1",
@@ -32,21 +88,7 @@ _.promise({
     .then(mongodb.initialize)
     .then(mongodb.collection)
 
-    .add({
-        query: {
-            "a": "b",
-        },
-        json: {
-            "$set": {
-                "a": "c",
-            },
-        },
-        options: mongodb.update.MULTI,
-    })
-    .then(mongodb.update)
+    .then(updater)
 
-    .make(sd => {
-        console.log("+", "mongodb$result", sd.mongodb$result)
-    })
     .then(mongodb.close)
     .catch(_.error.log)
