@@ -43,7 +43,7 @@ const get = _.promise((self, done) => {
 
                 self.json = util.scrub_ids(result) || null
 
-                if (sd.table_schema.partials) {
+                if (sd.table_schema.partials && self.json) {
                     self.json.$_original = _.d.clone.deep(self.json)
                 }
 

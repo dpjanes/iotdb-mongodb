@@ -54,6 +54,7 @@ const updater = _.promise((self, done) => {
 
         _.promise(self)
             .validate(updater)
+
             .add({
                 query: {
                     "a": "b",
@@ -63,11 +64,13 @@ const updater = _.promise((self, done) => {
                     "timestamp": timestamp,
                 },
             })
-            .then(mongodb.update.upsert)
+            .then(mongodb.db.replace)
+            // .then(mongodb.update.upsert)
             .make(sd => {
                 console.log("+", updater.method, timestamp, "mongodb$result", sd.mongodb$result)
             })
-            .catch(_.promise.log)
+
+            .catch(_.error.log)
     }, 2500)
 })
 
@@ -87,12 +90,26 @@ _.promise({
     mongodb$cfg: require("./mongodb$cfg.json"),
     mongodb$collection_name: "test1",
     mongodb$on_collection: on_collection,
-    /*
+    table_schema: {
+        name: "test1",
+        keys: [ "a" ],
+        partials: true,
+    },
     mongodb$pipeline: [
         {
-            "$match": { "updateDescription.updatedFields.timestamp": { "$exists": true } },
+            "$match": {
+                "$or": [
+                    {
+                        "updateDescription.updatedFields.timestamp": { "$exists": true },
+                    },
+                    {
+                        "operationType": "replace",
+                    },
+                ],
+            },
         },
     ],
+    /*
     */
 })
     .then(mongodb.initialize)

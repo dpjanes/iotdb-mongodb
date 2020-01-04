@@ -40,47 +40,27 @@ const replace = _.promise((self, done) => {
     _.promise.validate(self, replace)
 
     if (self.table_schema.keys.find(key => _.is.Undefined(self.json[key]))) {
-        return done(new errors.Invalid())
+        return done(new errors.Invalid(`expected these keys: ${self.table_schema.keys.join(",")}`))
     }
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)
     const sort = self.table_schema.keys.map(key => [ key, 1 ])
 
-    const json = mongodb.util.updated(_.d.clone.deep(self.json), self.json.$_original)
+    let operation = "findOneAndReplace"
+    let json = _.d.clone.deep(self.json)
 
-    /*
     if (self.table_schema.partials) {
-        const set = {}
-
-        _.keys(json)
-            .filter(key => !key.startsWith("$"))
-            .forEach(key => {
-                const n = json[key]
-
-                if (!json.$_original) {
-                    set[key] = n
-                    return
-                }
-
-                const o = json.$_original[key]
-                if (_.is.Equal(o, n)) {
-                    return
-                }
-
-                set[key] = n
-            });
-
-        console.log("SET", set, query)
+        json = mongodb.util.updated(json, json.$_original)
+        operation = "findOneAndUpdate"
     }
-    */
 
-    console.log("HERE:XXX", json)
+    delete json.$_original
 
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
-            sd.mongodb$collection.findOneAndReplace(query, json, {
+            sd.mongodb$collection[operation](query, json, {
                 sort: sort,
                 upsert: false,
                 returnOriginal: true,
@@ -94,6 +74,8 @@ const replace = _.promise((self, done) => {
                 } else if (!result.value) {
                     return done(new errors.NotFound())
                 }
+
+                self.mongodb$result = result
 
                 done(null, self)
             })
@@ -116,6 +98,7 @@ replace.accepts = {
     },
 }
 replace.produces = {
+    mongodb$result: _.is.Object,
 }
 
 /**
