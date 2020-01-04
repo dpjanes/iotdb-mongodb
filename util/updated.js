@@ -56,10 +56,16 @@ const updated = (nd, od) => {
                 const nv = head.nd[key]
 
                 if (_.is.Equal(ov, nv)) {
+                } else if (_.is.Dictionary(nv) && _.is.Dictionary(ov)) {
+                    stack.push({
+                        "nd": nv,
+                        "od": ov,
+                        "prefix": `${head.prefix}${key}.`,
+                    })
                 } else if (_.is.Undefined(nv)) {
-                    unset[key] = ""
+                    unset[head.prefix + key] = ""
                 } else {
-                    set[key] = nv
+                    set[head.prefix + key] = nv
                 }
             })
     }
@@ -76,63 +82,7 @@ const updated = (nd, od) => {
     return rd
 }
 
-describe("util.updated", function() {
-    it("no old", function() {
-        const nd = {}
-        const od = null
-        const got = updated(nd, od)
-        const want = {
-            "$set": {},
-        }
-
-        assert.deepEqual(got, want)
-    })
-    it("simple add", function() {
-        const nd = {
-            "a": 1,
-            "b": 2,
-        }
-        const od = {
-            "a": 1,
-        }
-        const got = updated(nd, od)
-        const want = {
-            "$set": {
-                "b": 2,
-            },
-        }
-
-        assert.deepEqual(got, want)
-    })
-    it("simple replace", function() {
-        const nd = {
-            "a": 1,
-        }
-        const od = {
-            "a": 2,
-        }
-        const got = updated(nd, od)
-        const want = {
-            "$set": {
-                "a": 1,
-            },
-        }
-
-        assert.deepEqual(got, want)
-    })
-    it("simple remove", function() {
-        const nd = {
-        }
-        const od = {
-            "a": 2,
-        }
-        const got = updated(nd, od)
-        const want = {
-            "$unset": {
-                "a": "",
-            },
-        }
-
-        assert.deepEqual(got, want)
-    })
-})
+/**
+ *  API
+ */
+exports.updated = updated

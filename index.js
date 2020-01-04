@@ -25,8 +25,8 @@
 module.exports = require("./lib")
 module.exports.dynamodb = require("./db")
 module.exports.db = require("./db")
-// module.exports.fs = require("./fs")
 module.exports.universal = require("./universal")
+module.exports.util = require("./util")
 
 module.exports.mongodb = require("mongodb")
 module.exports.Binary = module.exports.mongodb.Binary
