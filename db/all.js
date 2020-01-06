@@ -276,6 +276,7 @@ all.method = "db.all"
 all.requires = {
     mongodb: _.is.Object,
     table_schema: {
+        name: _.is.String,
         keys: _.is.Array,
         indexes: _.is.Dictionary,
     },
@@ -286,6 +287,7 @@ all.accepts = {
     pager: [ _.is.String, _.is.Integer ],
     query_limit: _.is.Intger,
     projection: [ _.is.Array, _.is.Dictionary ],
+    query_sort: _.is.Array,
 }
 all.produces = {
     jsons: _.is.Array,
