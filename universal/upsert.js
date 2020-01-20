@@ -60,6 +60,8 @@ const upsert = (_descriptor, _key) => {
                     })
                 }
             })
+
+            // XXX - MongoDB has a proper upsert - let's use it
             .then(mongodb.db.get)
             .make(sd => {
                 if (sd.json) {

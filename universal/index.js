@@ -35,6 +35,7 @@ module.exports = Object.assign(
     require("./count_query"),
     require("./count_key"),
     require("./create"),
+    require("./collection"),
     require("./delete"),
     require("./ensure_schema"),
     require("./list_all"),
