@@ -32,6 +32,7 @@ const _descriptor = require("./_descriptor")
  */
 const movie = {
     create: mongodb.universal.create(_descriptor),
+    ensure: mongodb.universal.ensure(_descriptor),
     save: mongodb.universal.save(_descriptor),
     delete: mongodb.universal.delete(_descriptor),
     upsert: mongodb.universal.upsert(_descriptor),

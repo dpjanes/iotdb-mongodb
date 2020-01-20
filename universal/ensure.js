@@ -78,10 +78,12 @@ const ensure = _descriptor => {
                     delete on_update[key]
                 });
 
-                const key = _descriptor["created"]
-                if (key) {
-                    delete on_update[key]
-                }
+                [ "created", "removed" ]
+                    .map(key => _descriptor.keys[key])
+                    .filter(key => key)
+                    .forEach(key => {
+                        delete on_update[key]
+                    })
 
                 const update = {
                     "$set": on_update,
