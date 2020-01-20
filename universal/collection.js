@@ -46,6 +46,9 @@ const collection = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
+            
+            .add("table_schema/name:mongodb$collection_name")
+            .then(mongodb.collection)
 
             .end(done, self, f)
     })
