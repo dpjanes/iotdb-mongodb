@@ -85,6 +85,10 @@ const ensure = _descriptor => {
                         delete on_update[key]
                     })
 
+                _.keys(on_update).forEach(key => {
+                    delete on_insert[key]
+                })
+
                 const update = {
                     "$set": on_update,
                     "$setOnInsert": on_insert,
@@ -92,12 +96,22 @@ const ensure = _descriptor => {
                 const values = sd.table_schema.keys.map(key => sd.json[key] || null)
                 const query = _.object(sd.table_schema.keys, values)
 
-                sd.mongodb$collection.findOneAndReplace(query, update, {
+                /* console.log("HERE:XXX", JSON.stringify(update, null, 2)) */
+
+                // we really need to kill TingoDB
+                let command = sd.mongodb$collection.updateOne
+                if (!command) {
+                    command = sd.mongodb$collection.findOneAndReplace
+                }
+                command = command.bind(sd.mongodb$collection)
+
+                command(query, update, {
+                    multi: false,
                     upsert: true,
                     returnOriginal: false,
                 }, (error, doc) => {
                     if (error) {
-                        return sdone(util.intercept(self)(error))
+                        return sdone(error)
                     }
 
                     sdone(null, self)
