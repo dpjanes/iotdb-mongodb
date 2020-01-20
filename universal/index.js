@@ -37,6 +37,7 @@ module.exports = Object.assign(
     require("./create"),
     require("./collection"),
     require("./delete"),
+    require("./ensure"),
     require("./ensure_schema"),
     require("./list_all"),
     require("./list_query"),

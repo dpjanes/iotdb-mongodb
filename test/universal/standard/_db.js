@@ -32,6 +32,8 @@ const _descriptor = require("./_descriptor")
  */
 const movie = {
     create: mongodb.universal.create(_descriptor),
+    ensure: mongodb.universal.ensure(_descriptor),
+    collection: mongodb.universal.collection(_descriptor),
     save: mongodb.universal.save(_descriptor),
     delete: mongodb.universal.delete(_descriptor),
     upsert: mongodb.universal.upsert(_descriptor),
@@ -59,4 +61,3 @@ movie.list.year.title_down = mongodb.universal.list_key(_descriptor, "year", "ye
 module.exports = {
     movie: movie,
 }
-
