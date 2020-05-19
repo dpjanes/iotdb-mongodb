@@ -56,7 +56,7 @@ const collection = _descriptor => {
     f.method = `${_descriptor.name}.collection`
     f.description = `Access to the underlying descriptor for ${_descriptor.one}`
     f.requires = {
-        [ _descriptor.one ]: _descriptor.validate,
+        // [ _descriptor.one ]: _descriptor.validate,
     }
     f.accepts = {
     }
