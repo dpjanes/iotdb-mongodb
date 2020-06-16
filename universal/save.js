@@ -61,9 +61,9 @@ const save = _descriptor => {
                 })
             })
 
-            .conditional(_descriptor.scrub_json, _descriptor.scrub_json)
+            .conditional(!!_descriptor.scrub_json, _descriptor.scrub_json)
             .then(mongodb.db.replace)
-            .conditional(_descriptor.updated, _descriptor.updated)
+            .conditional(!!_descriptor.updated, _descriptor.updated)
 
             .end(done, self, _descriptor.one)
     })

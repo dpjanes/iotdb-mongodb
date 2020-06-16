@@ -65,9 +65,9 @@ const remove = _descriptor => {
                 })
             })
 
-            .conditional(_descriptor.remove, _descriptor.remove)
+            .conditional(!!_descriptor.remove, _descriptor.remove)
             .then(mongodb.db.replace)
-            .conditional(_descriptor.removed, _descriptor.removed)
+            .conditional(!!_descriptor.removed, _descriptor.removed)
 
             .end(done, self)
     })

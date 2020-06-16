@@ -66,7 +66,7 @@ const ensure = _descriptor => {
                     assert.ok(!_.is.Undefined(sd.json[key]), `expected to see "${key}" in the record: ${JSON.stringify(sd.json, null, 2)}`)
                 })
             })
-            .conditional(_descriptor.scrub_json, _descriptor.scrub_json)
+            .conditional(!!_descriptor.scrub_json, _descriptor.scrub_json)
 
             .add("table_schema/name:mongodb$collection_name")
             .then(mongodb.collection)

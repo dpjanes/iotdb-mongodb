@@ -53,9 +53,9 @@ const delete_ = _descriptor => {
                 })
             })
 
-            .conditional(_descriptor.delete, _descriptor.delete)
+            .conditional(!!_descriptor.delete, _descriptor.delete)
             .then(mongodb.db.delete)
-            .conditional(_descriptor.deleted, _descriptor.deleted)
+            .conditional(!!_descriptor.deleted, _descriptor.deleted)
 
             .end(done, self)
     })
