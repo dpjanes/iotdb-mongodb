@@ -28,6 +28,7 @@ const mongodb = require("..")
 const assert = require("assert")
 
 const _util = require("./_util")
+const util = require("../lib/util")
 
 /**
  */
@@ -94,8 +95,9 @@ const ensure = _descriptor => {
                     "$setOnInsert": on_insert,
                 }
                 const values = sd.table_schema.keys.map(key => sd.json[key] || null)
-                const query = _.object(sd.table_schema.keys, values)
+                sd.query = _.object(sd.table_schema.keys, values)
 
+                // console.log("QUERY", sd.query)
                 /* console.log("HERE:XXX", JSON.stringify(update, null, 2)) */
 
                 // we really need to kill TingoDB
@@ -105,16 +107,50 @@ const ensure = _descriptor => {
                 }
                 command = command.bind(sd.mongodb$collection)
 
-                command(query, update, {
+                /*
+                console.log("MONGO:ENSURE.QUERY", sd.query)
+                console.log("MONGO:ENSURE.UDPATE", update)
+                */
+
+// console.log("ENSURE:A.1 update", update)
+// console.log("ENSURE:A.2 query", sd.query)
+                command(_.d.clone(sd.query), update, {
                     multi: false,
                     upsert: true,
-                    returnOriginal: false,
                 }, (error, doc) => {
                     if (error) {
                         return sdone(error)
                     }
 
-                    sdone(null, self)
+                    /*
+                    sd.mongodb$collection.updateOne
+
+                    delete doc.connection
+                    delete doc.message
+                    console.log("DOC", doc)
+                    */
+
+                    sdone(null, sd)
+                })
+            })
+
+            .make((sd, sdone) => {
+                // console.log("B.1 QUERY", sd.query)
+                sd.mongodb$collection.findOne(sd.query, (error, result) => {
+                    if (error) {
+                        return done(util.intercept(sd)(error))
+                    }
+
+                    sd.json = util.scrub_ids(result) || null
+                    // console.log("B.2 JSON", sd.json)
+
+                    if (sd.table_schema.partials && sd.json) {
+                        sd.json.$_original = _.d.clone.deep(sd.json)
+                    }
+
+                    sd[_descriptor.one] = sd.json
+
+                    sdone(null, sd)
                 })
             })
 
@@ -122,13 +158,14 @@ const ensure = _descriptor => {
     })
 
     f.method = `${_descriptor.name}.ensure`
-    f.description = `Ensure record ${_descriptor.one} exists. It does not return the record`
+    f.description = `Ensure record ${_descriptor.one} exists. It DOES return the record`
     f.requires = {
     }
     f.accepts = {
         [ _descriptor.one ]: _.is.Object,
     }
     f.produces = {
+        [ _descriptor.one ]: [ _descriptor.validate, _.is.Null ],
     }
 
     /**
