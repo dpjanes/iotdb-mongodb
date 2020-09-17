@@ -314,7 +314,15 @@ const count = _.promise((self, done) => {
 
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
-            sd.mongodb$collection.count(_make_query(self.query), (error, count) => {
+            const query = _make_query(self.query)
+
+            if (!_.is.Empty(self.query_search)) {
+                query["$text"] = {
+                    "$search": self.query_search,
+                }
+            }
+
+            sd.mongodb$collection.count(query, (error, count) => {
                 if (error) {
                     return done(util.intercept(self)(error))
                 }
