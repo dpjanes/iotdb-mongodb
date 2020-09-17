@@ -163,7 +163,7 @@ const all = _.promise((self, done) => {
 
     const query = _make_query(self.query)
 
-    if (self.query_search) {
+    if (!_.is.Empty(self.query_search)) {
         query["$text"] = {
             "$search": self.query_search,
         }

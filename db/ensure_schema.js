@@ -82,7 +82,6 @@ const ensure_schema = _.promise((self, done) => {
             if (_.is.Empty(sd.table_schema.text))  {
                 return
             }
-
             sd.index = {
                 name: "text",
                 indexes: {},
