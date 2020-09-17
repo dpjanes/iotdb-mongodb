@@ -163,6 +163,12 @@ const all = _.promise((self, done) => {
 
     const query = _make_query(self.query)
 
+    if (self.query_search) {
+        query["$text"] = {
+            "$search": self.query_search,
+        }
+    }
+
     let sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     if (self.query_sort) {
         sort = _.d.list(self, "query_sort", []).map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
@@ -284,6 +290,7 @@ all.requires = {
 all.accepts = {
     index_name: _.is.String,
     query: _.is.JSON,
+    query_search: _.is.String,
     pager: [ _.is.String, _.is.Integer ],
     query_limit: _.is.Intger,
     projection: [ _.is.Array, _.is.Dictionary ],

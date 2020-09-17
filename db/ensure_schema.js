@@ -76,7 +76,25 @@ const ensure_schema = _.promise((self, done) => {
             inputs: "pairs:pair",
         })
 
-        .end(done, self)
+        .make(sd => {
+            sd.index = null
+
+            if (_.is.Empty(sd.table_schema.text))  {
+                return
+            }
+
+            sd.index = {
+                name: "text",
+                indexes: {},
+            }
+
+            sd.table_schema.text.forEach(key => {
+                sd.index.indexes[key] = "text"
+            })
+        })
+        .conditional(sd => sd.index, mongodb.ensure_index)
+
+        .end(done, self, ensure_schema)
 })
 
 ensure_schema.method = "db.ensure_schema"
@@ -101,6 +119,7 @@ ensure_schema.requires = {
 ensure_schema.accepts = {
     table_schema: {
         indexes: _.is.Dictionary,
+        text: _.is.Array.of.String,
     },
 }
 ensure_schema.produces = {
