@@ -118,7 +118,7 @@ const _make_query = _query => {
 
                 case "find":
                     q = {
-                        "$regex": _escape_re(parts[position + 1]),
+                        "$regex": _.coerce.string.resafe(parts[position + 1]),
                         "$options": "i",
                     }
 
@@ -167,6 +167,10 @@ const all = _.promise((self, done) => {
         query["$text"] = {
             "$search": self.query_search,
         }
+    }
+
+    if (self.mongodb$query) {
+        Object.assign(query, self.mongodb$query)
     }
 
     let sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
@@ -295,6 +299,7 @@ all.accepts = {
     query_limit: _.is.Intger,
     projection: [ _.is.Array, _.is.Dictionary ],
     query_sort: _.is.Array,
+    mongodb$query: _.is.Dictionary,
 }
 all.produces = {
     jsons: _.is.Array,
@@ -322,6 +327,10 @@ const count = _.promise((self, done) => {
                 }
             }
 
+            if (self.mongodb$query) {
+                Object.assign(query, self.mongodb$query)
+            }
+
             sd.mongodb$collection.count(query, (error, count) => {
                 if (error) {
                     return done(util.intercept(self)(error))
@@ -345,6 +354,8 @@ count.requires = {
 }
 count.accepts = {
     query: _.is.JSON,
+    query_search: _.is.String,
+    mongodb$query: _.is.Dictionary,
 }
 count.produces = {
     count: _.is.Integer,
