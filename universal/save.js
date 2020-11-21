@@ -59,8 +59,6 @@ const save = _descriptor => {
                     sd.query[key] = sd[_descriptor.one][key]
                     assert.ok(!_.is.Undefined(sd.query[key]), `${f.method}: expected to find key ${key}`)
                 })
-
-                // console.log("MONGO:SAVE", sd.query, sd.json)
             })
 
             .conditional(!!_descriptor.scrub_json, _descriptor.scrub_json)
