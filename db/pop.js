@@ -24,8 +24,6 @@
 
 const _ = require("iotdb-helpers")
 
-const util = require("../lib/util")
-
 /**
  *  Find one and delete it. This isn't a real 
  *  DynamoDB function but we have it in our AWS code
@@ -43,11 +41,11 @@ const pop = _.promise((self, done) => {
         .make(sd => {
             sd.mongodb$collection.findOneAndDelete(query, {}, (error, result) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
                 if (result) {
-                    self.json = util.scrub_ids(result)
+                    self.json = mongodb.util.scrub_ids(result)
                 } else {
                     self.json = null
                 }

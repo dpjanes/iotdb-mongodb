@@ -24,8 +24,6 @@
 
 const _ = require("iotdb-helpers")
 
-const util = require("../lib/util")
-
 /**
  */
 const delete_ = _.promise((self, done) => {
@@ -42,7 +40,7 @@ const delete_ = _.promise((self, done) => {
         .make(sd => {
             sd.mongodb$collection.findAndRemove(query, sort, { w: 1, }, (error, result) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
                 self.mongodb$result = result

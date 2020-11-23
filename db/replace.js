@@ -25,8 +25,6 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const util = require("../lib/util")
-
 /**
  *  Requires: self.json, self.table_schema
  *  Produces: N/A

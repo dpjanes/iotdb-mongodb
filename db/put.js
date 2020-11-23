@@ -25,9 +25,6 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const util = require("../lib/util")
-const Binary = require("mongodb").Binary
-
 /**
  */
 const _put = document => _.promise((self, done) => {
@@ -55,7 +52,7 @@ const _put = document => _.promise((self, done) => {
                 returnOriginal: false,
             }, (error, doc) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
                 done(null, self)
@@ -83,6 +80,8 @@ _put.produces = {
  *  BLOB handling
  */
 const put_document = _.promise((self, done) => {
+    const Binary = require("mongodb").Binary
+
     _.promise(self)
         .then(_put(Binary(self.document)))
         .end(done, self)

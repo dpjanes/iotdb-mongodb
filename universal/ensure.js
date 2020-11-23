@@ -23,16 +23,16 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("..")
 
 const assert = require("assert")
 
 const _util = require("./_util")
-const util = require("../lib/util")
 
 /**
  */
 const ensure = _descriptor => {
+    const mongodb = require("..")
+
     assert(_.is.String(_descriptor.name))
     assert(_.is.String(_descriptor.one))
     assert(_.is.String(_descriptor.many))
@@ -138,10 +138,10 @@ const ensure = _descriptor => {
                 // console.log("B.1 QUERY", sd.query)
                 sd.mongodb$collection.findOne(sd.query, (error, result) => {
                     if (error) {
-                        return done(util.intercept(sd)(error))
+                        return done(mongodb.util.intercept(sd)(error))
                     }
 
-                    sd.json = util.scrub_ids(result) || null
+                    sd.json = mongodb.util.scrub_ids(result) || null
                     // console.log("B.2 JSON", sd.json)
 
                     if (sd.table_schema.partials && sd.json) {

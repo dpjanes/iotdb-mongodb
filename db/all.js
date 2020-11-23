@@ -25,8 +25,6 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-const util = require("../lib/util")
-
 // https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
 function _escape_re(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -214,10 +212,10 @@ const all = _.promise((self, done) => {
         .then(sd => {
             sd.mongodb$collection.find(query, options).sort(sort).toArray((error, mongodb$result) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
-                self.jsons = util.scrub_ids(mongodb$result)
+                self.jsons = mongodb.util.scrub_ids(mongodb$result)
                 self.json = self.jsons.length ? self.jsons[0] : null
 
                 self.cursor = null
@@ -333,7 +331,7 @@ const count = _.promise((self, done) => {
 
             sd.mongodb$collection.count(query, (error, count) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
                 self.count = count

@@ -24,8 +24,6 @@
 
 const _ = require("iotdb-helpers")
 
-const util = require("../lib/util")
-
 /**
  */
 const _ensure_one = _.promise((self, done) => {

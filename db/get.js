@@ -24,8 +24,6 @@
 
 const _ = require("iotdb-helpers")
 
-const util = require("../lib/util")
-
 /**
  */
 const get = _.promise((self, done) => {
@@ -38,10 +36,10 @@ const get = _.promise((self, done) => {
         .make(sd => {
             sd.mongodb$collection.findOne(self.query, (error, result) => {
                 if (error) {
-                    return done(util.intercept(self)(error))
+                    return done(mongodb.util.intercept(self)(error))
                 }
 
-                self.json = util.scrub_ids(result) || null
+                self.json = mongodb.util.scrub_ids(result) || null
 
                 if (sd.table_schema.partials && self.json) {
                     self.json.$_original = _.d.clone.deep(self.json)
