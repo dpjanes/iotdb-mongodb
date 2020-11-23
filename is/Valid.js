@@ -1,5 +1,5 @@
 /*
- *  lib/is.js
+ *  lib/Valid.js
  *
  *  David Janes
  *  IOTDB.org
@@ -23,9 +23,6 @@
 "use strict"
 
 const _ = require("iotdb-helpers")
-const mongodb = require("mongodb")
-
-const isBinary = v => v instanceof mongodb.Binary
 
 /**
  *  Is a Valid MongoDB object
@@ -63,14 +60,7 @@ const isValid = (v, _verbose) => {
     }
 }
 
-
 /**
  *  API
  */
-exports.Binary = isBinary
 exports.valid = isValid
-
-/**
- *  Monkeypatch
- */
-_.is.mongodb = exports
