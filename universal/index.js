@@ -45,6 +45,5 @@ module.exports = Object.assign(
     require("./remove"),
     require("./save"),
     require("./upsert"),
-    require("./util"),
     {}
 )

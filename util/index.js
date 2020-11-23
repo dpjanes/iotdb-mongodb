@@ -24,10 +24,12 @@
 
 module.exports = Object.assign(
     {},
-    require("./updated"),
+    require("./build_table"),
     require("./intercept"),
     require("./restore_ids"),
     require("./safe_ids"),
     require("./scrub_ids"),
+    require("./scrub_underscore"),
+    require("./updated"),
     {}
 )

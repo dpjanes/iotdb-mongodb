@@ -1,5 +1,5 @@
 /*
- *  test/universal/scrub_underscore.js
+ *  test/util/scrub_underscore.js
  *
  *  David Janes
  *  IOTDB.org
@@ -28,7 +28,7 @@ const mongodb = require("../..")
 
 const assert = require("assert")
 
-describe("universal/scrub_underscore", function() {
+describe("util/scrub_underscore", function() {
     describe("bad", function() {
     })
     describe("good", function() {
@@ -45,15 +45,15 @@ describe("universal/scrub_underscore", function() {
                 b: 2,
                 c: [ 3, 4, ],
             }
-            
+
             _.promise({
                 json: input,
             })
-                .then(mongodb.universal.util.scrub_underscore)
+                .then(mongodb.util.scrub_underscore)
                 .make(sd => {
                     assert.deepEqual(sd.json, expected)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

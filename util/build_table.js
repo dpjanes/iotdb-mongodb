@@ -1,5 +1,5 @@
 /*
- *  universal/util.js
+ *  lib/build_table.js
  *
  *  David Janes
  *  IOTDB
@@ -26,39 +26,16 @@ const _ = require("iotdb-helpers")
 const assert = require("assert")
 
 /**
- */
-const scrub_underscore = _.promise(self => {
-    _.promise.validate(self, scrub_underscore)
-
-    self.json = _.d.clone(self.json)
-
-    _.keys(self.json)
-        .filter(key => key.startsWith("_"))
-        .forEach(key => delete self.json[key]);
-})
-
-scrub_underscore.method = "universal.util.scrub_underscore"
-scrub_underscore.description = `Remove underscores from JSON record`
-scrub_underscore.requires = {
-}
-scrub_underscore.accepts = {
-    json: _.is.Dictionary,
-}
-scrub_underscore.produces = {
-    json: _.is.JSON,
-}
-
-/**
  *  Quickly build a database table
 
-    mongodb.universal.util.build({
+    mongodb.util.build_table({
         name: "question",       // name of table and objects
         keys: "id",             // unique key
         specials: "unit",       // keys that we want to search one
     })
 
  */
-const build = _paramd => {
+const build_table = _paramd => {
     const mongodb = require("..")
 
     /*
@@ -145,8 +122,5 @@ const build = _paramd => {
 /**
  *  API
  */
-exports.util = {
-    scrub_underscore: scrub_underscore,
-    build: build,
-}
+exports.build_table = build_table
 
