@@ -1,9 +1,9 @@
 /*
- *  util/index.js
+ *  lib/util.js
  *
  *  David Janes
  *  IOTDB.org
- *  2020-01-04
+ *  2017-08-05
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -22,12 +22,24 @@
 
 "use strict"
 
-module.exports = Object.assign(
-    {},
-    require("./updated"),
-    require("./intercept"),
-    require("./restore_ids"),
-    require("./safe_ids"),
-    require("./scrub_ids"),
-    {}
-)
+const _ = require("iotdb-helpers")
+
+const mongodb = require("mongodb")
+const is = require("../is")
+
+/**
+ *  Intercept an error, making sure our global
+ *  error handler can see it
+ */
+const intercept = self => error => {
+    if (self.mongodb) {
+        self.mongodb.emit("__error", error)
+    }
+
+    throw error
+}
+
+/**
+ *  API
+ */
+exports.intercept = intercept
