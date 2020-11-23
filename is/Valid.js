@@ -28,6 +28,8 @@ const _ = require("iotdb-helpers")
  *  Is a Valid MongoDB object
  */
 const isValid = (v, _verbose) => {
+    const is = require("../is")
+
     if (_.is.Array(v)) {
         for (let vi in v) {
             if (!isValid(v[vi], _verbose)) {
@@ -46,7 +48,7 @@ const isValid = (v, _verbose) => {
     } else {
         if (_.is.Atomic(v)) {
             return true
-        } else if (isBinary(v)) { 
+        } else if (_.is.mongodb.Binary(v)) { 
             return true
         } else if (_.is.Buffer(v)) { // ¯\_(ツ)_/¯
             return true
