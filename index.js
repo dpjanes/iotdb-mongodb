@@ -22,7 +22,9 @@
 
 "use strict"
 
+
 module.exports = require("./lib")
+module.exports.is = require("./is")
 module.exports.dynamodb = require("./db")
 module.exports.db = require("./db")
 module.exports.universal = require("./universal")

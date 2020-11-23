@@ -22,9 +22,16 @@
 
 "use strict"
 
+const _ = require("iotdb-helpers")
+
 module.exports = Object.assign(
     {},
     require("./Binary"),
     require("./valid"),
     {}
 )
+
+/**
+ *  Monkeypatch
+ */
+_.is.mongodb = module.exports
