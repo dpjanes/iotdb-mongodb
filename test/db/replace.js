@@ -39,7 +39,7 @@ describe("db/replace", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("bad", function() {
@@ -96,7 +96,7 @@ describe("db/replace", function() {
                     assert.ok(_.is.Undefined(sd.json.rating))
                 })
 
-                .end(done)
+                .end(done, {})
         })
     })
 })

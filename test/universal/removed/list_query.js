@@ -40,7 +40,7 @@ describe("universal/removed/list_query", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("list_query", function(done) {
@@ -78,7 +78,7 @@ describe("universal/removed/list_query", function() {
                 assert.deepEqual(0, sd.movies.length)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query removed items (true)", function(done) {
         const movie = {
@@ -108,7 +108,7 @@ describe("universal/removed/list_query", function() {
                 assert.ok(!sd.movies.find(m => !m.removed))
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query all items", function(done) {
         const movie = {
@@ -139,7 +139,7 @@ describe("universal/removed/list_query", function() {
                 assert.ok(sd.movies.find(m => m.removed))
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query unremoved items", function(done) {
         const movie = {
@@ -170,7 +170,7 @@ describe("universal/removed/list_query", function() {
                 assert.ok(sd.movies.length)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("removed before now", function(done) {
         const movie = {
@@ -201,6 +201,6 @@ describe("universal/removed/list_query", function() {
                 assert.ok(sd.movies.length)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

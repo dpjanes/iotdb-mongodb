@@ -40,7 +40,7 @@ describe("universal/collection", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works", function(done) {
@@ -52,6 +52,6 @@ describe("universal/collection", function() {
             .make(sd => {
                 assert.ok(sd.mongodb$collection)
             })
-            .end(done)
+            .end(done, {})
     })
 })

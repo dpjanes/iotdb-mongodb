@@ -39,7 +39,7 @@ describe("db.patch", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("bad", function() {
@@ -97,7 +97,7 @@ describe("db.patch", function() {
 
                 })
 
-                .end(done)
+                .end(done, {})
         })
     })
 })

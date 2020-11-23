@@ -39,7 +39,7 @@ describe("universal/removed/any_all", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("any_all", function(done) {
@@ -73,6 +73,6 @@ describe("universal/removed/any_all", function() {
                 assert.deepEqual(sd.exists, false)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

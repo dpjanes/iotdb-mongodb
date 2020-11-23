@@ -40,7 +40,7 @@ describe("count", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -50,7 +50,7 @@ describe("count", function() {
                 .make(sd => {
                     assert.deepEqual(sd.count, 88)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

@@ -40,7 +40,7 @@ describe("universal/list.year", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -53,7 +53,7 @@ describe("universal/list.year", function() {
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("year - title backwards", function(done) {
             _.promise(self)
@@ -64,7 +64,7 @@ describe("universal/list.year", function() {
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("year - title backwards, parameterized", function(done) {
             _.promise(self)
@@ -77,7 +77,7 @@ describe("universal/list.year", function() {
                     assert.deepEqual(sd.movies[0].title, "jOBS")
 
                 })
-                .end(done)
+                .end(done, {})
         })
         it("year - title backwards, parameterized, pager, query", function(done) {
             _.promise(self)
@@ -92,7 +92,7 @@ describe("universal/list.year", function() {
                     assert.deepEqual(sd.movies[0].title, "The Butler")
 
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

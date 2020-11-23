@@ -40,7 +40,7 @@ describe("universal/list_all", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -52,7 +52,7 @@ describe("universal/list_all", function() {
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("index (+year, +title)", function(done) {
             _.promise(self)
@@ -62,7 +62,7 @@ describe("universal/list_all", function() {
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), false)
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("index (-year, +title)", function(done) {
             _.promise(self)
@@ -71,7 +71,7 @@ describe("universal/list_all", function() {
                     assert.deepEqual(sd.movies.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), false)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("default index, query limit", function(done) {
             _.promise(self)
@@ -81,7 +81,7 @@ describe("universal/list_all", function() {
                     assert.deepEqual(sd.movies.length, 10);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("default index, pager past end + query", function(done) {
             _.promise(self)
@@ -91,7 +91,7 @@ describe("universal/list_all", function() {
                 .make(sd => {
                     assert.deepEqual(sd.movies.length, 0);
                 })
-                .end(done)
+                .end(done, {})
         })
         it("default index, pager near + query", function(done) {
             _.promise(self)
@@ -101,7 +101,7 @@ describe("universal/list_all", function() {
                 .make(sd => {
                     assert.deepEqual(sd.movies.length, 8);
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

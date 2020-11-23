@@ -40,7 +40,7 @@ describe("lib/get", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -56,7 +56,7 @@ describe("lib/get", function() {
                     assert.deepEqual(sd.json.year, 2014)
                     assert.deepEqual(sd.json.title, "Rush")
                 })
-                .end(done)
+                .end(done, {})
         })
         it("paramaterized", function(done) {
             _.promise(self)
@@ -69,7 +69,7 @@ describe("lib/get", function() {
                     assert.deepEqual(sd.json.year, 2014)
                     assert.deepEqual(sd.json.title, "Rush")
                 })
-                .end(done)
+                .end(done, {})
         })
         it("does not exists", function(done) {
             _.promise(self)
@@ -81,7 +81,7 @@ describe("lib/get", function() {
                 .make(sd => {
                     assert.deepEqual(sd.json, null)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

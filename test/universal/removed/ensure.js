@@ -40,7 +40,7 @@ describe("universal/ensure", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works", function(done) {
@@ -60,7 +60,7 @@ describe("universal/ensure", function() {
                 assert.ok(movie.created)
                 assert.ok(movie.updated)
             })
-            .end(done)
+            .end(done, {})
     })
     it("works - multiple times", function(done) {
         _.promise(self)
@@ -94,6 +94,6 @@ describe("universal/ensure", function() {
                 assert.ok(movie.created === sd.original.created)
                 assert.ok(movie.updated !== sd.original.updated)
             })
-            .end(done)
+            .end(done, {})
     })
 })

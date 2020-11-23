@@ -40,7 +40,7 @@ describe("universal/list_query", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -54,7 +54,7 @@ describe("universal/list_query", function() {
                 .make(sd => {
                     assert.deepEqual(sd.movies.length, 34);
                 })
-                .end(done)
+                .end(done, {})
         })
         it("parameterized empty", function(done) {
             _.promise(self)
@@ -67,7 +67,7 @@ describe("universal/list_query", function() {
                     // assert.deepEqual(_util.ordered_forward(sd.movies, "title"), true)
                     // assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
         it("paramterized", function(done) {
             _.promise(self)
@@ -80,7 +80,7 @@ describe("universal/list_query", function() {
                     assert.deepEqual(sd.movies.length, 88);
                     assert.deepEqual(_util.ordered_forward(sd.movies, "year"), true)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

@@ -39,7 +39,7 @@ describe("universal/removed/list_key", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("list_key", function(done) {
@@ -73,6 +73,6 @@ describe("universal/removed/list_key", function() {
                 assert.deepEqual(0, sd.movies.length)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

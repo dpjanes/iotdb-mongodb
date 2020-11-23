@@ -40,7 +40,7 @@ describe("universal/create", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works", function(done) {
@@ -56,7 +56,7 @@ describe("universal/create", function() {
                 assert.deepEqual(sd.movies[0].year, 2018)
                 assert.deepEqual(sd.movies[0].title, "Avengers : Infinity War")
             })
-            .end(done)
+            .end(done, {})
     })
     it("repeatedly", function(done) {
         _.promise(self)
@@ -83,7 +83,7 @@ describe("universal/create", function() {
                 assert.deepEqual(sd.movies[0].description, "bla bla")
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("parameterized", function(done) {
         _.promise(self)
@@ -104,7 +104,7 @@ describe("universal/create", function() {
                 assert.deepEqual(sd.movie.year, 2019)
                 assert.deepEqual(sd.movie.title, "Avengers : Endgame")
             })
-            .end(done)
+            .end(done, {})
     })
     it("fails with missing keys", function(done) {
         _.promise(self)

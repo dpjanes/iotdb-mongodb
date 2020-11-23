@@ -40,7 +40,7 @@ describe("universal/by_query", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
@@ -56,7 +56,7 @@ describe("universal/by_query", function() {
                     assert.deepEqual(sd.movie.year, 2014)
                     assert.deepEqual(sd.movie.title, "Rush")
                 })
-                .end(done)
+                .end(done, {})
         })
         it("parameterized", function(done) {
             _.promise(self)
@@ -69,7 +69,7 @@ describe("universal/by_query", function() {
                     assert.deepEqual(sd.movie.year, 2014)
                     assert.deepEqual(sd.movie.title, "Rush")
                 })
-                .end(done)
+                .end(done, {})
         })
         it("does not exists", function(done) {
             _.promise(self)
@@ -81,7 +81,7 @@ describe("universal/by_query", function() {
                 .make(sd => {
                     assert.deepEqual(sd.movie, null)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

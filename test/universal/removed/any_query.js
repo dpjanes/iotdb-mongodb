@@ -43,7 +43,7 @@ describe("universal/removed/any_query", function() {
                 delete self.movies
                 delete self.movie
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("any_query", function(done) {
@@ -81,7 +81,7 @@ describe("universal/removed/any_query", function() {
                 assert.deepEqual(sd.exists, false)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query removed items (true)", function(done) {
         const movie = {
@@ -110,7 +110,7 @@ describe("universal/removed/any_query", function() {
                 assert.deepEqual(sd.exists, true)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query all items", function(done) {
         const movie = {
@@ -139,7 +139,7 @@ describe("universal/removed/any_query", function() {
                 assert.deepEqual(sd.exists, true)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("query unremoved items", function(done) {
         const movie = {
@@ -168,7 +168,7 @@ describe("universal/removed/any_query", function() {
                 assert.deepEqual(sd.exists, true)
             })
 
-            .end(done)
+            .end(done, {})
     })
     it("removed before now", function(done) {
         const movie = {
@@ -197,6 +197,6 @@ describe("universal/removed/any_query", function() {
                 assert.deepEqual(sd.exists, true)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

@@ -39,7 +39,7 @@ describe("universal/removed/by_query", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("by_query", function(done) {
@@ -77,6 +77,6 @@ describe("universal/removed/by_query", function() {
                 assert.deepEqual(null, sd.movie)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

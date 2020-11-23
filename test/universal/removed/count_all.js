@@ -39,7 +39,7 @@ describe("universal/removed/count_all", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("count_all", function(done) {
@@ -73,6 +73,6 @@ describe("universal/removed/count_all", function() {
                 assert.deepEqual(sd.count, 0)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

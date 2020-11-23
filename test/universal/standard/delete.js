@@ -40,7 +40,7 @@ describe("universal/delete", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works", function(done) {
@@ -77,6 +77,6 @@ describe("universal/delete", function() {
                 assert.deepEqual(sd.movies.length, 88)
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

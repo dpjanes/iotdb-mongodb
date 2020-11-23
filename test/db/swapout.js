@@ -40,7 +40,7 @@ describe("db/swapout", function() {
                     const aws = require("iotdb-awslib")
                     assert.strictEqual(aws.dynamodb, mongodb.db)
                 })
-                .end(done)
+                .end(done, {})
         })
     })
 })

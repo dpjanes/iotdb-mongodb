@@ -39,7 +39,7 @@ describe("db/query", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     /**
@@ -54,7 +54,7 @@ describe("db/query", function() {
             .make(sd => {
                 assert.deepEqual(sd.jsons.length, 1);
             })
-            .end(done)
+            .end(done, {})
     })
     it("!= null", function(done) {
         _.promise(self)
@@ -65,6 +65,6 @@ describe("db/query", function() {
             .make(sd => {
                 assert.deepEqual(sd.jsons.length, 0);
             })
-            .end(done)
+            .end(done, {})
     })
 })

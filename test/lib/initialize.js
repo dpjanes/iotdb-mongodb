@@ -39,13 +39,13 @@ describe("initialize", function() {
             .make(sd => {
                 self = sd
             })
-            .end(done)
+            .end(done, {})
     })
 
     describe("good", function() {
         it("works", function(done) {
             _.promise(self)
-                .end(done)
+                .end(done, {})
         })
     })
 })

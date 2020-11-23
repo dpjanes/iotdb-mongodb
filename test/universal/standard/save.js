@@ -40,7 +40,7 @@ describe("universal/save", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works", function(done) {
@@ -66,6 +66,6 @@ describe("universal/save", function() {
                 assert.deepEqual(sd.movies[0].rating, "It's great")
             })
 
-            .end(done)
+            .end(done, {})
     })
 })

@@ -40,7 +40,7 @@ describe("universal/upsert", function() {
             .make(sd => {
                 self = sd;
             })
-            .end(done)
+            .end(done, {})
     })
 
     it("works like create", function(done) {
@@ -60,7 +60,7 @@ describe("universal/upsert", function() {
             .make(sd => {
                 assert.deepEqual(sd.movies.length, 1)
             })
-            .end(done)
+            .end(done, {})
     })
     it("works like create parameterized", function(done) {
         _.promise(self)
@@ -85,7 +85,7 @@ describe("universal/upsert", function() {
                 assert.deepEqual(sd.movie.review, "Haven't seen it")
                 assert.deepEqual(sd.movie.series, "MCU")
             })
-            .end(done)
+            .end(done, {})
     })
     it("modifies", function(done) {
         _.promise(self)
@@ -111,7 +111,7 @@ describe("universal/upsert", function() {
                 assert.deepEqual(sd.movie.review, "Looks promising")
                 assert.deepEqual(sd.movie.series, "MCU")
             })
-            .end(done)
+            .end(done, {})
     })
     it("keyed version", function(done) {
         _.promise(self)
@@ -128,6 +128,6 @@ describe("universal/upsert", function() {
                 assert.deepEqual(sd.movie.review, "Looks great")
                 assert.deepEqual(sd.movie.series, "MCU")
             })
-            .end(done)
+            .end(done, {})
     })
 })
