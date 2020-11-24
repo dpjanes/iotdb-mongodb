@@ -70,12 +70,6 @@ get.produces = {
 }
 
 /**
- */
-const get_document = _.promise((self, done) => {
-})
-
-/**
  *  API
  */
 exports.get = get
-exports.get.document = get_document
