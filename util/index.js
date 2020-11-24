@@ -26,6 +26,7 @@ module.exports = Object.assign(
     {},
     require("./build_projection"),
     require("./build_query"),
+    require("./build_sort"),
     require("./build_table"),
     require("./intercept"),
     require("./restore_ids"),

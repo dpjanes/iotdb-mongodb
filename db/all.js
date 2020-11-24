@@ -34,20 +34,8 @@ const all = _.promise((self, done) => {
 
     _.promise.validate(self, all)
 
-    let keys = self.table_schema.keys
-    if (self.index_name) {
-        keys = self.table_schema.indexes[self.index_name]
-        if (!keys) {
-            return done(new errors.Invalid(`${all.method}: no index named ${self.index_name}`))
-        }
-    }
-
     const query = mongodb.util.build_query(self.query, self.mongodb$search, self.mongodb$query)
-
-    let sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
-    if (self.query_sort) {
-        sort = _.d.list(self, "query_sort", []).map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
-    }
+    const sort = mongodb.util.build_sort(self.table_schema, self.index_name, self.mongodb$sort)
 
     const options = {
         skip: 0
@@ -163,8 +151,8 @@ all.accepts = {
     query: _.is.JSON,
     pager: [ _.is.String, _.is.Integer ],
     query_limit: _.is.Intger,
-    query_sort: _.is.Array,
 
+    mongodb$sort: _.is.Array,
     mongodb$projection: [ _.is.Array, _.is.Dictionary ],
     mongodb$search: _.is.String,
     mongodb$query: _.is.Dictionary,

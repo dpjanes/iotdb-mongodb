@@ -36,7 +36,7 @@ const _put = document => _.promise((self, done) => {
 
     const values = self.table_schema.keys.map(key => self.json[key] || null)
     const query = _.object(self.table_schema.keys, values)
-    const sort = self.table_schema.keys.map(key => [ key, 1 ])
+    const sort = mongodb.util.build_sort(self.table_schema)
 
     const json = _.d.clone(self.json)
     if (document) {

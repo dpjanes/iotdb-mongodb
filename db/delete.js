@@ -33,7 +33,7 @@ const delete_ = _.promise((self, done) => {
 
     const values = self.table_schema.keys.map(key => self.query[key] || null)
     const query = _.object(self.table_schema.keys, values)
-    const sort = self.table_schema.keys.map(key => [ key, 1 ])
+    const sort = mongodb.util.build_sort(self.table_schema)
 
     _.promise(self)
         .then(mongodb.collection.p(self.table_schema.name))
