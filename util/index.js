@@ -24,6 +24,7 @@
 
 module.exports = Object.assign(
     {},
+    require("./build_query"),
     require("./build_table"),
     require("./intercept"),
     require("./restore_ids"),

@@ -25,123 +25,6 @@
 const _ = require("iotdb-helpers")
 const errors = require("iotdb-errors")
 
-// https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
-function _escape_re(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-
-/**
- *  Make a mongodb looking query from a DynamoDB one
- */
-const _make_query = _query => {
-    const query = _.d.clone.shallow(_query || {})
-
-    _.keys(query)
-        .filter(query_key => _.is.Array(query[query_key]))
-        .forEach(query_key => {
-            const parts = query[query_key]
-
-            let position = 0
-            while (position < parts.length) {
-                let comparitor
-                let q
-
-                switch (parts[position].toLowerCase()) {
-                case "=":
-                case "eq":
-                    q = {
-                        "$eq": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-                    
-                case "<": case "lt":
-                    q = {
-                        "$lt": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-                    
-                case "<=": case "le":
-                    q = {
-                        "$lte": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-                    
-                case ">": case "gt":
-                    q = {
-                        "$gt": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-                    
-                case ">=": case "ge":
-                    q = {
-                        "$gte": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-                    
-                case "!=": case "ne":
-                    q = {
-                        "$ne": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-
-                case "between":
-                    q = {
-                        "$gte": parts[position + 1],
-                        "$lte": parts[position + 2],
-                    }
-
-                    position += 3
-                    break
-
-                case "in":
-                case "∈":
-                    q = {
-                        "$in": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-
-                case "find":
-                    q = {
-                        "$regex": _.coerce.string.resafe(parts[position + 1]),
-                        "$options": "i",
-                    }
-
-                    position += 2
-                    break
-
-                case "regex":
-                    q = {
-                        "$regex": parts[position + 1]
-                    }
-
-                    position += 2
-                    break
-
-                default:
-                    throw new errors.Invalid("unknown operator: " + parts[position])
-                }
-
-                query[query_key] = q
-            }
-        })
-
-    return query
-}
-
 /**
  *  Query the database. Note that this implements
  *  `all`, `query_simple` and `scan_simple`
@@ -159,7 +42,7 @@ const all = _.promise((self, done) => {
         }
     }
 
-    const query = _make_query(self.query)
+    const query = mongodb.util.build_query(self.query)
 
     if (!_.is.Empty(self.query_search)) {
         query["$text"] = {
@@ -317,7 +200,7 @@ const count = _.promise((self, done) => {
 
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
-            const query = _make_query(self.query)
+            const query = mongodb.util.build_query(self.query)
 
             if (!_.is.Empty(self.query_search)) {
                 query["$text"] = {
