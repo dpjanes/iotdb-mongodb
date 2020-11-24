@@ -1,9 +1,9 @@
 /*
- *  util/index.js
+ *  util/build_projection.js
  *
  *  David Janes
  *  IOTDB.org
- *  2020-01-04
+ *  2020-11-24
  *
  *  Copyright (2013-2020) David P. Janes
  *
@@ -22,16 +22,23 @@
 
 "use strict"
 
-module.exports = Object.assign(
-    {},
-    require("./build_projection"),
-    require("./build_query"),
-    require("./build_table"),
-    require("./intercept"),
-    require("./restore_ids"),
-    require("./safe_ids"),
-    require("./scrub_ids"),
-    require("./scrub_underscore"),
-    require("./updated"),
-    {}
-)
+const _ = require("iotdb-helpers")
+
+/**
+ */
+const build_projection = mongodb$projection => {
+    if (_.is.Array(mongodb$projection)) {
+        const projection = {}
+        mongodb$projection.forEach(key => projection[key] = 1)
+        return projection
+    } else if (_.is.Dictionary(mongodb$projection)) {
+        return _.d.clone(mongodb$projection)
+    } else {
+        return null
+    }
+}
+
+/**
+ *  API
+ */
+exports.build_projection = build_projection

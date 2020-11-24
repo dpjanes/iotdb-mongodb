@@ -71,13 +71,8 @@ const all = _.promise((self, done) => {
         options.limit = self.query_limit
     }
 
-    if (self.projection) {
-        if (_.is.Array(self.projection)) {
-            options.projection = {}
-            self.projection.forEach(key => options.projection[key] = 1)
-        } else {
-            options.projection = _.d.clone(self.projection)
-        }
+    if (self.mongodb$projection) {
+        options.projection = mongodb.util.build_projection(self.mongodb$projection) 
     }
 
     /*
@@ -178,7 +173,7 @@ all.accepts = {
     query_search: _.is.String,
     pager: [ _.is.String, _.is.Integer ],
     query_limit: _.is.Intger,
-    projection: [ _.is.Array, _.is.Dictionary ],
+    mongodb$projection: [ _.is.Array, _.is.Dictionary ],
     query_sort: _.is.Array,
     mongodb$query: _.is.Dictionary,
 }

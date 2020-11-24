@@ -32,7 +32,6 @@ const _util = require("./_util")
 /**
  */
 const configure = _descriptor => {
-
     const f = _.promise((self, done) => {
         _.promise(self)
             .validate(f)
@@ -58,7 +57,6 @@ const configure = _descriptor => {
         query: _.is.Null,
         query_limit: _.is.Null,
         index_name: _.is.Null,
-        projection: _.is.Null,
     }
 
     return f

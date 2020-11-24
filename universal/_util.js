@@ -35,7 +35,6 @@ const setup = _.promise(self => {
     self.query = null
     self.query_limit = null
     self.index_name = null
-    self.projection = null
 })
 
 setup.method = "universal._util/setup"
@@ -48,7 +47,6 @@ setup.produces = {
     query: _.is.Null,
     query_limit: _.is.Null,
     index_name: _.is.Null,
-    projection: _.is.Null,
 }
 
 /**

@@ -39,7 +39,7 @@ const _list_folder = _.promise((self, done) => {
             query: {
                 "metadata.folder": self.folder,
             },
-            projection: [ "filename" ],
+            mongodb$projection: [ "filename" ],
         })
         .then(mongodb.collection)
         .then(mongodb.find)
