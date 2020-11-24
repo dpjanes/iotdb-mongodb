@@ -48,6 +48,9 @@ const movie = {
         year: mongodb.universal.list_key(_descriptor, "year"),
         title: mongodb.universal.list_key(_descriptor, "title"),
     },
+    rx: {
+        query: mongodb.universal.rx_query(_descriptor, "year-title-index"),
+    },
 }
 
 movie.upsert.title = mongodb.universal.upsert(_descriptor, "title")

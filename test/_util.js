@@ -107,6 +107,30 @@ const ordered_forward = (jsons, key) => {
 }
 
 /**
+ *  Gathers all results from rx.Observable
+ */
+const gather = _.promise((self, done) => {
+    _.promise.validate(self, gather)
+
+    self.jsons = []
+    self.observable.subscribe(
+        json => self.jsons.push(json),
+        error => done(error),
+        () => done(null, self)
+    )
+})
+
+gather.method = "gather"
+gather.description = ``
+gather.requires = {
+    observable: _.is.rx.Observable,
+}
+gather.produces = {
+    jsons: _.is.Array,
+}
+
+
+/**
  *  API
  */
 exports.auto_fail = auto_fail
@@ -115,3 +139,5 @@ exports.ok_error = ok_error
 exports.initialize = initialize
 exports.load = load
 exports.ordered_forward = ordered_forward
+
+exports.gather = gather
