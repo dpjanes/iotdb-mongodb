@@ -28,7 +28,7 @@ const errors = require("iotdb-errors")
 /**
  *  Make a mongodb looking query from a DynamoDB one
  */
-const build_query = _query => {
+const build_query = (_query, _search, _native) => {
     const query = _.d.clone.shallow(_query || {})
 
     _.keys(query)
@@ -133,6 +133,16 @@ const build_query = _query => {
                 query[query_key] = q
             }
         })
+
+    if (!_.is.Empty(_search)) {
+        query["$text"] = {
+            "$search": _search,
+        }
+    }
+
+    if (_native) {
+        Object.assign(query, _native)
+    }
 
     return query
 }

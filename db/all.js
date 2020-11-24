@@ -42,17 +42,7 @@ const all = _.promise((self, done) => {
         }
     }
 
-    const query = mongodb.util.build_query(self.query)
-
-    if (!_.is.Empty(self.query_search)) {
-        query["$text"] = {
-            "$search": self.query_search,
-        }
-    }
-
-    if (self.mongodb$query) {
-        Object.assign(query, self.mongodb$query)
-    }
+    const query = mongodb.util.build_query(self.query, self.mongodb$search, self.mongodb$query)
 
     let sort = keys.map(key => [ key.replace(/^[-+]/, ""), key.startsWith("-") ? -1 : 1 ])
     if (self.query_sort) {
@@ -169,12 +159,14 @@ all.requires = {
 }
 all.accepts = {
     index_name: _.is.String,
+
     query: _.is.JSON,
-    query_search: _.is.String,
     pager: [ _.is.String, _.is.Integer ],
     query_limit: _.is.Intger,
-    mongodb$projection: [ _.is.Array, _.is.Dictionary ],
     query_sort: _.is.Array,
+
+    mongodb$projection: [ _.is.Array, _.is.Dictionary ],
+    mongodb$search: _.is.String,
     mongodb$query: _.is.Dictionary,
 }
 all.produces = {

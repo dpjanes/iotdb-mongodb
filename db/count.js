@@ -35,17 +35,7 @@ const count = _.promise((self, done) => {
 
         .then(mongodb.collection.p(self.table_schema.name))
         .make(sd => {
-            const query = mongodb.util.build_query(self.query)
-
-            if (!_.is.Empty(self.query_search)) {
-                query["$text"] = {
-                    "$search": self.query_search,
-                }
-            }
-
-            if (self.mongodb$query) {
-                Object.assign(query, self.mongodb$query)
-            }
+            const query = mongodb.util.build_query(self.query, self.mongodb$search, self.mongodb$query)
 
             sd.mongodb$collection.count(query, (error, count) => {
                 if (error) {
@@ -70,7 +60,7 @@ count.requires = {
 }
 count.accepts = {
     query: _.is.JSON,
-    query_search: _.is.String,
+    mongodb$search: _.is.String,
     mongodb$query: _.is.Dictionary,
 }
 count.produces = {
