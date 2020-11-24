@@ -48,5 +48,6 @@ module.exports = Object.assign(
     require("./rx_all"),
     require("./rx_key"),
     require("./rx_query"),
+    require("./rx_watch"),
     {}
 )
