@@ -46,6 +46,7 @@ module.exports = Object.assign(
     require("./save"),
     require("./upsert"),
     require("./rx_all"),
+    require("./rx_key"),
     require("./rx_query"),
     {}
 )
