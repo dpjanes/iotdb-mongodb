@@ -8,8 +8,8 @@
     }, 
     "dependencies": {
         "iotdb-errors": "~3.1.9", 
-        "iotdb-helpers": "~3.4.21", 
-        "mongodb": "~3.6.2"
+        "iotdb-helpers": "~3.5.1", 
+        "mongodb": "~3.6.3"
     }, 
     "description": "POP MongoDB interface", 
     "homepage": "https://github.com/dpjanes/node-iotdb", 
@@ -25,5 +25,5 @@
         "cover": "nyc --reporter=html mocha --recursive", 
         "test": "mocha --recursive --bail"
     }, 
-    "version": "2.1.0"
+    "version": "2.1.1"
 }
