@@ -41,6 +41,7 @@ echo "=================="
         util/*.js \
         universal/*.js \
         db/*.js \
+        is/*.js \
         bin/*.js \
         |
     ( cd "${NPM_DST}" && tar xvf - && npm publish ) || exit 1

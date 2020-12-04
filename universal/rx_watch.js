@@ -61,37 +61,27 @@ const rx_watch = (_descriptor, _index) => {
                     }
                 ]
 
-                const _emitter = subscriber => {
+                sd.observable = new rx.Observable(subscriber => {
                     const change_stream = sd.mongodb$collection.watch(pipeline)
                     change_stream
                         .on("change", event => {
-                            const x = event.fullDocument
-                            x._type = event.operationType // XXX - this should be soft
+                            const x = event.fullDocument || {}
+                            x.__type = event.operationType // XXX - this should be soft
                             delete x._id // likely this is B.S.
 
                             subscriber.next(x)
                         })
 
-                        // who knows if these work, the documentation is very weird
-                        .on("error", error => subscriber.error(error))
-                        .on("close", () => subscriber.complete())
-
                     return {
                         unsubscribe: () => {
-                            if (!change_stream) {
-                                return
+                            try {
+                                change_stream.close()
+                            } catch (x) {
                             }
-
-                            const cs = change_stream
-                            change_stream = null
-                            cs.close()
                         }
                     }
-                }
-
-                sd.observable = new rx.Observable(_emitter)
+                })
             })
-
             .end(done, self, f)
     })
 

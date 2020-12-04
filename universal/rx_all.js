@@ -77,6 +77,7 @@ const rx_all = (_descriptor, _index) => {
                                 }
 
                                 sd.jsons.forEach(json => {
+                                    json.__type = "exists"
                                     subscriber.next(json)
                                 })
 

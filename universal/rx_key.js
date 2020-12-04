@@ -81,6 +81,7 @@ const rx_key = (_descriptor, _key, _index) => {
                                 }
 
                                 sd.jsons.forEach(json => {
+                                    json.__type = "exists"
                                     subscriber.next(json)
                                 })
 
