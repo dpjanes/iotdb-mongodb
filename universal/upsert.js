@@ -46,6 +46,7 @@ const upsert = (_descriptor, _key) => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
+            .conditional(!!_descriptor.writing, _descriptor.writing)
 
             .make(sd => {
                 sd.query = {}

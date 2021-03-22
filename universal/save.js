@@ -47,6 +47,7 @@ const save = _descriptor => {
 
             .then(_util.setup)
             .then(_descriptor.setup)
+            .conditional(!!_descriptor.writing, _descriptor.writing)
 
             .then(_descriptor.scrub || _util.scrub(_descriptor.one))
             .then(_util.key(_descriptor, "updated", now))
